@@ -1,0 +1,24 @@
+{
+  "name": "azdevautomation",
+  "version": "1.0.0",
+  "description": "Azure DevOps automation task",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmitryserbin/azdev-automation"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "Dmitry Serbin",
+  "license": "MIT",
+  "dependencies": {
+    "@types/q": "^1.5.2",
+    "azdev-automation": "^1.0.1",
+    "azure-pipelines-task-lib": "^2.9.3",
+    "q": "^1.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.7"
+  }
+}

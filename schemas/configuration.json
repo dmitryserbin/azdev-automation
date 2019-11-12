@@ -1,0 +1,80 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "array",
+  "title": "Configuration",
+  "items": {
+    "$id": "#/items",
+    "type": "object",
+    "title": "Projects",
+    "required": [
+      "name",
+      "description"
+    ],
+    "properties": {
+      "name": {
+        "$id": "#/items/properties/name",
+        "type": "string",
+        "minLength": 1,
+        "title": "Project name",
+        "default": "",
+        "examples": [
+          "My Project"
+        ],
+        "pattern": "^(.*)$"
+      },
+      "description": {
+        "$id": "#/items/properties/description",
+        "type": "string",
+        "minLength": 1,
+        "title": "Project description",
+        "default": "",
+        "examples": [
+          "This is My Project"
+        ],
+        "pattern": "^(.*)$"
+      },
+      "projectPermissions": {
+        "$id": "#/items/properties/projectPermissions",
+        "type": "string",
+        "title": "Project permissions policy",
+        "default": "",
+        "examples": [
+          "My Policy"
+        ],
+        "pattern": "^(.*)$"
+      },
+      "repositoryPermissions": {
+        "$id": "#/items/properties/repositoryPermissions",
+        "type": "string",
+        "title": "Repository permissions policy",
+        "default": "",
+        "examples": [
+          "My Policy"
+        ],
+        "pattern": "^(.*)$"
+      },
+      "buildPermissions": {
+        "$id": "#/items/properties/buildPermissions",
+        "type": "string",
+        "title": "Build permissions policy",
+        "default": "",
+        "examples": [
+          "My Policy"
+        ],
+        "pattern": "^(.*)$"
+      },
+      "releasePermissions": {
+        "$id": "#/items/properties/releasePermissions",
+        "type": "string",
+        "title": "Release permissions policy",
+        "default": "",
+        "examples": [
+          "My Policy"
+        ],
+        "pattern": "^(.*)$"
+      }
+    }
+  }
+}

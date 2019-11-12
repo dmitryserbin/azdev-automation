@@ -1,0 +1,61 @@
+{
+  "name": "azdev-automation",
+  "version": "1.0.1",
+  "description": "Azure DevOps automation framework enables access control automation of projects, pipelines and repositories configuration in Azure DevOps Services",
+  "main": "./automation.js",
+  "types": "./automation.d.ts",
+  "files": [
+    "*.js",
+    "*.d.ts",
+    "common/[*.js, *.d.ts]",
+    "factories/[*.js, *.d.ts]",
+    "helpers/*.js, *.d.ts]",
+    "interfaces/*.js, *.d.ts]",
+    "mappers/*.js, *.d.ts]",
+    "readers/*.js, *.d.ts]",
+    "updaters/*.js, *.d.ts]",
+    "schemas/*.json"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha -r ts-node/register tests/**/*.test.ts --no-timeouts --reporter mocha-multi-reporters --reporter-options configFile=mocha.json",
+    "patch": "npm version patch --no-git-tag-version",
+    "clean": "npm prune --production",
+    "publish": "npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmitryserbin/azdev-automation"
+  },
+  "keywords": [
+    "Azure",
+    "Azure DevOps",
+    "RBAC",
+    "Automation"
+  ],
+  "author": "Dmitry Serbin",
+  "license": "MIT",
+  "dependencies": {
+    "@types/debug": "^4.1.5",
+    "ajv": "^6.10.2",
+    "azure-devops-node-api": "^9.0.1",
+    "debug": "^4.1.1",
+    "meow": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.4",
+    "@types/meow": "^5.0.0",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.12.7",
+    "@types/sinon-chai": "^3.2.3",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2",
+    "mocha-junit-reporter": "^1.23.1",
+    "mocha-multi-reporters": "^1.1.7",
+    "sinon": "^7.5.0",
+    "sinon-chai": "^3.3.0",
+    "ts-node": "^8.5.0",
+    "typemoq": "^2.1.0",
+    "typescript": "^3.7.2"
+  }
+}

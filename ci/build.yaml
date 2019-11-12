@@ -1,0 +1,43 @@
+trigger:
+- master
+
+pr: none
+
+queue:
+  name: Hosted VS2017
+
+steps:
+- task: Npm@1
+  displayName: Restore packages
+  inputs:
+    command: install
+
+- task: Npm@1
+  displayName: Run build
+  inputs:
+    command: custom
+    customCommand: run build
+
+- task: Npm@1
+  displayName: Run tests
+  inputs:
+    command: custom
+    customCommand: run test
+
+- task: Npm@1
+  displayName: Run clean
+  inputs:
+    command: custom
+    customCommand: run clean
+
+- task: PowerShell@2
+  displayName: Publish package
+  inputs:
+    filePath: ci/publish.ps1
+    arguments: -Token $(Token) -PackageDirectory $(Build.SourcesDirectory)
+
+- task: PublishTestResults@2
+  displayName: Publish test results
+  inputs:
+    testResultsFiles: test-*.xml
+  condition: always()

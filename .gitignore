@@ -1,0 +1,13 @@
+**/node_modules
+**/configs
+**/policies
+**/.DS_Store
+**/.taskkey
+**/.npmrc
+**/*.sh
+**/*.vsix
+**/*.js
+**/*.d.ts
+**/*.log
+**/*.xml
+**/*.tgz

@@ -1,0 +1,72 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "array",
+  "title": "Project permission policies",
+  "items": {
+    "$id": "#/items",
+    "type": "object",
+    "title": "Policies",
+    "required": [
+      "name",
+      "definition"
+    ],
+    "properties": {
+      "name": {
+        "$id": "#/items/properties/name",
+        "type": "string",
+        "minLength": 1,
+        "title": "Policy name",
+        "default": "",
+        "examples": [
+          "My Policy"
+        ],
+        "pattern": "^(.*)$"
+      },
+      "definition": {
+        "$id": "#/items/properties/definition",
+        "type": "array",
+        "title": "Policy definition",
+        "items": {
+          "$id": "#/items/properties/definition/items",
+          "type": "object",
+          "title": "Group definition",
+          "required": [
+            "name",
+            "members"
+          ],
+          "properties": {
+            "name": {
+              "$id": "#/items/properties/definition/items/properties/name",
+              "type": "string",
+              "minLength": 1,
+              "title": "Group name",
+              "default": "",
+              "examples": [
+                "My Group"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "members": {
+              "$id": "#/items/properties/definition/items/properties/members",
+              "type": "array",
+              "title": "Group members",
+              "items": {
+                "$id": "#/items/properties/definition/items/properties/members/items",
+                "type": "string",
+                "minLength": 1,
+                "title": "Group member",
+                "default": "",
+                "examples": [
+                  "My Group Member"
+                ],
+                "pattern": "^(.*)$"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

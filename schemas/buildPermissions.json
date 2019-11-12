@@ -1,0 +1,34 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "array",
+  "title": "Build permission policies",
+  "items": {
+    "$id": "#/items",
+    "type": "object",
+    "title": "Policies",
+    "required": [
+      "name",
+      "definition"
+    ],
+    "properties": {
+      "name": {
+        "$id": "#/items/properties/name",
+        "type": "string",
+        "minLength": 1,
+        "title": "Policy name",
+        "default": "",
+        "examples": [
+          "My Policy"
+        ],
+        "pattern": "^(.*)$"
+      },
+      "definition": {
+        "$id": "#/items/properties/definition",
+        "type": "array",
+        "title": "Policy definition"
+      }
+    }
+  }
+}
