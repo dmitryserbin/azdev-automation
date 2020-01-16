@@ -111,7 +111,13 @@ export class ProjectUpdater implements IProjectUpdater {
             // Create group
             if (!targetGroup) {
 
+                this.logger.log(`Creating new <${groupName}> group`);
+
                 targetGroup = await this.projectHelper.createProjectGroup(group.name, `Members of this group have custom access to the project.`, project.id!);
+
+                // It takes a few seconds to before
+                // New group data provider is available
+                await this.helper.wait(3000, 3000);
 
                 // Set minimum project permissions
                 const groupIdentity: string = await this.securityHelper.getGroupIdentity(project.name!, targetGroup);
