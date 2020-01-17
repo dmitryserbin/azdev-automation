@@ -20,8 +20,7 @@
     "build": "tsc",
     "test": "mocha -r ts-node/register tests/**/*.test.ts --no-timeouts --reporter mocha-multi-reporters --reporter-options configFile=mocha.json",
     "patch": "npm version patch --no-git-tag-version",
-    "clean": "npm prune --production",
-    "publish": "npm publish"
+    "clean": "npm prune --production"
   },
   "repository": {
     "type": "git",
