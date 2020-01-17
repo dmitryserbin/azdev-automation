@@ -59,7 +59,7 @@ try
         -FilePath (Join-Path -Path $PackageDirectory -ChildPath .npmrc) `
         -ErrorAction Stop
 
-    & npm publish $NewPackage --dry-run
+    & npm publish $NewPackage
 }
 catch
 {
