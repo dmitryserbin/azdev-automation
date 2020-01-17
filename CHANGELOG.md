@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+
+- Address new group data provider issue
+
 ## 1.0.1
 
 - Minor improvements and bug fixes
