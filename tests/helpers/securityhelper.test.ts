@@ -46,7 +46,7 @@ const groupOneContributions: any = {
 const allContributions: any = {
 
     dataProviders: {
-        "ms.vss-admin-web.org-admin-permissions-pivot-data-provider": groupOneContributions,
+        "ms.vss-admin-web.org-admin-groups-permissions-pivot-data-provider": groupOneContributions,
     },
 
 };
