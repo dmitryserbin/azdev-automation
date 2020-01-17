@@ -30,11 +30,12 @@ steps:
     command: custom
     customCommand: run clean
 
-- task: PowerShell@2
+- task: Npm@1
   displayName: Publish package
   inputs:
-    filePath: ci/publish.ps1
-    arguments: -Token $(Token) -PackageDirectory $(Build.SourcesDirectory)
+    command: publish
+    workingDir: $(Build.SourcesDirectory)
+    publishEndpoint: dmitryserbin-npmjs
 
 - task: PublishTestResults@2
   displayName: Publish test results
