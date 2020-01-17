@@ -29,7 +29,7 @@ export class SecurityHelper implements ISecurityHelper {
         const debug = this.debugLogger.extend("getGroupIdentity");
 
         const apiVersion: string = "5.1-preview.1";
-        const providerId: string = "ms.vss-admin-web.org-admin-permissions-pivot-data-provider";
+        const providerId: string = "ms.vss-admin-web.org-admin-groups-permissions-pivot-data-provider"
 
         const body: any = {
 
