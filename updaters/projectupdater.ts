@@ -117,7 +117,7 @@ export class ProjectUpdater implements IProjectUpdater {
 
                 // It may take up to a few seconds before
                 // New group identity becomes available
-                await this.helper.wait(3000, 3000);
+                await this.helper.wait(5000, 5000);
 
                 // Set minimum project permissions
                 const groupIdentity: string = await this.securityHelper.getGroupIdentity(project.name!, targetGroup);
