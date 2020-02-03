@@ -12,7 +12,7 @@ import { IAzDevClient } from "../../interfaces/azdevclient";
 import { PermissionType } from "../../interfaces/configurationreader";
 import { IDebugLogger } from "../../interfaces/debuglogger";
 import { IGraphIdentity } from "../../interfaces/graphhelper";
-import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../../interfaces/securityhelper";
+import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission, IGroupProvider } from "../../interfaces/securityhelper";
 import { ISecurityMapper } from "../../interfaces/securitymapper";
 import { SecurityMapper } from "../../mappers/securitymapper";
 
@@ -29,16 +29,20 @@ const groupOne: GraphGroup = {
 
 };
 
+const viewProjectPermission: any = {
+
+    bit: 1,
+    displayName: "View project-level information",
+    token: `$PROJECT:vstfs:///Classification/TeamProject/${projectOne.id}:`,
+    namespaceId: 1,
+
+};
+
 const groupOneContributions: any = {
 
     identityDescriptor: "1-1",
     subjectPermissions: [
-        {
-            bit: 1,
-            displayName: "View project-level information",
-            token: `$PROJECT:vstfs:///Classification/TeamProject/${projectOne.id}:`,
-            namespaceId: 1,
-        },
+        viewProjectPermission,
     ],
 
 };
@@ -148,17 +152,18 @@ describe("SecurityHelper", () => {
 
     });
 
-    it("Should get group identity", async () => {
+    it("Should get group provider", async () => {
 
         // Arrange
         azdevClientMock.setup((x) => x.post(TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve(allContributions));
 
         // Act
-        const result: string = await securityHelper.getGroupIdentity(projectOne.id!, groupOne);
+        const result: IGroupProvider = await securityHelper.getGroupProvider("ms.vss-admin-web.org-admin-groups-permissions-pivot-data-provider", projectOne.id!, groupOne);
 
         // Assert
         chai.expect(result).not.eq(null);
-        chai.expect(result).eq(groupOneContributions.identityDescriptor);
+        chai.expect(result.identityDescriptor).eq(groupOneContributions.identityDescriptor);
+        chai.expect(result.subjectPermissions[0].displayName).eq(viewProjectPermission.displayName);
 
     });
 

@@ -49,6 +49,7 @@ export interface IGroupMembership {
 
     name: string;
     members: string[];
+    permissions?: IPermission[];
 
 }
 

@@ -6,7 +6,7 @@ import { AzDevApiType, IAzDevClient } from "../interfaces/azdevclient";
 import { PermissionType } from "../interfaces/configurationreader";
 import { IDebugLogger } from "../interfaces/debuglogger";
 import { IGraphIdentity } from "../interfaces/graphhelper";
-import { IIdentityPermission, INamespace, INamespaceAction, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../interfaces/securityhelper";
+import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission, IGroupProvider, ISubjectPermission } from "../interfaces/securityhelper";
 import { ISecurityMapper } from "../interfaces/securitymapper";
 
 export class SecurityHelper implements ISecurityHelper {
@@ -24,17 +24,16 @@ export class SecurityHelper implements ISecurityHelper {
 
     }
 
-    public async getGroupIdentity(projectName: string, group: GraphGroup): Promise<string> {
+    public async getGroupProvider(id: string, projectName: string, group: GraphGroup): Promise<any> {
 
-        const debug = this.debugLogger.extend("getGroupIdentity");
+        const debug = this.debugLogger.extend("getGroupProvider");
 
         const apiVersion: string = "5.1-preview.1";
-        const providerId: string = "ms.vss-admin-web.org-admin-groups-permissions-pivot-data-provider"
 
         const body: any = {
 
             contributionIds: [
-                providerId,
+                id,
             ],
             dataProviderContext: {
                 properties: {
@@ -50,25 +49,19 @@ export class SecurityHelper implements ISecurityHelper {
         };
 
         const response: any = await this.azdevClient.post<any>(`_apis/Contribution/HierarchyQuery`, apiVersion, body, AzDevApiType.Core);
-        const provider: any = response.dataProviders[providerId];
+        const provider: any = response.dataProviders[id];
 
         if (!provider) {
 
-            throw new Error(`Group <${group.displayName}> provider <${providerId}> not found`);
+            throw new Error(`Group <${group.displayName}> provider <${id}> not found`);
 
         }
 
-        const descriptor: string = provider.identityDescriptor;
+        const mappedProvider: IGroupProvider = this.mapper.mapGroupProvider(provider);
 
-        if (!descriptor) {
+        debug(mappedProvider);
 
-            throw new Error(`Group <${group.displayName}> identity descriptor not found`);
-
-        }
-
-        debug(descriptor);
-
-        return descriptor;
+        return mappedProvider;
 
     }
 
@@ -143,7 +136,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     }
 
-    public async setGroupAccessControl(projectId: string, identity: string, action: INamespaceAction, type: PermissionType): Promise<any> {
+    public async setGroupAccessControl(identity: string, permission: ISubjectPermission, type: PermissionType): Promise<any> {
 
         const debug = this.debugLogger.extend("setGroupAccessControl");
 
@@ -151,8 +144,6 @@ export class SecurityHelper implements ISecurityHelper {
         const accessControlApiVersion: string = "5.1-preview.1";
 
         let result: any = {};
-
-        const token: string = `$PROJECT:vstfs:///Classification/TeamProject/${projectId}:`;
 
         const entry: any = {
 
@@ -172,7 +163,7 @@ export class SecurityHelper implements ISecurityHelper {
 
             case PermissionType.Allow: {
 
-                entry.allow = entry.extendedInfo.effectiveAllow = entry.extendedInfo.inheritedAllow = action.bit;
+                entry.allow = entry.extendedInfo.effectiveAllow = entry.extendedInfo.inheritedAllow = permission.bit;
 
                 break;
 
@@ -180,7 +171,7 @@ export class SecurityHelper implements ISecurityHelper {
 
             case PermissionType.Deny: {
 
-                entry.deny = entry.extendedInfo.effectiveDeny = entry.extendedInfo.inheritedDeny = action.bit;
+                entry.deny = entry.extendedInfo.effectiveDeny = entry.extendedInfo.inheritedDeny = permission.bit;
 
                 break;
 
@@ -202,19 +193,19 @@ export class SecurityHelper implements ISecurityHelper {
 
         if (type === PermissionType.NotSet) {
 
-            result = await this.azdevClient.delete<any>(`_apis/Permissions/${action.namespaceId}/${action.bit}?descriptor=${entry.descriptor}&token=${token}`, permissionsApiVersion, AzDevApiType.Core);
+            result = await this.azdevClient.delete<any>(`_apis/Permissions/${permission.namespaceId}/${permission.bit}?descriptor=${entry.descriptor}&token=${permission.token}`, permissionsApiVersion, AzDevApiType.Core);
 
         } else {
 
             const body: any = {
 
                 accessControlEntries: [ entry ],
-                token,
+                token: permission.token,
                 merge: true,
 
             };
 
-            result = await this.azdevClient.post<any>(`_apis/AccessControlEntries/${action.namespaceId}`, accessControlApiVersion, body, AzDevApiType.Core);
+            result = await this.azdevClient.post<any>(`_apis/AccessControlEntries/${permission.namespaceId}`, accessControlApiVersion, body, AzDevApiType.Core);
 
         }
 

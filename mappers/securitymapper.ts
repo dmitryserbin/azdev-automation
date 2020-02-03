@@ -1,7 +1,7 @@
 import Debug from "debug";
 
 import { IDebugLogger } from "../interfaces/debuglogger";
-import { IIdentityPermission, INamespace, INamespaceAction, ISecurityIdentity, ISecurityPermission } from "../interfaces/securityhelper";
+import { IIdentityPermission, INamespace, INamespaceAction, ISecurityIdentity, ISecurityPermission, IGroupProvider, ISubjectPermission } from "../interfaces/securityhelper";
 import { ISecurityMapper } from "../interfaces/securitymapper";
 
 export class SecurityMapper implements ISecurityMapper {
@@ -69,6 +69,40 @@ export class SecurityMapper implements ISecurityMapper {
 
     }
 
+    public mapGroupProvider(input: any): IGroupProvider {
+
+        const debug = this.debugLogger.extend("mapIdentityProvider");
+
+        const result: IGroupProvider = {
+
+            identityDescriptor: input.identityDescriptor,
+            subjectPermissions: [],
+
+        };
+
+        if (input.subjectPermissions) {
+
+            for (const permission of input.subjectPermissions) {
+
+                result.subjectPermissions.push({
+
+                    displayName: permission.displayName,
+                    namespaceId: permission.namespaceId,
+                    token: permission.token,
+                    bit: permission.bit,
+                    canEdit: permission.canEdit,
+                    effectivePermissionValue: permission.effectivePermissionValue,
+                    explicitPermissionValue: permission.explicitPermissionValue,
+                    isPermissionInherited: permission.isPermissionInherited,
+
+                } as ISubjectPermission);
+            }
+
+        }
+
+        return result;
+    }
+
     public mapNamespace(input: any): INamespace {
 
         const debug = this.debugLogger.extend("mapNamespace");
@@ -91,10 +125,12 @@ export class SecurityMapper implements ISecurityMapper {
             for (const action of input.actions) {
 
                 result.actions.push({
+
                     bit: action.bit,
                     name: action.name,
                     displayName: action.displayName,
                     namespaceId: action.namespaceId,
+
                 } as INamespaceAction);
             }
 

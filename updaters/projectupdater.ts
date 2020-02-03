@@ -11,7 +11,7 @@ import { IGraphHelper } from "../interfaces/graphhelper";
 import { IHelper } from "../interfaces/helper";
 import { IProjectHelper } from "../interfaces/projecthelper";
 import { IProjectUpdater } from "../interfaces/projectupdater";
-import { INamespace, INamespaceAction, ISecurityHelper } from "../interfaces/securityhelper";
+import { ISecurityHelper, IGroupProvider, ISubjectPermission } from "../interfaces/securityhelper";
 
 export class ProjectUpdater implements IProjectUpdater {
 
@@ -84,17 +84,9 @@ export class ProjectUpdater implements IProjectUpdater {
 
     public async updatePermissions(project: TeamProject, policy: IProjectPermission): Promise<void> {
 
+        const debug = this.debugLogger.extend("updatePermissions");
+
         this.logger.log(`Applying <${policy.name}> project permissions policy`);
-
-        const viewAccess: string = "View project-level information";
-        const namespace: INamespace = await this.securityHelper.getNamespace("Project");
-        const accessAction: INamespaceAction = namespace.actions.filter((i) => i.displayName === viewAccess)[0];
-
-        if (!accessAction) {
-
-            throw new Error(`Namespace <${namespace.name}> action <${viewAccess}> not found`);
-
-        }
 
         await Promise.all(policy.definition.map(async (group) => {
 
@@ -119,9 +111,40 @@ export class ProjectUpdater implements IProjectUpdater {
                 // New group identity becomes available
                 await this.helper.wait(5000, 5000);
 
-                // Set minimum project permissions
-                const groupIdentity: string = await this.securityHelper.getGroupIdentity(project.name!, targetGroup);
-                const updatedPermission: any = await this.securityHelper.setGroupAccessControl(project.id!, groupIdentity, accessAction, PermissionType.Allow);
+            }
+
+            // Update permissions
+            if (group.permissions) {
+
+                const groupProvider: IGroupProvider = await this.securityHelper.getGroupProvider("ms.vss-admin-web.org-admin-groups-permissions-pivot-data-provider", project.name!, targetGroup);
+
+                for (const permission of group.permissions) {
+                
+                    const targetPermission: ISubjectPermission = groupProvider.subjectPermissions.filter((i) => i.displayName === permission.name)[0];
+
+                    if (!targetPermission) {
+
+                        throw new Error(`Permission <${permission.name}> not found`);
+
+                    }
+
+                    // Some magic to address JSON enum parsing issue
+                    // To be fixed with configuration reader refactoring
+                    const type: PermissionType = PermissionType[permission.type.toString() as keyof typeof PermissionType];
+
+                    // Skip updating identical explicit permission
+                    if (targetPermission.explicitPermissionValue === type) {
+
+                        debug(`Permission <${permission.name}> (${permission.type}) is identical`);
+
+                        continue;
+                    }
+
+                    debug(`Configuring <${permission.name}> (${permission.type}) permission`);
+
+                    const updatedPermission: any = await this.securityHelper.setGroupAccessControl(groupProvider.identityDescriptor, targetPermission, type);
+
+                }
 
             }
 

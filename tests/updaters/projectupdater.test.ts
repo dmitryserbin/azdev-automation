@@ -97,8 +97,10 @@ const projectHelperMock = TypeMoq.Mock.ofType<IProjectHelper>();
 const graphHelperMock = TypeMoq.Mock.ofType<IGraphHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
 
+const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
 const debugLoggerMock = TypeMoq.Mock.ofType<IDebugLogger>();
-debugLoggerMock.setup((x) => x.create(TypeMoq.It.isAnyString())).returns(() => TypeMoq.Mock.ofType<Debug.Debugger>().target);
+debugLoggerMock.setup((x) => x.create(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
+debuggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
 
 const consoleLoggerMock = TypeMoq.Mock.ofType<IConsoleLogger>();
 consoleLoggerMock.setup((x) => x.log(TypeMoq.It.isAny())).returns(() => null);
