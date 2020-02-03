@@ -33,72 +33,72 @@ export class ParameterReader implements IParameterReader {
                 --serviceConnections [boolean], control service connections feature
                 --branchPolicies [boolean], control branch policies feature`;
 
-        const parameters: meow.Result = meow(usage, {
+        const options: meow.Options = {
 
-                flags: {
+            flags: {
 
-                    config: {
+                config: {
 
-                        type: "string",
-                        alias: "c",
+                    type: "string",
+                    alias: "c",
 
-                    },
-                    policies: {
+                },
+                policies: {
 
-                        type: "string",
-                        alias: "p",
-                        default: "policies",
+                    type: "string",
+                    alias: "p",
+                    default: "policies",
 
-                    },
-                    schemas: {
+                },
+                schemas: {
 
-                        type: "string",
-                        alias: "s",
-                        default: "schemas",
+                    type: "string",
+                    alias: "s",
+                    default: "schemas",
 
-                    },
-                    account: {
+                },
+                account: {
 
-                        type: "string",
-                        alias: "a",
+                    type: "string",
+                    alias: "a",
 
-                    },
-                    token: {
+                },
+                token: {
 
-                        type: "string",
-                        alias: "t",
+                    type: "string",
+                    alias: "t",
 
-                    },
-                    projectSetup: {
+                },
+                projectSetup: {
 
-                        type: "boolean",
-                        default: false,
+                    type: "boolean",
+                    default: false,
 
-                    },
-                    accessPermissions: {
+                },
+                accessPermissions: {
 
-                        type: "boolean",
-                        default: false,
+                    type: "boolean",
+                    default: false,
 
-                    },
-                    serviceConnections: {
+                },
+                serviceConnections: {
 
-                        type: "boolean",
-                        default: false,
+                    type: "boolean",
+                    default: false,
 
-                    },
-                    branchPolicies: {
+                },
+                branchPolicies: {
 
-                        type: "boolean",
-                        default: false,
-
-                    },
+                    type: "boolean",
+                    default: false,
 
                 },
 
             },
 
-        );
+        }
+
+        const parameters: meow.Result = meow(usage, options);
 
         debug(parameters.flags);
 
@@ -122,7 +122,7 @@ export class ParameterReader implements IParameterReader {
                 --feature, -f [string], feature name to execute
                 --mock, -m [boolean], enable mock`;
 
-        const parameters: meow.Result = meow(usage, {
+        const options: meow.Options = {
 
             flags: {
 
@@ -165,7 +165,9 @@ export class ParameterReader implements IParameterReader {
 
             },
 
-        });
+        };
+
+        const parameters: meow.Result = meow(usage, options);
 
         debug(parameters.flags);
 
