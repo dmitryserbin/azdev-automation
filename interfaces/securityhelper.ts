@@ -1,17 +1,18 @@
 import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
-import { PermissionType } from "./configurationreader";
+import { PermissionType, IPermission } from "./configurationreader";
 import { IGraphIdentity } from "./graphhelper";
 
 export interface ISecurityHelper {
 
-    getGroupIdentity(projectName: string, group: GraphGroup): Promise<string>;
+    getNamespace(name: string, actionFilter?: string): Promise<INamespace>;
+    getGroupProvider(id: string, projectName: string, group: GraphGroup): Promise<IGroupProvider>;
     getExplicitIdentities(projectId: string, permissionSetId: string, permissionSetToken: string): Promise<ISecurityIdentity[]>;
     addIdentityToPermission(projectId: string, identity: IGraphIdentity): Promise<ISecurityIdentity>;
     getIdentityPermission(projectId: string, identity: ISecurityIdentity, permissionSetId: string, permissionSetToken: string): Promise<IIdentityPermission>;
-    setGroupAccessControl(projectId: string, identity: string, action: INamespaceAction, type: PermissionType): Promise<any>;
+    setGroupAccessControl(identity: string, action: INamespaceAction, type: PermissionType): Promise<any>;
     setIdentityAccessControl(projectId: string, identity: IIdentityPermission, permission: ISecurityPermission, type: PermissionType): Promise<any>;
-    getNamespace(name: string, actionFilter?: string): Promise<INamespace>;
+    updateGroupPermissions(projectName: string, group: GraphGroup, permissions: IPermission[]): Promise<void>;
 
 }
 
@@ -34,6 +35,27 @@ export interface INamespaceAction {
     name: string;
     displayName: string;
     namespaceId: string;
+
+}
+
+export interface IGroupProvider {
+
+    identityDescriptor: string;
+    subjectPermissions: ISubjectPermission[];
+
+}
+
+export interface ISubjectPermission {
+
+    bit: number;
+    name: string;
+    displayName: string;
+    namespaceId: string;
+    token: string;
+    canEdit: boolean;
+    effectivePermissionValue?: number;
+    explicitPermissionValue?: number;
+    isPermissionInherited?: boolean;
 
 }
 

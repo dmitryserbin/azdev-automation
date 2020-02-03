@@ -90,7 +90,7 @@ Azure DevOps projects configuration contains target projects details and policy 
 
 > `node console.js --a=MyAccount --t=MyPAT --p=policies --c=projects.json`
 
-```
+```typescript
 --config, -c [string], path to configuration file
 --policies, -p [string], path to policies directory
 --schemas, -s [string], path to schemas directory

@@ -1,12 +1,12 @@
 import Debug from "debug";
 
-import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
+import { GraphGroup, GraphMembership } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { AzDevApiType, IAzDevClient } from "../interfaces/azdevclient";
-import { PermissionType } from "../interfaces/configurationreader";
+import { PermissionType, IPermission } from "../interfaces/configurationreader";
 import { IDebugLogger } from "../interfaces/debuglogger";
 import { IGraphIdentity } from "../interfaces/graphhelper";
-import { IIdentityPermission, INamespace, INamespaceAction, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../interfaces/securityhelper";
+import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission, IGroupProvider, ISubjectPermission } from "../interfaces/securityhelper";
 import { ISecurityMapper } from "../interfaces/securitymapper";
 
 export class SecurityHelper implements ISecurityHelper {
@@ -24,17 +24,58 @@ export class SecurityHelper implements ISecurityHelper {
 
     }
 
-    public async getGroupIdentity(projectName: string, group: GraphGroup): Promise<string> {
+    public async getNamespace(name: string, actionFilter?: string): Promise<INamespace> {
 
-        const debug = this.debugLogger.extend("getGroupIdentity");
+        const debug = this.debugLogger.extend("getNamespace");
+
+        const response: any = await this.azdevClient.get<any>(`_apis/securitynamespaces`, AzDevApiType.Core);
+        const allNamespaces: any[] = response.value;
+
+        if (!allNamespaces) {
+
+            throw new Error("No namespaces found");
+
+        }
+
+        const namespaces: any[] = allNamespaces.filter((i) => i.name === name);
+
+        let namespace: any;
+
+        // Apply namespace action filter
+        if (actionFilter) {
+
+            namespace = namespaces.filter((i: any) => i.actions.some((a: any) => a.displayName === actionFilter))[0];
+
+        } else {
+
+            namespace = namespaces[0];
+
+        }
+
+        if (!namespace) {
+
+            throw new Error(`Namespace <${name}> not found`);
+
+        }
+
+        const mappedNamespace: INamespace = this.mapper.mapNamespace(namespace);
+
+        debug(`Found <${mappedNamespace.name}> (${mappedNamespace.namespaceId}) namespace with <${mappedNamespace.actions.length}> actions`);
+
+        return mappedNamespace;
+
+    }
+
+    public async getGroupProvider(id: string, projectName: string, group: GraphGroup): Promise<any> {
+
+        const debug = this.debugLogger.extend("getGroupProvider");
 
         const apiVersion: string = "5.1-preview.1";
-        const providerId: string = "ms.vss-admin-web.org-admin-groups-permissions-pivot-data-provider"
 
         const body: any = {
 
             contributionIds: [
-                providerId,
+                id,
             ],
             dataProviderContext: {
                 properties: {
@@ -50,25 +91,19 @@ export class SecurityHelper implements ISecurityHelper {
         };
 
         const response: any = await this.azdevClient.post<any>(`_apis/Contribution/HierarchyQuery`, apiVersion, body, AzDevApiType.Core);
-        const provider: any = response.dataProviders[providerId];
+        const provider: any = response.dataProviders[id];
 
         if (!provider) {
 
-            throw new Error(`Group <${group.displayName}> provider <${providerId}> not found`);
+            throw new Error(`Group <${group.displayName}> provider <${id}> not found`);
 
         }
 
-        const descriptor: string = provider.identityDescriptor;
+        const mappedProvider: IGroupProvider = this.mapper.mapGroupProvider(provider);
 
-        if (!descriptor) {
+        debug(mappedProvider);
 
-            throw new Error(`Group <${group.displayName}> identity descriptor not found`);
-
-        }
-
-        debug(descriptor);
-
-        return descriptor;
+        return mappedProvider;
 
     }
 
@@ -143,7 +178,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     }
 
-    public async setGroupAccessControl(projectId: string, identity: string, action: INamespaceAction, type: PermissionType): Promise<any> {
+    public async setGroupAccessControl(identity: string, permission: ISubjectPermission, type: PermissionType): Promise<any> {
 
         const debug = this.debugLogger.extend("setGroupAccessControl");
 
@@ -151,8 +186,6 @@ export class SecurityHelper implements ISecurityHelper {
         const accessControlApiVersion: string = "5.1-preview.1";
 
         let result: any = {};
-
-        const token: string = `$PROJECT:vstfs:///Classification/TeamProject/${projectId}:`;
 
         const entry: any = {
 
@@ -172,7 +205,7 @@ export class SecurityHelper implements ISecurityHelper {
 
             case PermissionType.Allow: {
 
-                entry.allow = entry.extendedInfo.effectiveAllow = entry.extendedInfo.inheritedAllow = action.bit;
+                entry.allow = entry.extendedInfo.effectiveAllow = entry.extendedInfo.inheritedAllow = permission.bit;
 
                 break;
 
@@ -180,7 +213,7 @@ export class SecurityHelper implements ISecurityHelper {
 
             case PermissionType.Deny: {
 
-                entry.deny = entry.extendedInfo.effectiveDeny = entry.extendedInfo.inheritedDeny = action.bit;
+                entry.deny = entry.extendedInfo.effectiveDeny = entry.extendedInfo.inheritedDeny = permission.bit;
 
                 break;
 
@@ -202,19 +235,19 @@ export class SecurityHelper implements ISecurityHelper {
 
         if (type === PermissionType.NotSet) {
 
-            result = await this.azdevClient.delete<any>(`_apis/Permissions/${action.namespaceId}/${action.bit}?descriptor=${entry.descriptor}&token=${token}`, permissionsApiVersion, AzDevApiType.Core);
+            result = await this.azdevClient.delete<any>(`_apis/Permissions/${permission.namespaceId}/${permission.bit}?descriptor=${entry.descriptor}&token=${permission.token}`, permissionsApiVersion, AzDevApiType.Core);
 
         } else {
 
             const body: any = {
 
                 accessControlEntries: [ entry ],
-                token,
+                token: permission.token,
                 merge: true,
 
             };
 
-            result = await this.azdevClient.post<any>(`_apis/AccessControlEntries/${action.namespaceId}`, accessControlApiVersion, body, AzDevApiType.Core);
+            result = await this.azdevClient.post<any>(`_apis/AccessControlEntries/${permission.namespaceId}`, accessControlApiVersion, body, AzDevApiType.Core);
 
         }
 
@@ -301,45 +334,39 @@ export class SecurityHelper implements ISecurityHelper {
 
     }
 
-    public async getNamespace(name: string, actionFilter?: string): Promise<INamespace> {
+    public async updateGroupPermissions(projectName: string, group: GraphGroup, permissions: IPermission[]): Promise<void> {
 
-        const debug = this.debugLogger.extend("getNamespace");
+        const debug = this.debugLogger.extend("updateGroupPermissions");
 
-        const response: any = await this.azdevClient.get<any>(`_apis/securitynamespaces`, AzDevApiType.Core);
-        const allNamespaces: any[] = response.value;
+        const groupProvider: IGroupProvider = await this.getGroupProvider("ms.vss-admin-web.org-admin-groups-permissions-pivot-data-provider", projectName, group);
 
-        if (!allNamespaces) {
+        for (const permission of permissions) {
 
-            throw new Error("No namespaces found");
+            const targetPermission: ISubjectPermission = groupProvider.subjectPermissions.filter((i) => i.displayName === permission.name)[0];
+
+            if (!targetPermission) {
+
+                throw new Error(`Permission <${permission.name}> not found`);
+
+            }
+
+            // Some magic to address JSON enum parsing issue
+            // To be fixed with configuration reader refactoring
+            const type: PermissionType = PermissionType[permission.type.toString() as keyof typeof PermissionType];
+
+            // Skip updating identical explicit permission
+            if (targetPermission.explicitPermissionValue === type) {
+
+                debug(`Permission <${permission.name}> (${permission.type}) is identical`);
+
+                continue;
+            }
+
+            debug(`Configuring <${permission.name}> (${permission.type}) permission`);
+
+            const updatedPermission: any = await this.setGroupAccessControl(groupProvider.identityDescriptor, targetPermission, type);
 
         }
-
-        const namespaces: any[] = allNamespaces.filter((i) => i.name === name);
-
-        let namespace: any;
-
-        // Apply namespace action filter
-        if (actionFilter) {
-
-            namespace = namespaces.filter((i: any) => i.actions.some((a: any) => a.displayName === actionFilter))[0];
-
-        } else {
-
-            namespace = namespaces[0];
-
-        }
-
-        if (!namespace) {
-
-            throw new Error(`Namespace <${name}> not found`);
-
-        }
-
-        const mappedNamespace: INamespace = this.mapper.mapNamespace(namespace);
-
-        debug(`Found <${mappedNamespace.name}> (${mappedNamespace.namespaceId}) namespace with <${mappedNamespace.actions.length}> actions`);
-
-        return mappedNamespace;
 
     }
 

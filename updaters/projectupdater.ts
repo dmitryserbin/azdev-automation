@@ -4,14 +4,14 @@ import { OperationReference } from "azure-devops-node-api/interfaces/common/Oper
 import { Process, ProjectVisibility, TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { GraphGroup, GraphMembership } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
-import { IProject, IProjectPermission, PermissionType } from "../interfaces/configurationreader";
+import { IProject, IProjectPermission, PermissionType, IPermission } from "../interfaces/configurationreader";
 import { IConsoleLogger } from "../interfaces/consolelogger";
 import { IDebugLogger } from "../interfaces/debuglogger";
 import { IGraphHelper } from "../interfaces/graphhelper";
 import { IHelper } from "../interfaces/helper";
 import { IProjectHelper } from "../interfaces/projecthelper";
 import { IProjectUpdater } from "../interfaces/projectupdater";
-import { INamespace, INamespaceAction, ISecurityHelper } from "../interfaces/securityhelper";
+import { ISecurityHelper, IGroupProvider, ISubjectPermission } from "../interfaces/securityhelper";
 
 export class ProjectUpdater implements IProjectUpdater {
 
@@ -84,23 +84,15 @@ export class ProjectUpdater implements IProjectUpdater {
 
     public async updatePermissions(project: TeamProject, policy: IProjectPermission): Promise<void> {
 
+        const debug = this.debugLogger.extend("updatePermissions");
+
         this.logger.log(`Applying <${policy.name}> project permissions policy`);
-
-        const viewAccess: string = "View project-level information";
-        const namespace: INamespace = await this.securityHelper.getNamespace("Project");
-        const accessAction: INamespaceAction = namespace.actions.filter((i) => i.displayName === viewAccess)[0];
-
-        if (!accessAction) {
-
-            throw new Error(`Namespace <${namespace.name}> action <${viewAccess}> not found`);
-
-        }
 
         await Promise.all(policy.definition.map(async (group) => {
 
             const groupName: string = `[${project.name}]\\${group.name}`;
 
-            this.logger.log(`Updating <${groupName}> group members`);
+            debug(`Updating <${groupName}> group configuration`);
 
             // Slow down parallel calls to address
             // Intermittent API connectivity issues
@@ -119,27 +111,23 @@ export class ProjectUpdater implements IProjectUpdater {
                 // New group identity becomes available
                 await this.helper.wait(5000, 5000);
 
-                // Set minimum project permissions
-                const groupIdentity: string = await this.securityHelper.getGroupIdentity(project.name!, targetGroup);
-                const updatedPermission: any = await this.securityHelper.setGroupAccessControl(project.id!, groupIdentity, accessAction, PermissionType.Allow);
+            }
+
+            // Update permissions
+            if (group.permissions && group.permissions.length) {
+
+                this.logger.log(`Updating <${groupName}> group permissions`);
+
+                await this.securityHelper.updateGroupPermissions(project.name!, targetGroup, group.permissions);
 
             }
 
-            let validMemberships: GraphMembership[] = [];
+            // Update members
+            if (group.members && group.members.length) {
 
-            // Adding new memberships
-            if (group.members.length > 0) {
+                this.logger.log(`Updating <${groupName}> group members`);
 
-                validMemberships = await this.graphHelper.addGroupMemberships(targetGroup, group.members);
-
-            }
-
-            const obsoleteMemberships: GraphMembership[] = await this.graphHelper.getObsoleteGroupMemberships(targetGroup, validMemberships);
-
-            // Removing obsolete memberships
-            if (obsoleteMemberships.length > 0) {
-
-                await this.graphHelper.removeGroupMemberships(targetGroup, obsoleteMemberships);
+                await this.graphHelper.updateGroupMembers(group.members, targetGroup);
 
             }
 
