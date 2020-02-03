@@ -92,7 +92,7 @@ export class ProjectUpdater implements IProjectUpdater {
 
             const groupName: string = `[${project.name}]\\${group.name}`;
 
-            this.logger.log(`Updating <${groupName}> group members`);
+            debug(`Updating <${groupName}> group configuration`);
 
             // Slow down parallel calls to address
             // Intermittent API connectivity issues
@@ -115,6 +115,8 @@ export class ProjectUpdater implements IProjectUpdater {
 
             // Update permissions
             if (group.permissions) {
+
+                this.logger.log(`Updating <${groupName}> group permissions`);
 
                 const groupProvider: IGroupProvider = await this.securityHelper.getGroupProvider("ms.vss-admin-web.org-admin-groups-permissions-pivot-data-provider", project.name!, targetGroup);
 
@@ -148,21 +150,28 @@ export class ProjectUpdater implements IProjectUpdater {
 
             }
 
-            let validMemberships: GraphMembership[] = [];
+            // Update members
+            if (group.members) {
 
-            // Adding new memberships
-            if (group.members.length > 0) {
+                this.logger.log(`Updating <${groupName}> group members`);
 
-                validMemberships = await this.graphHelper.addGroupMemberships(targetGroup, group.members);
+                let validMemberships: GraphMembership[] = [];
 
-            }
+                // Adding new memberships
+                if (group.members.length > 0) {
 
-            const obsoleteMemberships: GraphMembership[] = await this.graphHelper.getObsoleteGroupMemberships(targetGroup, validMemberships);
+                    validMemberships = await this.graphHelper.addGroupMemberships(targetGroup, group.members);
 
-            // Removing obsolete memberships
-            if (obsoleteMemberships.length > 0) {
+                }
 
-                await this.graphHelper.removeGroupMemberships(targetGroup, obsoleteMemberships);
+                const obsoleteMemberships: GraphMembership[] = await this.graphHelper.getObsoleteGroupMemberships(targetGroup, validMemberships);
+
+                // Removing obsolete memberships
+                if (obsoleteMemberships.length > 0) {
+
+                    await this.graphHelper.removeGroupMemberships(targetGroup, obsoleteMemberships);
+
+                }
 
             }
 
