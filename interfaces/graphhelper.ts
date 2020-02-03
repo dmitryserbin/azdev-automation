@@ -10,6 +10,7 @@ export interface IGraphHelper {
     addGroupMemberships(group: GraphGroup, members: string[]): Promise<GraphMembership[]>;
     removeGroupMemberships(group: GraphGroup, memberships: GraphMembership[]): Promise<void>;
     getObsoleteGroupMemberships(group: GraphGroup, validMemberships: GraphMembership[]): Promise<GraphMembership[]>;
+    updateGroupMembers(members: string[], group: GraphGroup): Promise<void>;
 
 }
 

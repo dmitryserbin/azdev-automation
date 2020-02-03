@@ -275,4 +275,28 @@ export class GraphHelper implements IGraphHelper {
 
     }
 
+    public async updateGroupMembers(members: string[], group: GraphGroup): Promise<void> {
+
+        const debug = this.debugLogger.extend("updateGroupMembers");
+
+        let validMemberships: GraphMembership[] = [];
+
+        // Adding new memberships
+        if (members.length > 0) {
+
+            validMemberships = await this.addGroupMemberships(group, members);
+
+        }
+
+        const obsoleteMemberships: GraphMembership[] = await this.getObsoleteGroupMemberships(group, validMemberships);
+
+        // Removing obsolete memberships
+        if (obsoleteMemberships.length > 0) {
+
+            await this.removeGroupMemberships(group, obsoleteMemberships);
+
+        }
+
+    }
+
 }

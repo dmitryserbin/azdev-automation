@@ -1,9 +1,9 @@
 import Debug from "debug";
 
-import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
+import { GraphGroup, GraphMembership } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { AzDevApiType, IAzDevClient } from "../interfaces/azdevclient";
-import { PermissionType } from "../interfaces/configurationreader";
+import { PermissionType, IPermission } from "../interfaces/configurationreader";
 import { IDebugLogger } from "../interfaces/debuglogger";
 import { IGraphIdentity } from "../interfaces/graphhelper";
 import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission, IGroupProvider, ISubjectPermission } from "../interfaces/securityhelper";
@@ -21,6 +21,48 @@ export class SecurityHelper implements ISecurityHelper {
         this.mapper = mapper;
 
         this.azdevClient = azdevClient;
+
+    }
+
+    public async getNamespace(name: string, actionFilter?: string): Promise<INamespace> {
+
+        const debug = this.debugLogger.extend("getNamespace");
+
+        const response: any = await this.azdevClient.get<any>(`_apis/securitynamespaces`, AzDevApiType.Core);
+        const allNamespaces: any[] = response.value;
+
+        if (!allNamespaces) {
+
+            throw new Error("No namespaces found");
+
+        }
+
+        const namespaces: any[] = allNamespaces.filter((i) => i.name === name);
+
+        let namespace: any;
+
+        // Apply namespace action filter
+        if (actionFilter) {
+
+            namespace = namespaces.filter((i: any) => i.actions.some((a: any) => a.displayName === actionFilter))[0];
+
+        } else {
+
+            namespace = namespaces[0];
+
+        }
+
+        if (!namespace) {
+
+            throw new Error(`Namespace <${name}> not found`);
+
+        }
+
+        const mappedNamespace: INamespace = this.mapper.mapNamespace(namespace);
+
+        debug(`Found <${mappedNamespace.name}> (${mappedNamespace.namespaceId}) namespace with <${mappedNamespace.actions.length}> actions`);
+
+        return mappedNamespace;
 
     }
 
@@ -292,45 +334,39 @@ export class SecurityHelper implements ISecurityHelper {
 
     }
 
-    public async getNamespace(name: string, actionFilter?: string): Promise<INamespace> {
+    public async updateGroupPermissions(projectName: string, group: GraphGroup, permissions: IPermission[]): Promise<void> {
 
-        const debug = this.debugLogger.extend("getNamespace");
+        const debug = this.debugLogger.extend("updateGroupPermissions");
 
-        const response: any = await this.azdevClient.get<any>(`_apis/securitynamespaces`, AzDevApiType.Core);
-        const allNamespaces: any[] = response.value;
+        const groupProvider: IGroupProvider = await this.getGroupProvider("ms.vss-admin-web.org-admin-groups-permissions-pivot-data-provider", projectName, group);
 
-        if (!allNamespaces) {
+        for (const permission of permissions) {
+        
+            const targetPermission: ISubjectPermission = groupProvider.subjectPermissions.filter((i) => i.displayName === permission.name)[0];
 
-            throw new Error("No namespaces found");
+            if (!targetPermission) {
+
+                throw new Error(`Permission <${permission.name}> not found`);
+
+            }
+
+            // Some magic to address JSON enum parsing issue
+            // To be fixed with configuration reader refactoring
+            const type: PermissionType = PermissionType[permission.type.toString() as keyof typeof PermissionType];
+
+            // Skip updating identical explicit permission
+            if (targetPermission.explicitPermissionValue === type) {
+
+                debug(`Permission <${permission.name}> (${permission.type}) is identical`);
+
+                continue;
+            }
+
+            debug(`Configuring <${permission.name}> (${permission.type}) permission`);
+
+            const updatedPermission: any = await this.setGroupAccessControl(groupProvider.identityDescriptor, targetPermission, type);
 
         }
-
-        const namespaces: any[] = allNamespaces.filter((i) => i.name === name);
-
-        let namespace: any;
-
-        // Apply namespace action filter
-        if (actionFilter) {
-
-            namespace = namespaces.filter((i: any) => i.actions.some((a: any) => a.displayName === actionFilter))[0];
-
-        } else {
-
-            namespace = namespaces[0];
-
-        }
-
-        if (!namespace) {
-
-            throw new Error(`Namespace <${name}> not found`);
-
-        }
-
-        const mappedNamespace: INamespace = this.mapper.mapNamespace(namespace);
-
-        debug(`Found <${mappedNamespace.name}> (${mappedNamespace.namespaceId}) namespace with <${mappedNamespace.actions.length}> actions`);
-
-        return mappedNamespace;
 
     }
 

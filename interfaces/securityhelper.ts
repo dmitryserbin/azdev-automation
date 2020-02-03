@@ -1,17 +1,18 @@
 import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
-import { PermissionType } from "./configurationreader";
+import { PermissionType, IPermission } from "./configurationreader";
 import { IGraphIdentity } from "./graphhelper";
 
 export interface ISecurityHelper {
 
+    getNamespace(name: string, actionFilter?: string): Promise<INamespace>;
     getGroupProvider(id: string, projectName: string, group: GraphGroup): Promise<IGroupProvider>;
     getExplicitIdentities(projectId: string, permissionSetId: string, permissionSetToken: string): Promise<ISecurityIdentity[]>;
     addIdentityToPermission(projectId: string, identity: IGraphIdentity): Promise<ISecurityIdentity>;
     getIdentityPermission(projectId: string, identity: ISecurityIdentity, permissionSetId: string, permissionSetToken: string): Promise<IIdentityPermission>;
     setGroupAccessControl(identity: string, action: INamespaceAction, type: PermissionType): Promise<any>;
     setIdentityAccessControl(projectId: string, identity: IIdentityPermission, permission: ISecurityPermission, type: PermissionType): Promise<any>;
-    getNamespace(name: string, actionFilter?: string): Promise<INamespace>;
+    updateGroupPermissions(projectName: string, group: GraphGroup, permissions: IPermission[]): Promise<void>;
 
 }
 

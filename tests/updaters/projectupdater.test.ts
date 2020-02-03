@@ -6,7 +6,7 @@ import * as TypeMoq from "typemoq";
 
 import { OperationReference } from "azure-devops-node-api/interfaces/common/OperationsInterfaces";
 import { Process, TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
-import { GraphGroup, GraphMembership } from "azure-devops-node-api/interfaces/GraphInterfaces";
+import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { IBuildPermission, IGroupMembership, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IPermission, PermissionType } from "../../interfaces/configurationreader";
 import { IConsoleLogger } from "../../interfaces/consolelogger";
@@ -15,7 +15,7 @@ import { IGraphHelper } from "../../interfaces/graphhelper";
 import { IHelper } from "../../interfaces/helper";
 import { IProjectHelper } from "../../interfaces/projecthelper";
 import { IProjectUpdater } from "../../interfaces/projectupdater";
-import { INamespace, ISecurityHelper } from "../../interfaces/securityhelper";
+import { ISecurityHelper } from "../../interfaces/securityhelper";
 import { ProjectUpdater } from "../../updaters/projectupdater";
 
 const memberOne: string = "GroupOne";
@@ -70,26 +70,6 @@ const releasePermissions: IReleasePermission = {
 
     name: "Default",
     definition: [],
-
-};
-
-const namespace: INamespace = {
-
-    namespaceId: "1",
-    name: "My Namespace",
-    displayName: "My Namespace",
-    separatorValue: "/",
-    writePermission: 1,
-    readPermission: 0,
-    dataspaceCategory: "My Category",
-    actions: [
-        {
-            bit: 1,
-            name: "View project-level information",
-            displayName: "View project-level information",
-            namespaceId: "1",
-        },
-    ],
 
 };
 
@@ -157,14 +137,11 @@ describe("ProjectUpdater", () => {
     it("Should update project permissions", async () => {
 
         const mockGraphGroup: TypeMoq.IMock<GraphGroup> = TypeMoq.Mock.ofType<GraphGroup>();
-        const mockGraphMembership: TypeMoq.IMock<GraphMembership> = TypeMoq.Mock.ofType<GraphMembership>();
 
         // Arrange
-        securityHelperMock.setup((x) => x.getNamespace(TypeMoq.It.isAnyString())).returns(() => Promise.resolve(namespace));
         projectHelperMock.setup((x) => x.getProjectGroup(TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString())).returns(() => Promise.resolve(mockGraphGroup.target));
-        graphHelperMock.setup((x) => x.addGroupMemberships(TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve([ mockGraphMembership.target ]));
-        graphHelperMock.setup((x) => x.getObsoleteGroupMemberships(TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve([ mockGraphMembership.target ]));
-        graphHelperMock.setup((x) => x.removeGroupMemberships(TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve());
+        securityHelperMock.setup((x) => x.updateGroupPermissions(TypeMoq.It.isAnyString(),TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve());
+        graphHelperMock.setup((x) => x.updateGroupMembers(TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve());
 
         // Act & Assert
         chai.expect(async () => await projectUpdater.updatePermissions(mockProject.target, project.permissions.project)).to.not.throw();
