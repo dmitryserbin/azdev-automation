@@ -8,7 +8,7 @@ import { OperationReference } from "azure-devops-node-api/interfaces/common/Oper
 import { Process, TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { GraphGroup, GraphMembership } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
-import { IBuildPermission, IGroupMembership, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission } from "../../interfaces/configurationreader";
+import { IBuildPermission, IGroupMembership, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IPermission, PermissionType } from "../../interfaces/configurationreader";
 import { IConsoleLogger } from "../../interfaces/consolelogger";
 import { IDebugLogger } from "../../interfaces/debuglogger";
 import { IGraphHelper } from "../../interfaces/graphhelper";
@@ -18,13 +18,26 @@ import { IProjectUpdater } from "../../interfaces/projectupdater";
 import { INamespace, ISecurityHelper } from "../../interfaces/securityhelper";
 import { ProjectUpdater } from "../../updaters/projectupdater";
 
+const memberOne: string = "GroupOne";
+const memberTwo: string = "GroupTwo";
+
+const groupPermission: IPermission = {
+
+    name: "PermissionOne",
+    type: PermissionType.Allow,
+
+};
+
 const group: IGroupMembership = {
 
     name: "MyGroup",
     members: [
-        "GroupOne",
-        "GroupTwo",
+        memberOne,
+        memberTwo,
     ],
+    permissions: [
+        groupPermission
+    ]
 
 };
 

@@ -114,7 +114,7 @@ export class ProjectUpdater implements IProjectUpdater {
             }
 
             // Update permissions
-            if (group.permissions) {
+            if (group.permissions && group.permissions.length) {
 
                 this.logger.log(`Updating <${groupName}> group permissions`);
 
@@ -151,7 +151,7 @@ export class ProjectUpdater implements IProjectUpdater {
             }
 
             // Update members
-            if (group.members) {
+            if (group.members && group.members.length) {
 
                 this.logger.log(`Updating <${groupName}> group members`);
 
