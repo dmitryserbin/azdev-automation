@@ -341,7 +341,7 @@ export class SecurityHelper implements ISecurityHelper {
         const groupProvider: IGroupProvider = await this.getGroupProvider("ms.vss-admin-web.org-admin-groups-permissions-pivot-data-provider", projectName, group);
 
         for (const permission of permissions) {
-        
+
             const targetPermission: ISubjectPermission = groupProvider.subjectPermissions.filter((i) => i.displayName === permission.name)[0];
 
             if (!targetPermission) {
