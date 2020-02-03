@@ -33,8 +33,7 @@
           "type": "object",
           "title": "Group definition",
           "required": [
-            "name",
-            "members"
+            "name"
           ],
           "properties": {
             "name": {
@@ -62,6 +61,46 @@
                   "My Group Member"
                 ],
                 "pattern": "^(.*)$"
+              }
+            },
+            "permissions": {
+              "$id": "#/items/properties/definition/items/properties/permissions",
+              "type": "array",
+              "title": "Group permissions",
+              "items": {
+                "$id": "#/items/properties/definition/items/properties/permissions/items",
+                "type": "object",
+                "title": "Group permission",
+                "required": [
+                  "name",
+                  "type"
+                ],
+                "properties": {
+                  "name": {
+                    "$id": "#/items/properties/definition/items/properties/permissions/items/properties/name",
+                    "type": "string",
+                    "minLength": 1,
+                    "title": "Permission name",
+                    "default": "",
+                    "examples": [
+                      "My Permission"
+                    ],
+                    "pattern": "^(.*)$"
+                  },
+                  "type": {
+                    "$id": "#/items/properties/definition/items/properties/permissions/items/properties/type",
+                    "type": "string",
+                    "minLength": 1,
+                    "title": "Permission type",
+                    "default": "",
+                    "examples": [
+                      "Allow",
+                      "Deny",
+                      "NotSet"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
               }
             }
           }
