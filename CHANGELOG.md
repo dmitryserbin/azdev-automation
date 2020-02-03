@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+
+- Add project group permission support
+
 ## 1.0.2
 
 - Address new group data provider issue
