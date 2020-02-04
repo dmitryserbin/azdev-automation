@@ -66,7 +66,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     }
 
-    public async getGroupProvider(id: string, projectName: string, group: GraphGroup): Promise<any> {
+    public async getGroupProvider(id: string, projectName: string, group: GraphGroup): Promise<IGroupProvider> {
 
         const debug = this.debugLogger.extend("getGroupProvider");
 

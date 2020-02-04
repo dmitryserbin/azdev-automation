@@ -119,7 +119,7 @@ export class Automation implements IAutomation {
 
                 }
 
-                // Work
+                // Work items
                 if (project.permissions.work) {
 
                     await workUpdater.updatePermissions(targetProject, project.permissions.work);

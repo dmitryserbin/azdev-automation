@@ -119,8 +119,8 @@ export class AutomationFactory implements IAutomationFactory {
         const repositoryHelper: IRepositoryHelper = new RepositoryHelper(gitApi, this.debugLogger);
 
         const helper: IHelper = new Helper(this.debugLogger);
-        const securityMapper: ISecurityMapper = new SecurityMapper(this.debugLogger);
         const graphHelper: IGraphHelper = new GraphHelper(azdevClient, this.debugLogger, helper);
+        const securityMapper: ISecurityMapper = new SecurityMapper(this.debugLogger);
         const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, this.debugLogger, securityMapper);
 
         return new RepositoryUpdater(repositoryHelper, graphHelper, securityHelper, this.debugLogger, this.consoleLogger, helper);
@@ -129,11 +129,15 @@ export class AutomationFactory implements IAutomationFactory {
 
     public async createWorkUpdater(): Promise<IWorkUpdater> {
 
-        const workHelper: IWorkHelper = new WorkHelper(this.debugLogger);
+        const vsoClient: vc.VsoClient = await this.apiFactory.createVsoClient();
+        const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
 
         const helper: IHelper = new Helper(this.debugLogger);
+        const workHelper: IWorkHelper = new WorkHelper(this.debugLogger);
+        const securityMapper: ISecurityMapper = new SecurityMapper(this.debugLogger);
+        const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, this.debugLogger, securityMapper);
 
-        return new WorkUpdater(workHelper, this.debugLogger, this.consoleLogger, helper);
+        return new WorkUpdater(workHelper, securityHelper, this.debugLogger, this.consoleLogger, helper);
 
     }
 
