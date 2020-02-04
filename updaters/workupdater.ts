@@ -37,8 +37,20 @@ export class WorkUpdater implements IWorkUpdater {
         this.logger.log(`Applying <${policy.name}> work items permissions policy`);
 
         const namespace: INamespace = await this.securityHelper.getNamespace("CSS");
+        const nodeIdentifier: string = await this.workHelper.getNodeIdentifier(project.id!, "area");
+
         const permissionSetId: string = namespace.namespaceId;
-        const permissionSetToken: string = `vstfs:///Classification/Node/${project.id!}`;
+        const permissionSetToken: string = `vstfs:///Classification/Node/${nodeIdentifier}`;
+
+        const existingIdentities: ISecurityIdentity[] = await this.securityHelper.getExplicitIdentities(project.id!, permissionSetId, permissionSetToken);
+
+        await Promise.all(policy.definition.map(async (group) => {
+
+            const groupName: string = `[${project.name}]\\${group.name}`;
+
+            this.logger.log(`Assigninig <${groupName}> group permissions`);
+
+        }));
 
     }
 

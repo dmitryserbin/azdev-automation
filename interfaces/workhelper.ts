@@ -1,6 +1,6 @@
 // tslint:disable-next-line:no-empty-interface
 export interface IWorkHelper {
 
-    // To be implemented
+    getNodeIdentifier(projectId: string, type: string): Promise<string>;
 
 }
