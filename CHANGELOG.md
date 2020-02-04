@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4
+
+- Add work items permission support
+
 ## 1.0.3
 
 - Add project group permission support
