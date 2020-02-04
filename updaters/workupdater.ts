@@ -41,7 +41,6 @@ export class WorkUpdater implements IWorkUpdater {
 
         const namespace: INamespace = await this.securityHelper.getNamespace("CSS");
         const nodeIdentifier: string = await this.workHelper.getNodeIdentifier(project.id!, "area");
-
         const permissionSetId: string = namespace.namespaceId;
         const permissionSetToken: string = `vstfs:///Classification/Node/${nodeIdentifier}`;
 
