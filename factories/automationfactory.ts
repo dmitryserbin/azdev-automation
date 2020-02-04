@@ -134,10 +134,11 @@ export class AutomationFactory implements IAutomationFactory {
 
         const helper: IHelper = new Helper(this.debugLogger);
         const workHelper: IWorkHelper = new WorkHelper(azdevClient, this.debugLogger);
+        const graphHelper: IGraphHelper = new GraphHelper(azdevClient, this.debugLogger, helper);
         const securityMapper: ISecurityMapper = new SecurityMapper(this.debugLogger);
         const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, this.debugLogger, securityMapper);
 
-        return new WorkUpdater(workHelper, securityHelper, this.debugLogger, this.consoleLogger, helper);
+        return new WorkUpdater(workHelper, graphHelper, securityHelper, this.debugLogger, this.consoleLogger, helper);
 
     }
 
