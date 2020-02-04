@@ -6,9 +6,9 @@ import { OperationReference } from "azure-devops-node-api/interfaces/common/Oper
 import { Process, ProjectVisibility, TeamProject, TeamProjectReference } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { GraphDescriptorResult, GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
-import { AzDevApiType, IAzDevClient } from "../interfaces/azdevclient";
-import { IDebugLogger } from "../interfaces/debuglogger";
-import { IProjectHelper } from "../interfaces/projecthelper";
+import { AzDevApiType, IAzDevClient } from "../interfaces/common/azdevclient";
+import { IDebugLogger } from "../interfaces/common/debuglogger";
+import { IProjectHelper } from "../interfaces/helpers/projecthelper";
 
 export class ProjectHelper implements IProjectHelper {
 

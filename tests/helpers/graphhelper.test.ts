@@ -7,10 +7,10 @@ import * as TypeMoq from "typemoq";
 import { GraphGroup, GraphMember, GraphMembership } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { GraphHelper } from "../../helpers/graphhelper";
-import { IAzDevClient } from "../../interfaces/azdevclient";
-import { IDebugLogger } from "../../interfaces/debuglogger";
-import { IGraphHelper, IGraphIdentity } from "../../interfaces/graphhelper";
-import { IHelper } from "../../interfaces/helper";
+import { IAzDevClient } from "../../interfaces/common/azdevclient";
+import { IDebugLogger } from "../../interfaces/common/debuglogger";
+import { IGraphHelper, IGraphIdentity } from "../../interfaces/helpers/graphhelper";
+import { IHelper } from "../../interfaces/common/helper";
 
 const userIdentityOne: IGraphIdentity = {
 

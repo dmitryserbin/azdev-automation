@@ -1,13 +1,13 @@
 import Debug from "debug";
 
-import { GraphGroup, GraphMembership } from "azure-devops-node-api/interfaces/GraphInterfaces";
+import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
-import { AzDevApiType, IAzDevClient } from "../interfaces/azdevclient";
-import { PermissionType, IPermission } from "../interfaces/configurationreader";
-import { IDebugLogger } from "../interfaces/debuglogger";
-import { IGraphIdentity } from "../interfaces/graphhelper";
-import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission, IGroupProvider, ISubjectPermission } from "../interfaces/securityhelper";
-import { ISecurityMapper } from "../interfaces/securitymapper";
+import { AzDevApiType, IAzDevClient } from "../interfaces/common/azdevclient";
+import { PermissionType, IPermission } from "../interfaces/readers/configurationreader";
+import { IDebugLogger } from "../interfaces/common/debuglogger";
+import { IGraphIdentity } from "../interfaces/helpers/graphhelper";
+import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission, IGroupProvider, ISubjectPermission } from "../interfaces/helpers/securityhelper";
+import { ISecurityMapper } from "../interfaces/mappers/securitymapper";
 
 export class SecurityHelper implements ISecurityHelper {
 

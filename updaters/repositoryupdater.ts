@@ -2,14 +2,14 @@ import Debug from "debug";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IBuildPermission, PermissionType } from "../interfaces/configurationreader";
-import { IConsoleLogger } from "../interfaces/consolelogger";
-import { IDebugLogger } from "../interfaces/debuglogger";
-import { IGraphHelper, IGraphIdentity } from "../interfaces/graphhelper";
-import { IHelper } from "../interfaces/helper";
-import { IRepositoryHelper } from "../interfaces/repositoryhelper";
-import { IRepositoryUpdater } from "../interfaces/repositoryupdater";
-import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../interfaces/securityhelper";
+import { IBuildPermission, PermissionType } from "../interfaces/readers/configurationreader";
+import { IConsoleLogger } from "../interfaces/common/consolelogger";
+import { IDebugLogger } from "../interfaces/common/debuglogger";
+import { IGraphHelper, IGraphIdentity } from "../interfaces/helpers/graphhelper";
+import { IHelper } from "../interfaces/common/helper";
+import { IRepositoryHelper } from "../interfaces/helpers/repositoryhelper";
+import { IRepositoryUpdater } from "../interfaces/updaters/repositoryupdater";
+import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../interfaces/helpers/securityhelper";
 
 export class RepositoryUpdater implements IRepositoryUpdater {
 

@@ -1,8 +1,8 @@
 import { Automation } from "./automation";
 import { DebugLogger } from "./common/debuglogger";
 import { IAutomation, IEndpoint, IParameters } from "./interfaces/automation";
-import { IDebugLogger } from "./interfaces/debuglogger";
-import { IConsoleParameters } from "./interfaces/parameterreader";
+import { IDebugLogger } from "./interfaces/common/debuglogger";
+import { IConsoleParameters } from "./interfaces/readers/parameterreader";
 import { ParameterReader } from "./readers/parameterreader";
 
 async function run(): Promise<void> {

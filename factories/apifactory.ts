@@ -11,8 +11,8 @@ import * as vc from "azure-devops-node-api/VsoClient";
 
 import * as vi from "azure-devops-node-api/interfaces/common/VsoBaseInterfaces";
 
-import { IApiFactory } from "../interfaces/apifactory";
-import { IDebugLogger } from "../interfaces/debuglogger";
+import { IApiFactory } from "../interfaces/factories/apifactory";
+import { IDebugLogger } from "../interfaces/common/debuglogger";
 
 export class ApiFactory implements IApiFactory {
 

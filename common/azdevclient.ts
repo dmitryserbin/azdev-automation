@@ -2,8 +2,8 @@ import Debug from "debug";
 
 import * as rc from "typed-rest-client/RestClient";
 
-import { AzDevApiType, IAzDevClient } from "../interfaces/azdevclient";
-import { IDebugLogger } from "../interfaces/debuglogger";
+import { AzDevApiType, IAzDevClient } from "../interfaces/common/azdevclient";
+import { IDebugLogger } from "../interfaces/common/debuglogger";
 import { Retryable } from "./retry";
 
 export class AzDevClient implements IAzDevClient {

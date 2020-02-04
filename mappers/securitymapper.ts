@@ -1,8 +1,8 @@
 import Debug from "debug";
 
-import { IDebugLogger } from "../interfaces/debuglogger";
-import { IIdentityPermission, INamespace, INamespaceAction, ISecurityIdentity, ISecurityPermission, IGroupProvider, ISubjectPermission } from "../interfaces/securityhelper";
-import { ISecurityMapper } from "../interfaces/securitymapper";
+import { IDebugLogger } from "../interfaces/common/debuglogger";
+import { IIdentityPermission, INamespace, INamespaceAction, ISecurityIdentity, ISecurityPermission, IGroupProvider, ISubjectPermission } from "../interfaces/helpers/securityhelper";
+import { ISecurityMapper } from "../interfaces/mappers/securitymapper";
 
 export class SecurityMapper implements ISecurityMapper {
 

@@ -8,12 +8,12 @@ import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { SecurityHelper } from "../../helpers/securityhelper";
-import { IAzDevClient } from "../../interfaces/azdevclient";
-import { PermissionType } from "../../interfaces/configurationreader";
-import { IDebugLogger } from "../../interfaces/debuglogger";
-import { IGraphIdentity } from "../../interfaces/graphhelper";
-import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission, IGroupProvider } from "../../interfaces/securityhelper";
-import { ISecurityMapper } from "../../interfaces/securitymapper";
+import { IAzDevClient } from "../../interfaces/common/azdevclient";
+import { PermissionType } from "../../interfaces/readers/configurationreader";
+import { IDebugLogger } from "../../interfaces/common/debuglogger";
+import { IGraphIdentity } from "../../interfaces/helpers/graphhelper";
+import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission, IGroupProvider } from "../../interfaces/helpers/securityhelper";
+import { ISecurityMapper } from "../../interfaces/mappers/securitymapper";
 import { SecurityMapper } from "../../mappers/securitymapper";
 
 const projectOne: TeamProject = {

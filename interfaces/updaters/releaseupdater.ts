@@ -1,7 +1,7 @@
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
-import { IReleasePermission, ITask } from "./configurationreader";
-import { IReleaseHelper } from "./releasehelper";
-import { ITaskAgentHelper } from "./taskagenthelper";
+import { IReleasePermission, ITask } from "../readers/configurationreader";
+import { IReleaseHelper } from "../helpers/releasehelper";
+import { ITaskAgentHelper } from "../helpers/taskagenthelper";
 
 export interface IReleaseUpdater {
 

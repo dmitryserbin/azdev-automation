@@ -6,14 +6,14 @@ import * as TypeMoq from "typemoq";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IBuildHelper } from "../../interfaces/buildhelper";
-import { IBuildUpdater } from "../../interfaces/buildupdater";
-import { IBuildPermission, IGroupPermission, PermissionType } from "../../interfaces/configurationreader";
-import { IConsoleLogger } from "../../interfaces/consolelogger";
-import { IDebugLogger } from "../../interfaces/debuglogger";
-import { IGraphHelper } from "../../interfaces/graphhelper";
-import { IHelper } from "../../interfaces/helper";
-import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../../interfaces/securityhelper";
+import { IBuildHelper } from "../../interfaces/helpers/buildhelper";
+import { IBuildUpdater } from "../../interfaces/updaters/buildupdater";
+import { IBuildPermission, IGroupPermission, PermissionType } from "../../interfaces/readers/configurationreader";
+import { IConsoleLogger } from "../../interfaces/common/consolelogger";
+import { IDebugLogger } from "../../interfaces/common/debuglogger";
+import { IGraphHelper } from "../../interfaces/helpers/graphhelper";
+import { IHelper } from "../../interfaces/common/helper";
+import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../../interfaces/helpers/securityhelper";
 import { BuildUpdater } from "../../updaters/buildupdater";
 
 const buildHelperMock = TypeMoq.Mock.ofType<IBuildHelper>();

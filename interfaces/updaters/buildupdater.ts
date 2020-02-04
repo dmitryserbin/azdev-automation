@@ -1,7 +1,7 @@
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
-import { IBuildPermission } from "./configurationreader";
+import { IBuildPermission } from "../readers/configurationreader";
 
-export interface IRepositoryUpdater {
+export interface IBuildUpdater {
 
     updatePermissions(project: TeamProject, policy: IBuildPermission): Promise<void>;
 

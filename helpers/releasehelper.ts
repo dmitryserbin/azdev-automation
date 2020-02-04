@@ -3,8 +3,8 @@ import Debug from "debug";
 import * as ra from "azure-devops-node-api/ReleaseApi";
 
 import { Artifact, ReleaseDefinition, WorkflowTask } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
-import { IDebugLogger } from "../interfaces/debuglogger";
-import { IReleaseHelper } from "../interfaces/releasehelper";
+import { IDebugLogger } from "../interfaces/common/debuglogger";
+import { IReleaseHelper } from "../interfaces/helpers/releasehelper";
 
 export class ReleaseHelper implements IReleaseHelper {
 
