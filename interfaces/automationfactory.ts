@@ -9,5 +9,6 @@ export interface IAutomationFactory {
     createReleaseUpdater(): Promise<IReleaseUpdater>;
     createBuildUpdater(): Promise<IBuildUpdater>;
     createRepositoryUpdater(): Promise<IRepositoryUpdater>;
+    createWorkUpdater(): Promise<IRepositoryUpdater>;
 
 }

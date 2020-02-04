@@ -17,6 +17,7 @@ import { IProjectUpdater } from "./interfaces/projectupdater";
 import { IReleaseUpdater } from "./interfaces/releaseupdater";
 import { IRepositoryUpdater } from "./interfaces/repositoryupdater";
 import { ConfigurationReader } from "./readers/configurationreader";
+import { IWorkUpdater } from "./interfaces/workupdater";
 
 export class Automation implements IAutomation {
 
@@ -55,6 +56,7 @@ export class Automation implements IAutomation {
         const buildUpdater: IBuildUpdater = await this.automationFactory.createBuildUpdater();
         const releaseUpdater: IReleaseUpdater = await this.automationFactory.createReleaseUpdater();
         const repositoryUpdater: IRepositoryUpdater = await this.automationFactory.createRepositoryUpdater();
+        const workUpdater: IWorkUpdater = await this.automationFactory.createWorkUpdater();
 
         for (const project of projects) {
 
@@ -114,6 +116,13 @@ export class Automation implements IAutomation {
                 if (project.permissions.repository) {
 
                     await repositoryUpdater.updatePermissions(targetProject, project.permissions.repository);
+
+                }
+
+                // Work
+                if (project.permissions.work) {
+
+                    await workUpdater.updatePermissions(targetProject, project.permissions.work);
 
                 }
 

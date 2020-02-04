@@ -12,5 +12,6 @@ export interface IArtifactFactory {
     repositoryPermissions: IConfigArtifact;
     buildPermissions: IConfigArtifact;
     releasePermissions: IConfigArtifact;
+    workPermissions: IConfigArtifact;
 
 }

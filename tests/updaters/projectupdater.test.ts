@@ -8,7 +8,7 @@ import { OperationReference } from "azure-devops-node-api/interfaces/common/Oper
 import { Process, TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
-import { IBuildPermission, IGroupMembership, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IPermission, PermissionType } from "../../interfaces/configurationreader";
+import { IBuildPermission, IGroupMembership, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IPermission, PermissionType, IWorkPermission } from "../../interfaces/configurationreader";
 import { IConsoleLogger } from "../../interfaces/consolelogger";
 import { IDebugLogger } from "../../interfaces/debuglogger";
 import { IGraphHelper } from "../../interfaces/graphhelper";
@@ -73,6 +73,13 @@ const releasePermissions: IReleasePermission = {
 
 };
 
+const workPermissions: IWorkPermission = {
+
+    name: "Default",
+    definition: [],
+
+};
+
 const project: IProject = {
 
     name: "MyProject",
@@ -82,6 +89,7 @@ const project: IProject = {
         build: buildPermissions,
         release: releasePermissions,
         repository: repositoryPermissions,
+        work: workPermissions,
     },
 
 };

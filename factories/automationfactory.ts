@@ -37,6 +37,10 @@ import { BuildUpdater } from "../updaters/buildupdater";
 import { ProjectUpdater } from "../updaters/projectupdater";
 import { ReleaseUpdater } from "../updaters/releaseupdater";
 import { RepositoryUpdater } from "../updaters/repositoryupdater";
+import { IWorkUpdater } from "../interfaces/workupdater";
+import { IWorkHelper } from "../interfaces/workhelper";
+import { WorkHelper } from "../helpers/workhelper";
+import { WorkUpdater } from "../updaters/workupdater";
 
 export class AutomationFactory implements IAutomationFactory {
 
@@ -120,6 +124,16 @@ export class AutomationFactory implements IAutomationFactory {
         const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, this.debugLogger, securityMapper);
 
         return new RepositoryUpdater(repositoryHelper, graphHelper, securityHelper, this.debugLogger, this.consoleLogger, helper);
+
+    }
+
+    public async createWorkUpdater(): Promise<IWorkUpdater> {
+
+        const workHelper: IWorkHelper = new WorkHelper(this.debugLogger);
+
+        const helper: IHelper = new Helper(this.debugLogger);
+
+        return new WorkUpdater(workHelper, this.debugLogger, this.consoleLogger, helper);
 
     }
 
