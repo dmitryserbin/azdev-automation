@@ -100,10 +100,6 @@ export class WorkUpdater implements IWorkUpdater {
 
                 debug(`Configuring <${permission.name}> (${permission.type}) permission`);
 
-                // Slow down parallel calls to address
-                // Intermittent API connectivity issues
-                await this.helper.wait(500, 1500);
-
                 const updatedPermission: any = await this.securityHelper.setIdentityAccessControl(permissionSetToken, identityPermission, targetPermission, type);
 
             }
