@@ -42,14 +42,14 @@ export interface IReleasePermission {
 export interface IRepositoryPermission {
 
     name: string;
-    definition: any[];
+    definition: IGroupPermission[];
 
 }
 
 export interface IWorkPermission {
 
     name: string;
-    definition: any[];
+    definition: IGroupPermission[];
 
 }
 
