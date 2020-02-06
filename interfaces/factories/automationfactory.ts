@@ -6,8 +6,8 @@ import { IRepositoryUpdater } from "../updaters/repositoryupdater";
 export interface IAutomationFactory {
 
     createProjectUpdater(): Promise<IProjectUpdater>;
-    createReleaseUpdater(): Promise<IReleaseUpdater>;
     createBuildUpdater(): Promise<IBuildUpdater>;
+    createReleaseUpdater(): Promise<IReleaseUpdater>;
     createRepositoryUpdater(): Promise<IRepositoryUpdater>;
     createWorkUpdater(): Promise<IRepositoryUpdater>;
 

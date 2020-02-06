@@ -74,6 +74,23 @@ export class AutomationFactory implements IAutomationFactory {
 
     }
 
+    public async createBuildUpdater(): Promise<IBuildUpdater> {
+
+        const vsoClient: vc.VsoClient = await this.apiFactory.createVsoClient();
+        const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
+
+        const buildApi: ba.IBuildApi = await this.apiFactory.createBuildApi();
+        const buildHelper: IBuildHelper = new BuildHelper(buildApi, this.debugLogger);
+
+        const helper: IHelper = new Helper(this.debugLogger);
+        const securityMapper: ISecurityMapper = new SecurityMapper(this.debugLogger);
+        const graphHelper: IGraphHelper = new GraphHelper(azdevClient, this.debugLogger, helper);
+        const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, this.debugLogger, securityMapper);
+
+        return new BuildUpdater(buildHelper, graphHelper, securityHelper, this.debugLogger, this.consoleLogger, helper);
+
+    }
+
     public async createReleaseUpdater(): Promise<IReleaseUpdater> {
 
         const vsoClient: vc.VsoClient = await this.apiFactory.createVsoClient();
@@ -90,23 +107,6 @@ export class AutomationFactory implements IAutomationFactory {
         const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, this.debugLogger, securityMapper);
 
         return new ReleaseUpdater(releaseHelper, taskAgentHelper, graphHelper, securityHelper, this.debugLogger, this.consoleLogger, helper);
-
-    }
-
-    public async createBuildUpdater(): Promise<IBuildUpdater> {
-
-        const vsoClient: vc.VsoClient = await this.apiFactory.createVsoClient();
-        const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
-
-        const buildApi: ba.IBuildApi = await this.apiFactory.createBuildApi();
-        const buildHelper: IBuildHelper = new BuildHelper(buildApi, this.debugLogger);
-
-        const helper: IHelper = new Helper(this.debugLogger);
-        const securityMapper: ISecurityMapper = new SecurityMapper(this.debugLogger);
-        const graphHelper: IGraphHelper = new GraphHelper(azdevClient, this.debugLogger, helper);
-        const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, this.debugLogger, securityMapper);
-
-        return new BuildUpdater(buildHelper, graphHelper, securityHelper, this.debugLogger, this.consoleLogger, helper);
 
     }
 
