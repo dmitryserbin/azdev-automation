@@ -13,6 +13,7 @@ export interface ISecurityHelper {
     setGroupAccessControl(identity: string, action: INamespaceAction, type: PermissionType): Promise<any>;
     setIdentityAccessControl(projectId: string, identity: IIdentityPermission, permission: ISecurityPermission, type: PermissionType): Promise<any>;
     updateGroupPermissions(projectName: string, group: GraphGroup, permissions: IPermission[]): Promise<void>;
+    updateIdentityPermissions(projectId: string, identity: ISecurityIdentity, permissions: IPermission[], permissionSetId: string, permissionSetToken: string): Promise<void>;
 
 }
 

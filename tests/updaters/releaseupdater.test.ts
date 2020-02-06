@@ -15,7 +15,7 @@ import { IGraphHelper } from "../../interfaces/helpers/graphhelper";
 import { IHelper } from "../../interfaces/common/helper";
 import { IReleaseHelper } from "../../interfaces/helpers/releasehelper";
 import { IReleaseUpdater } from "../../interfaces/updaters/releaseupdater";
-import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../../interfaces/helpers/securityhelper";
+import { INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../../interfaces/helpers/securityhelper";
 import { ITaskAgentHelper } from "../../interfaces/helpers/taskagenthelper";
 import { ReleaseUpdater } from "../../updaters/releaseupdater";
 
@@ -232,33 +232,10 @@ describe("ReleaseUpdater", () => {
 
         };
 
-        const permissionOne: ISecurityPermission = {
-
-            permissionId: 0,
-            explicitPermissionId: 1,
-            originalPermissionId: 1,
-            permissionBit: 1,
-            namespaceId: "1",
-            displayName: "Permission One",
-
-        };
-
-        const identityPermissionOne: IIdentityPermission = {
-
-            currentTeamFoundationId: "1",
-            descriptorIdentityType: "Identity Type",
-            descriptorIdentifier: "1",
-            permissions: [
-                permissionOne,
-            ],
-
-        };
-
         // Arrange
         securityHelperMock.setup((x) => x.getNamespace(TypeMoq.It.isAnyString())).returns(() => Promise.resolve(releaseNamespace));
         securityHelperMock.setup((x) => x.getExplicitIdentities(TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString())).returns(() => Promise.resolve([ targetIdentityOne ]));
-        securityHelperMock.setup((x) => x.getIdentityPermission(TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString())).returns(() => Promise.resolve(identityPermissionOne));
-        securityHelperMock.setup((x) => x.setIdentityAccessControl(TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve());
+        securityHelperMock.setup((x) => x.updateIdentityPermissions(TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAny(), TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString())).returns(() => Promise.resolve());
 
         // Act & Assert
         chai.expect(async () => await releaseUpdater.updatePermissions(projectOne, releasePermissions)).to.not.throw();

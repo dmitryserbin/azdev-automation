@@ -350,23 +350,87 @@ export class SecurityHelper implements ISecurityHelper {
 
             }
 
-            // Some magic to address JSON enum parsing issue
-            // To be fixed with configuration reader refactoring
-            const type: PermissionType = PermissionType[permission.type.toString() as keyof typeof PermissionType];
-
             // Skip updating identical explicit permission
-            if (targetPermission.explicitPermissionValue === type) {
+            if (this.isSubjectPermissionEqual(permission, targetPermission)) {
 
                 debug(`Permission <${permission.name}> (${permission.type}) is identical`);
 
                 continue;
+
             }
 
             debug(`Configuring <${permission.name}> (${permission.type}) permission`);
 
+            const type: PermissionType = this.getPermissionType(permission);
+
             const updatedPermission: any = await this.setGroupAccessControl(groupProvider.identityDescriptor, targetPermission, type);
 
         }
+
+    }
+
+    public async updateIdentityPermissions(projectId: string, identity: ISecurityIdentity, permissions: IPermission[], permissionSetId: string, permissionSetToken: string): Promise<void> {
+
+        const debug = this.debugLogger.extend("updateIdentityPermissions");
+
+        const identityPermission: IIdentityPermission = await this.getIdentityPermission(projectId, identity, permissionSetId, permissionSetToken);
+
+        for (const permission of permissions) {
+
+            const targetPermission: ISecurityPermission = identityPermission.permissions.filter((i) => i.displayName.trim() === permission.name)[0];
+
+            if (!targetPermission) {
+
+                throw new Error(`Permission <${permission.name}> not found`);
+
+            }
+
+            // Skip updating identical permission
+            if (this.isSecurityPermissionEqual(permission, targetPermission)) {
+
+                debug(`Permission <${permission.name}> (${permission.type}) is identical`);
+
+                continue;
+
+            }
+
+            debug(`Configuring <${permission.name}> (${permission.type}) permission`);
+
+            const type: PermissionType = this.getPermissionType(permission);
+
+            const updatedPermission: any = await this.setIdentityAccessControl(permissionSetToken, identityPermission, targetPermission, type);
+
+        }
+
+    }
+
+    private isSecurityPermissionEqual(permission: IPermission, targetPermission: ISecurityPermission): boolean {
+
+        const type: PermissionType = this.getPermissionType(permission);
+
+        const result: boolean = targetPermission.permissionId === type && targetPermission.explicitPermissionId === type;
+
+        return result;
+
+    }
+
+    private isSubjectPermissionEqual(permission: IPermission, targetPermission: ISubjectPermission): boolean {
+
+        const type: PermissionType = this.getPermissionType(permission);
+
+        const result: boolean = targetPermission.explicitPermissionValue === type;
+
+        return result;
+
+    }
+
+    private getPermissionType(permission: IPermission): PermissionType {
+
+        // Some magic to address JSON enum parsing issue
+        // To be fixed with configuration reader refactoring
+        const type: PermissionType = PermissionType[permission.type.toString() as keyof typeof PermissionType];
+
+        return type;
 
     }
 

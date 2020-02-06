@@ -2,13 +2,13 @@ import Debug from "debug";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IWorkPermission, PermissionType } from "../interfaces/readers/configurationreader";
+import { IWorkPermission } from "../interfaces/readers/configurationreader";
 import { IConsoleLogger } from "../interfaces/common/consolelogger";
 import { IDebugLogger } from "../interfaces/common/debuglogger";
 import { IHelper } from "../interfaces/common/helper";
 import { IWorkHelper } from "../interfaces/helpers/workhelper";
 import { IWorkUpdater } from "../interfaces/updaters/workupdater";
-import { INamespace, ISecurityHelper, ISecurityIdentity, IIdentityPermission, ISecurityPermission } from "../interfaces/helpers/securityhelper";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../interfaces/helpers/securityhelper";
 import { IGraphIdentity, IGraphHelper } from "../interfaces/helpers/graphhelper";
 
 export class WorkUpdater implements IWorkUpdater {
@@ -74,35 +74,7 @@ export class WorkUpdater implements IWorkUpdater {
 
             }
 
-            const identityPermission: IIdentityPermission = await this.securityHelper.getIdentityPermission(project.id!, targetIdentity, permissionSetId, permissionSetToken);
-
-            for (const permission of group.permissions) {
-
-                const targetPermission: ISecurityPermission = identityPermission.permissions.filter((i) => i.displayName.trim() === permission.name)[0];
-
-                if (!targetPermission) {
-
-                    throw new Error(`Permission <${permission.name}> not found`);
-
-                }
-
-                // Some magic to address JSON enum parsing issue
-                // To be fixed with configuration reader refactoring
-                const type: PermissionType = PermissionType[permission.type.toString() as keyof typeof PermissionType];
-
-                // Skip updating identical permission
-                if (targetPermission.permissionId === type && targetPermission.explicitPermissionId === type) {
-
-                    debug(`Permission <${permission.name}> (${permission.type}) is identical`);
-
-                    continue;
-                }
-
-                debug(`Configuring <${permission.name}> (${permission.type}) permission`);
-
-                const updatedPermission: any = await this.securityHelper.setIdentityAccessControl(permissionSetToken, identityPermission, targetPermission, type);
-
-            }
+            await this.securityHelper.updateIdentityPermissions(project.id!, targetIdentity, group.permissions, permissionSetId, permissionSetToken);
 
         }));
 
