@@ -17,7 +17,7 @@
     "schemas/*.json"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --build --clean && tsc",
     "test": "mocha -r ts-node/register tests/**/*.test.ts --no-timeouts --reporter mocha-multi-reporters --reporter-options configFile=mocha.json",
     "patch": "npm version patch --no-git-tag-version",
     "clean": "npm prune --production"
