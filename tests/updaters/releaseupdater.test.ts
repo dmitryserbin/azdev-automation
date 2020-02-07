@@ -140,6 +140,8 @@ const releasePermissions: IReleasePermission = {
 
 };
 
+const namespaceName: string = "ReleaseManagement";
+
 const releaseHelperMock = TypeMoq.Mock.ofType<IReleaseHelper>();
 const taskAgentHelperMock = TypeMoq.Mock.ofType<ITaskAgentHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
@@ -209,8 +211,8 @@ describe("ReleaseUpdater", () => {
         const releaseNamespace: INamespace = {
 
             namespaceId: "1",
-            name: "ReleaseManagement",
-            displayName: "ReleaseManagement",
+            name: namespaceName,
+            displayName: namespaceName,
             separatorValue: "/",
             writePermission: 1,
             readPermission: 0,

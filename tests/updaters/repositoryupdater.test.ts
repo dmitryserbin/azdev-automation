@@ -6,16 +6,16 @@ import * as TypeMoq from "typemoq";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IBuildHelper } from "../../interfaces/helpers/buildhelper";
-import { IBuildUpdater } from "../../interfaces/updaters/buildupdater";
-import { IBuildPermission, IGroupPermission, PermissionType } from "../../interfaces/readers/configurationreader";
+import { IGroupPermission, PermissionType, IRepositoryPermission } from "../../interfaces/readers/configurationreader";
 import { IConsoleLogger } from "../../interfaces/common/consolelogger";
 import { IDebugLogger } from "../../interfaces/common/debuglogger";
 import { IHelper } from "../../interfaces/common/helper";
 import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../interfaces/helpers/securityhelper";
-import { BuildUpdater } from "../../updaters/buildupdater";
+import { IRepositoryHelper } from "../../interfaces/helpers/repositoryhelper";
+import { IRepositoryUpdater } from "../../interfaces/updaters/repositoryupdater";
+import { RepositoryUpdater } from "../../updaters/repositoryupdater";
 
-const buildHelperMock = TypeMoq.Mock.ofType<IBuildHelper>();
+const repositoryHelperMock = TypeMoq.Mock.ofType<IRepositoryHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
 
 const helperMock = TypeMoq.Mock.ofType<IHelper>();
@@ -36,7 +36,7 @@ const projectOne: TeamProject = {
 
 };
 
-const buildPermission: IBuildPermission = {
+const repositoryPermission: IRepositoryPermission = {
 
     name: "Default",
     definition: [
@@ -65,15 +65,15 @@ const groupPermission: IGroupPermission = {
 
 };
 
-const namespaceName: string = "Build";
+const namespaceName: string = "Git Repositories";
 
-describe("BuildUpdater", () => {
+describe("RepositoryUpdater", () => {
 
-    const buildUpdater: IBuildUpdater = new BuildUpdater(buildHelperMock.target, securityHelperMock.target, helperMock.target, debugLoggerMock.target, consoleLoggerMock.target);
+    const repositoryUpdater: IRepositoryUpdater = new RepositoryUpdater(repositoryHelperMock.target, securityHelperMock.target, helperMock.target, debugLoggerMock.target, consoleLoggerMock.target);
 
     it("Should update permissions", async () => {
 
-        const buildNamespace: INamespace = {
+        const repositoryNamespace: INamespace = {
 
             namespaceId: "1",
             name: namespaceName,
@@ -98,13 +98,13 @@ describe("BuildUpdater", () => {
         };
 
         // Arrange
-        securityHelperMock.setup((x) => x.getNamespace(TypeMoq.It.isAnyString())).returns(() => Promise.resolve(buildNamespace));
+        securityHelperMock.setup((x) => x.getNamespace(TypeMoq.It.isAnyString())).returns(() => Promise.resolve(repositoryNamespace));
         securityHelperMock.setup((x) => x.getExplicitIdentities(TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString())).returns(() => Promise.resolve([ targetIdentityOne ]));
         securityHelperMock.setup((x) => x.getExistingIdentity(TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString(), TypeMoq.It.isAny())).returns(() => Promise.resolve(targetIdentityOne));
         securityHelperMock.setup((x) => x.updateIdentityPermissions(TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAny(), TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString())).returns(() => Promise.resolve());
 
         // Act & Assert
-        chai.expect(async () => await buildUpdater.updatePermissions(projectOne, buildPermission)).to.not.throw();
+        chai.expect(async () => await repositoryUpdater.updatePermissions(projectOne, repositoryPermission)).to.not.throw();
 
     });
 

@@ -65,6 +65,8 @@ const groupPermission: IGroupPermission = {
 
 };
 
+const namespaceName: string = "CSS";
+
 describe("WorkUpdater", () => {
 
     const workUpdater: IWorkUpdater = new WorkUpdater(workHelperMock.target, securityHelperMock.target, helperMock.target, debugLoggerMock.target, consoleLoggerMock.target);
@@ -74,8 +76,8 @@ describe("WorkUpdater", () => {
         const workNamespace: INamespace = {
 
             namespaceId: "1",
-            name: "CSS",
-            displayName: "CSS",
+            name: namespaceName,
+            displayName: namespaceName,
             separatorValue: "/",
             writePermission: 1,
             readPermission: 0,
