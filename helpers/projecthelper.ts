@@ -27,7 +27,7 @@ export class ProjectHelper implements IProjectHelper {
 
     public async createProject(name: string, description: string, processTemplate: Process, sourceControlType: string, visibility: ProjectVisibility): Promise<OperationReference> {
 
-        const debug = this.debugLogger.extend("createProject");
+        const debug = this.debugLogger.extend(this.createProject.name);
 
         const projectRequest: TeamProject = {
 
@@ -55,7 +55,7 @@ export class ProjectHelper implements IProjectHelper {
 
     public async updateProject(project: TeamProject): Promise<void> {
 
-        const debug = this.debugLogger.extend("updateProject");
+        const debug = this.debugLogger.extend(this.updateProject.name);
 
         const updatedProject: TeamProject = {
 
@@ -71,7 +71,7 @@ export class ProjectHelper implements IProjectHelper {
 
     public async findProject(name: string): Promise<TeamProject> {
 
-        const debug = this.debugLogger.extend("findProject");
+        const debug = this.debugLogger.extend(this.findProject.name);
 
         const result: TeamProject = await this.coreApi.getProject(name);
 
@@ -83,7 +83,7 @@ export class ProjectHelper implements IProjectHelper {
 
     public async findProjects(nameFilter?: string): Promise<TeamProjectReference[]> {
 
-        const debug = this.debugLogger.extend("findProjects");
+        const debug = this.debugLogger.extend(this.findProjects.name);
 
         let result: TeamProjectReference[] = [];
 
@@ -111,7 +111,7 @@ export class ProjectHelper implements IProjectHelper {
 
     public async getProjectGroup(name: string, projectId: string): Promise<GraphGroup> {
 
-        const debug = this.debugLogger.extend("getProjectGroup");
+        const debug = this.debugLogger.extend(this.getProjectGroup.name);
 
         const descriptor = await this.azdevClient.get<GraphDescriptorResult>(`_apis/graph/descriptors/${projectId}`, AzDevApiType.Graph);
         const descriptorId = descriptor.value;
@@ -133,7 +133,7 @@ export class ProjectHelper implements IProjectHelper {
 
     public async getProjectGroups(projectId: string): Promise<GraphGroup[]> {
 
-        const debug = this.debugLogger.extend("getProjectGroups");
+        const debug = this.debugLogger.extend(this.getProjectGroups.name);
 
         const descriptor = await this.azdevClient.get<GraphDescriptorResult>(`_apis/graph/descriptors/${projectId}`, AzDevApiType.Graph);
         const descriptorId = descriptor.value;
@@ -151,7 +151,7 @@ export class ProjectHelper implements IProjectHelper {
 
     public async createProjectGroup(name: string, description: string, projectId: string): Promise<GraphGroup> {
 
-        const debug = this.debugLogger.extend("createProjectGroup");
+        const debug = this.debugLogger.extend(this.createProjectGroup.name);
 
         const descriptor = await this.azdevClient.get<GraphDescriptorResult>(`_apis/graph/descriptors/${projectId}`, AzDevApiType.Graph);
         const descriptorId = descriptor.value;

@@ -26,7 +26,7 @@ export class AzDevClient implements IAzDevClient {
     @Retryable()
     public async get<T>(path: string, type: AzDevApiType = this.apiType): Promise<T> {
 
-        const debug = this.debugLogger.extend("get");
+        const debug = this.debugLogger.extend(this.get.name);
 
         const url: string = this.newUrl(path, type);
 
@@ -41,7 +41,7 @@ export class AzDevClient implements IAzDevClient {
     @Retryable()
     public async post<T>(path: string, apiVersion?: string, body?: any, type: AzDevApiType = this.apiType): Promise<T> {
 
-        const debug = this.debugLogger.extend("post");
+        const debug = this.debugLogger.extend(this.post.name);
 
         const url: string = this.newUrl(path, type);
 
@@ -64,7 +64,7 @@ export class AzDevClient implements IAzDevClient {
     @Retryable()
     public async patch<T>(path: string, apiVersion?: string, body?: any, type: AzDevApiType = this.apiType): Promise<T> {
 
-        const debug = this.debugLogger.extend("patch");
+        const debug = this.debugLogger.extend(this.patch.name);
 
         const url: string = this.newUrl(path, type);
 
@@ -87,7 +87,7 @@ export class AzDevClient implements IAzDevClient {
     @Retryable()
     public async put<T>(path: string, apiVersion?: string, body?: any, type: AzDevApiType = this.apiType): Promise<T> {
 
-        const debug = this.debugLogger.extend("put");
+        const debug = this.debugLogger.extend(this.put.name);
 
         const url: string = this.newUrl(path, type);
 
@@ -110,7 +110,7 @@ export class AzDevClient implements IAzDevClient {
     @Retryable()
     public async delete<T>(path: string, apiVersion?: string, type: AzDevApiType = this.apiType): Promise<T> {
 
-        const debug = this.debugLogger.extend("delete");
+        const debug = this.debugLogger.extend(this.delete.name);
 
         const url: string = this.newUrl(path, type);
 
@@ -132,7 +132,7 @@ export class AzDevClient implements IAzDevClient {
 
     private newUrl(path: string, type: AzDevApiType): string {
 
-        const debug = this.debugLogger.extend("newUrl");
+        const debug = this.debugLogger.extend(this.newUrl.name);
 
         const prefix: string = type.toString();
         const base: string = `https://${prefix}.azure.com`;

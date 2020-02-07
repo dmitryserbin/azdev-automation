@@ -21,7 +21,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
     public async findDefinitionsWithArtifact(projectName: string, artifactName: string, artifactType: string): Promise<ReleaseDefinition[]> {
 
-        const debug = this.debugLogger.extend("findDefinitionsWithArtifact");
+        const debug = this.debugLogger.extend(this.findDefinitionsWithArtifact.name);
 
         const result: ReleaseDefinition[] = [];
         const projectDefinitions: ReleaseDefinition[] = await this.releaseApi.getReleaseDefinitions(projectName);
@@ -52,7 +52,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
     public async findDefinitionsWithTasks(projectName: string, taskIDs: string[]): Promise<ReleaseDefinition[]> {
 
-        const debug = this.debugLogger.extend("findDefinitionsWithTask");
+        const debug = this.debugLogger.extend(this.findDefinitionsWithTasks.name);
 
         const result: ReleaseDefinition[] = [];
         const projectDefinitions: ReleaseDefinition[] = await this.releaseApi.getReleaseDefinitions(projectName);
@@ -86,7 +86,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
     public async removeDefinitionTasks(definition: ReleaseDefinition, taskIDs: string[]): Promise<ReleaseDefinition> {
 
-        const debug = this.debugLogger.extend("removeDefinitionTasks");
+        const debug = this.debugLogger.extend(this.removeDefinitionTasks.name);
 
         const removedTasks: string[] = [];
 
@@ -134,7 +134,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
     public async updateDefinitionTasks(definition: ReleaseDefinition, taskIDs: string[], taskParameters: { [name: string]: any }): Promise<ReleaseDefinition> {
 
-        const debug = this.debugLogger.extend("updateDefinitionTasks");
+        const debug = this.debugLogger.extend(this.updateDefinitionTasks.name);
 
         const updatedTasks: string[] = [];
 
@@ -196,7 +196,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
     public async removeDefinitionArtifact(definition: ReleaseDefinition, artifactName: string, artifactType: string): Promise<ReleaseDefinition> {
 
-        const debug = this.debugLogger.extend("removeDefinitionArtifact");
+        const debug = this.debugLogger.extend(this.removeDefinitionArtifact.name);
 
         const updatedArtifacts: Artifact[] = [];
 
@@ -223,7 +223,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
     public async updateDefinition(definition: ReleaseDefinition, projectName: string): Promise<void> {
 
-        const debug = this.debugLogger.extend("updateDefinition");
+        const debug = this.debugLogger.extend(this.updateDefinition.name);
 
         debug(`Updating ${projectName} project ${definition.name} definition`);
 

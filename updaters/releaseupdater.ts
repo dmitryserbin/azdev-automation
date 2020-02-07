@@ -37,7 +37,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
     public async removeDefinitionArtifact(projectName: string, artifactName: string, artifactType: string, mock?: boolean): Promise<void> {
 
-        const debug = this.debugLogger.extend("removeDefinitionArtifact");
+        const debug = this.debugLogger.extend(this.removeDefinitionArtifact.name);
 
         this.logger.log(`Configuring <${projectName}> project release defintion(s) (mock: ${mock})`);
 
@@ -93,7 +93,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
     public async removeDefinitionTasks(projectName: string, task: ITask, mock?: boolean): Promise<void> {
 
-        const debug = this.debugLogger.extend("removeReleaseDefinitionTask");
+        const debug = this.debugLogger.extend(this.removeDefinitionTasks.name);
 
         const ids: string[] = await this.getTaskIDs(task.name);
 
@@ -141,7 +141,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
     public async updateDefinitionTasks(projectName: string, task: ITask, mock?: boolean): Promise<void> {
 
-        const debug = this.debugLogger.extend("updateReleaseDefinitionTasks");
+        const debug = this.debugLogger.extend(this.updateDefinitionTasks.name);
 
         this.logger.log(`Configuring <${projectName}> project release defintion(s) (mock: ${mock})`);
 
@@ -193,7 +193,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
     public async updatePermissions(project: TeamProject, policy: IReleasePermission): Promise<void> {
 
-        const debug = this.debugLogger.extend("updatePermissions");
+        const debug = this.debugLogger.extend(this.updatePermissions.name);
 
         this.logger.log(`Applying <${policy.name}> release permissions policy`);
 

@@ -22,7 +22,7 @@ export class TaskAgentHelper implements ITaskAgentHelper {
 
     public async findTasks(name: string): Promise<TaskDefinition[]> {
 
-        const debug = this.debugLogger.extend("findTasks");
+        const debug = this.debugLogger.extend(this.findTasks.name);
 
         const allTasks: TaskDefinition[] = await this.taskAgentApi.getTaskDefinitions();
 

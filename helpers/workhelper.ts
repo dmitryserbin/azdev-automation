@@ -19,7 +19,7 @@ export class WorkHelper implements IWorkHelper {
 
     public async getNodeIdentifier(projectId: string, type: string): Promise<string> {
 
-        const debug = this.debugLogger.extend("getNode");
+        const debug = this.debugLogger.extend(this.getNodeIdentifier.name);
 
         const response: any = await this.azdevClient.get<any>(`${projectId}/_apis/wit/classificationnodes`, AzDevApiType.Core);
         const allNodes: any[] = response.value;

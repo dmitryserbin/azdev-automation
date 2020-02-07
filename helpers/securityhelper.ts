@@ -28,13 +28,14 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async findIdentity(name: string): Promise<IGraphIdentity> {
 
-        const debug = this.debugLogger.extend("findIdentity");
+        const debug = this.debugLogger.extend(this.findIdentity.name);
 
         debug(`Attempting to find <${name}> identity`);
 
         let targetIdentity: IGraphIdentity;
 
         const searchRequest: any = {
+
             query: name,
             identityTypes: [
                 "user",
@@ -59,6 +60,7 @@ export class SecurityHelper implements ISecurityHelper {
                 MinResults: 10,
                 MaxResults: 10,
             },
+
         };
 
         // Narrow filter for user identities
@@ -93,7 +95,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async getNamespace(name: string, actionFilter?: string): Promise<INamespace> {
 
-        const debug = this.debugLogger.extend("getNamespace");
+        const debug = this.debugLogger.extend(this.getNamespace.name);
 
         const response: any = await this.azdevClient.get<any>(`_apis/securitynamespaces`, AzDevApiType.Core);
         const allNamespaces: any[] = response.value;
@@ -135,7 +137,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async getGroupProvider(id: string, projectName: string, group: GraphGroup): Promise<IGroupProvider> {
 
-        const debug = this.debugLogger.extend("getGroupProvider");
+        const debug = this.debugLogger.extend(this.getGroupProvider.name);
 
         const apiVersion: string = "5.1-preview.1";
 
@@ -176,7 +178,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async getIdentityMembership(group: GraphGroup, identity: IGraphIdentity): Promise<GraphMembership> {
 
-        const debug = this.debugLogger.extend("getIdentityMembership");
+        const debug = this.debugLogger.extend(this.getIdentityMembership.name);
 
         debug(`Retrieving <${identity.displayName}> identity group <${group.principalName}> membership`);
 
@@ -199,7 +201,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async addIdentityMembership(group: GraphGroup, identity: IGraphIdentity): Promise<GraphMembership> {
 
-        const debug = this.debugLogger.extend("addIdentityMembership");
+        const debug = this.debugLogger.extend(this.addIdentityMembership.name);
 
         debug(`Adding <${identity.displayName}> identity to <${group.principalName}> group membership`);
 
@@ -251,7 +253,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async getGroupMemberships(group: GraphGroup): Promise<GraphMembership[]> {
 
-        const debug = this.debugLogger.extend("getGroupMemberships");
+        const debug = this.debugLogger.extend(this.getGroupMemberships.name);
 
         const result = await this.azdevClient.get<any>(`_apis/Graph/Memberships/${group.descriptor}?direction=1`, AzDevApiType.Graph);
 
@@ -265,7 +267,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async removeGroupMembership(group: GraphGroup, member: GraphMembership): Promise<void> {
 
-        const debug = this.debugLogger.extend("removeGroupMembership");
+        const debug = this.debugLogger.extend(this.removeGroupMembership.name);
 
         debug(`Removing <${member.memberDescriptor}> principal from <${group.principalName}> group membership`);
 
@@ -275,7 +277,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async addGroupMemberships(group: GraphGroup, members: string[]): Promise<GraphMembership[]> {
 
-        const debug = this.debugLogger.extend("addGroupMemberships");
+        const debug = this.debugLogger.extend(this.addGroupMemberships.name);
 
         debug(`Adding <${members.length}> group <${group.principalName}> memberships`);
 
@@ -321,7 +323,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async removeGroupMemberships(group: GraphGroup, memberships: GraphMembership[]): Promise<void> {
 
-        const debug = this.debugLogger.extend("removeGroupMemberships");
+        const debug = this.debugLogger.extend(this.removeGroupMemberships.name);
 
         debug(`Removing <${memberships.length}> group <${group.principalName}> memberships`);
 
@@ -339,7 +341,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async getObsoleteGroupMemberships(group: GraphGroup, validMemberships: GraphMembership[]): Promise<GraphMembership[]> {
 
-        const debug = this.debugLogger.extend("getObsoleteGroupMemberships");
+        const debug = this.debugLogger.extend(this.getObsoleteGroupMemberships.name);
 
         debug(`Retrieving obsolete group <${group.principalName}> memberships`);
 
@@ -364,7 +366,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async updateGroupMembers(members: string[], group: GraphGroup): Promise<void> {
 
-        const debug = this.debugLogger.extend("updateGroupMembers");
+        const debug = this.debugLogger.extend(this.updateGroupMembers.name);
 
         let validMemberships: GraphMembership[] = [];
 
@@ -388,7 +390,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async getExplicitIdentities(projectId: string, permissionSetId: string, permissionSetToken: string): Promise<ISecurityIdentity[]> {
 
-        const debug = this.debugLogger.extend("getExplicitIdentities");
+        const debug = this.debugLogger.extend(this.getExplicitIdentities.name);
 
         const apiVersion: string = "5";
 
@@ -412,7 +414,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async addIdentityToPermission(projectId: string, identity: IGraphIdentity): Promise<ISecurityIdentity> {
 
-        const debug = this.debugLogger.extend("addIdentityToPermission");
+        const debug = this.debugLogger.extend(this.addIdentityToPermission.name);
 
         const apiVersion: string = "5";
 
@@ -439,7 +441,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async getIdentityPermission(projectId: string, identity: ISecurityIdentity, permissionSetId: string, permissionSetToken: string): Promise<IIdentityPermission> {
 
-        const debug = this.debugLogger.extend("getIdentityPermission");
+        const debug = this.debugLogger.extend(this.getIdentityPermission.name);
 
         const apiVersion: string = "5";
 
@@ -459,7 +461,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async setGroupAccessControl(identity: string, permission: ISubjectPermission, type: PermissionType): Promise<any> {
 
-        const debug = this.debugLogger.extend("setGroupAccessControl");
+        const debug = this.debugLogger.extend(this.setGroupAccessControl.name);
 
         const permissionsApiVersion: string = "5.0";
         const accessControlApiVersion: string = "5.1-preview.1";
@@ -538,7 +540,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async setIdentityAccessControl(token: string, identity: IIdentityPermission, permission: ISecurityPermission, type: PermissionType): Promise<any> {
 
-        const debug = this.debugLogger.extend("setIdentityAccessControl");
+        const debug = this.debugLogger.extend(this.setIdentityAccessControl.name);
 
         const permissionsApiVersion: string = "5.0";
         const accessControlApiVersion: string = "5.1-preview.1";
@@ -615,7 +617,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async updateGroupPermissions(projectName: string, group: GraphGroup, permissions: IPermission[]): Promise<void> {
 
-        const debug = this.debugLogger.extend("updateGroupPermissions");
+        const debug = this.debugLogger.extend(this.updateGroupPermissions.name);
 
         const groupProvider: IGroupProvider = await this.getGroupProvider("ms.vss-admin-web.org-admin-groups-permissions-pivot-data-provider", projectName, group);
 
@@ -650,7 +652,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async updateIdentityPermissions(projectId: string, identity: ISecurityIdentity, permissions: IPermission[], permissionSetId: string, permissionSetToken: string): Promise<void> {
 
-        const debug = this.debugLogger.extend("updateIdentityPermissions");
+        const debug = this.debugLogger.extend(this.updateIdentityPermissions.name);
 
         const identityPermission: IIdentityPermission = await this.getIdentityPermission(projectId, identity, permissionSetId, permissionSetToken);
 
@@ -685,7 +687,7 @@ export class SecurityHelper implements ISecurityHelper {
 
     public async getExistingIdentity(name: string, projectId: string, existingIdentities: ISecurityIdentity[]): Promise<ISecurityIdentity> {
 
-        const debug = this.debugLogger.extend("getExistingIdentity");
+        const debug = this.debugLogger.extend(this.getExistingIdentity.name);
 
         let targetIdentity: ISecurityIdentity = existingIdentities.filter((i) => i.displayName === name)[0];
 

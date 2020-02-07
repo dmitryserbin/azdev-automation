@@ -34,7 +34,7 @@ export class ProjectUpdater implements IProjectUpdater {
 
     public async getProject(name: string): Promise<TeamProject> {
 
-        const debug = this.debugLogger.extend("getProject");
+        const debug = this.debugLogger.extend(this.getProject.name);
 
         const targetProject: TeamProject = await this.projectHelper.findProject(name);
 
@@ -81,7 +81,7 @@ export class ProjectUpdater implements IProjectUpdater {
 
     public async updatePermissions(project: TeamProject, policy: IProjectPermission): Promise<void> {
 
-        const debug = this.debugLogger.extend("updatePermissions");
+        const debug = this.debugLogger.extend(this.updatePermissions.name);
 
         this.logger.log(`Applying <${policy.name}> project permissions policy`);
 

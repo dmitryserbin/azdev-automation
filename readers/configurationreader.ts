@@ -20,7 +20,7 @@ export class ConfigurationReader implements IConfigurationReader {
 
     public async read(): Promise<IProject[]> {
 
-        const debug = this.debugLogger.extend("read");
+        const debug = this.debugLogger.extend(this.read.name);
 
         // Read artifacts
         const projects: IProject[] = await this.parse<IProject[]>(this.artifactFactory.configuration);
@@ -79,7 +79,7 @@ export class ConfigurationReader implements IConfigurationReader {
 
     private async parse<T>(config: IConfigArtifact): Promise<T> {
 
-        const debug = this.debugLogger.extend("parse");
+        const debug = this.debugLogger.extend(this.parse.name);
 
         const validator: ValidateFunction = await this.readSchema(config.schema);
         const result: T = await this.readJson<T>(config.path);
@@ -97,7 +97,7 @@ export class ConfigurationReader implements IConfigurationReader {
 
     private async readSchema(path: string): Promise<ValidateFunction> {
 
-        const debug = this.debugLogger.extend("readSchema");
+        const debug = this.debugLogger.extend(this.readSchema.name);
 
         debug(`Reading <${path}> schema`);
 
@@ -111,7 +111,7 @@ export class ConfigurationReader implements IConfigurationReader {
 
     private async readJson<T>(path: string) {
 
-        const debug = this.debugLogger.extend("readJson");
+        const debug = this.debugLogger.extend(this.readJson.name);
 
         debug(`Reading <${path}> file`);
 

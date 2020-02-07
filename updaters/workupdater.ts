@@ -32,7 +32,7 @@ export class WorkUpdater implements IWorkUpdater {
 
     public async updatePermissions(project: TeamProject, policy: IWorkPermission): Promise<void> {
 
-        const debug = this.debugLogger.extend("updatePermissions");
+        const debug = this.debugLogger.extend(this.updatePermissions.name);
 
         this.logger.log(`Applying <${policy.name}> work items permissions policy`);
 

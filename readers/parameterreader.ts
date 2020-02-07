@@ -16,7 +16,7 @@ export class ParameterReader implements IParameterReader {
 
     public readParameters(): IConsoleParameters {
 
-        const debug = this.debugLogger.extend("readParameters");
+        const debug = this.debugLogger.extend(this.readParameters.name);
 
         const usage: string = `
             Usage
@@ -108,7 +108,7 @@ export class ParameterReader implements IParameterReader {
 
     public readConsoleParameters(): IConsoleParameters {
 
-        const debug = this.debugLogger.extend("readConsoleParameters");
+        const debug = this.debugLogger.extend(this.readConsoleParameters.name);
 
         const usage: string = `
             Usage

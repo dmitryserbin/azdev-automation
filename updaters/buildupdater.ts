@@ -32,7 +32,7 @@ export class BuildUpdater implements IBuildUpdater {
 
     public async updatePermissions(project: TeamProject, policy: IBuildPermission): Promise<void> {
 
-        const debug = this.debugLogger.extend("updatePermissions");
+        const debug = this.debugLogger.extend(this.updatePermissions.name);
 
         this.logger.log(`Applying <${policy.name}> build permissions policy`);
 
