@@ -32,7 +32,7 @@ describe("WorkHelper", () => {
     it("Should get node identifier", async () => {
 
         const areaNode = {
-    
+
             structureType: "area",
             identifier: 1,
 
