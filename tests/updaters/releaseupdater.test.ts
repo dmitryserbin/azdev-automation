@@ -11,7 +11,6 @@ import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterf
 import { IGroupPermission, IReleasePermission, ITask, PermissionType } from "../../interfaces/readers/configurationreader";
 import { IConsoleLogger } from "../../interfaces/common/consolelogger";
 import { IDebugLogger } from "../../interfaces/common/debuglogger";
-import { IGraphHelper } from "../../interfaces/helpers/graphhelper";
 import { IHelper } from "../../interfaces/common/helper";
 import { IReleaseHelper } from "../../interfaces/helpers/releasehelper";
 import { IReleaseUpdater } from "../../interfaces/updaters/releaseupdater";
@@ -143,7 +142,6 @@ const releasePermissions: IReleasePermission = {
 
 const releaseHelperMock = TypeMoq.Mock.ofType<IReleaseHelper>();
 const taskAgentHelperMock = TypeMoq.Mock.ofType<ITaskAgentHelper>();
-const graphHelperMock = TypeMoq.Mock.ofType<IGraphHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
 
 const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
@@ -159,7 +157,7 @@ helperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber(
 
 describe("ReleaseUpdater", () => {
 
-    const releaseUpdater: IReleaseUpdater = new ReleaseUpdater(releaseHelperMock.target, taskAgentHelperMock.target, graphHelperMock.target, securityHelperMock.target, debugLoggerMock.target, consoleLoggerMock.target, helperMock.target);
+    const releaseUpdater: IReleaseUpdater = new ReleaseUpdater(releaseHelperMock.target, taskAgentHelperMock.target, securityHelperMock.target, debugLoggerMock.target, consoleLoggerMock.target, helperMock.target);
 
     it("Should remove definition tasks", async () => {
 

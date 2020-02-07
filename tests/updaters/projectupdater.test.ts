@@ -11,7 +11,6 @@ import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 import { IBuildPermission, IGroupMembership, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IPermission, PermissionType, IWorkPermission } from "../../interfaces/readers/configurationreader";
 import { IConsoleLogger } from "../../interfaces/common/consolelogger";
 import { IDebugLogger } from "../../interfaces/common/debuglogger";
-import { IGraphHelper } from "../../interfaces/helpers/graphhelper";
 import { IHelper } from "../../interfaces/common/helper";
 import { IProjectHelper } from "../../interfaces/helpers/projecthelper";
 import { IProjectUpdater } from "../../interfaces/updaters/projectupdater";
@@ -95,7 +94,6 @@ const project: IProject = {
 };
 
 const projectHelperMock = TypeMoq.Mock.ofType<IProjectHelper>();
-const graphHelperMock = TypeMoq.Mock.ofType<IGraphHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
 
 const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
@@ -115,7 +113,7 @@ mockProject.setup((x) => x.id).returns(() => "1");
 
 describe("ProjectUpdater", () => {
 
-    const projectUpdater: IProjectUpdater = new ProjectUpdater(projectHelperMock.target, graphHelperMock.target, securityHelperMock.target, debugLoggerMock.target, consoleLoggerMock.target, helperMock.target);
+    const projectUpdater: IProjectUpdater = new ProjectUpdater(projectHelperMock.target, securityHelperMock.target, debugLoggerMock.target, consoleLoggerMock.target, helperMock.target);
 
     it("Should create new project", async () => {
 
@@ -149,7 +147,7 @@ describe("ProjectUpdater", () => {
         // Arrange
         projectHelperMock.setup((x) => x.getProjectGroup(TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString())).returns(() => Promise.resolve(mockGraphGroup.target));
         securityHelperMock.setup((x) => x.updateGroupPermissions(TypeMoq.It.isAnyString(),TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve());
-        graphHelperMock.setup((x) => x.updateGroupMembers(TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve());
+        securityHelperMock.setup((x) => x.updateGroupMembers(TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve());
 
         // Act & Assert
         chai.expect(async () => await projectUpdater.updatePermissions(mockProject.target, project.permissions.project)).to.not.throw();

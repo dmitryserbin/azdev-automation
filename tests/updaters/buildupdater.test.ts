@@ -11,13 +11,11 @@ import { IBuildUpdater } from "../../interfaces/updaters/buildupdater";
 import { IBuildPermission, IGroupPermission, PermissionType } from "../../interfaces/readers/configurationreader";
 import { IConsoleLogger } from "../../interfaces/common/consolelogger";
 import { IDebugLogger } from "../../interfaces/common/debuglogger";
-import { IGraphHelper } from "../../interfaces/helpers/graphhelper";
 import { IHelper } from "../../interfaces/common/helper";
-import { INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../../interfaces/helpers/securityhelper";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../interfaces/helpers/securityhelper";
 import { BuildUpdater } from "../../updaters/buildupdater";
 
 const buildHelperMock = TypeMoq.Mock.ofType<IBuildHelper>();
-const graphHelperMock = TypeMoq.Mock.ofType<IGraphHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
 
 const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
@@ -69,7 +67,7 @@ const groupPermission: IGroupPermission = {
 
 describe("BuildUpdater", () => {
 
-    const buildUpdater: IBuildUpdater = new BuildUpdater(buildHelperMock.target, graphHelperMock.target, securityHelperMock.target, debugLoggerMock.target, consoleLoggerMock.target, helperMock.target);
+    const buildUpdater: IBuildUpdater = new BuildUpdater(buildHelperMock.target, securityHelperMock.target, debugLoggerMock.target, consoleLoggerMock.target, helperMock.target);
 
     it("Should update permissions", async () => {
 

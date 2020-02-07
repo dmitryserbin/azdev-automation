@@ -7,25 +7,23 @@ import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterf
 import { IReleasePermission, ITask } from "../interfaces/readers/configurationreader";
 import { IConsoleLogger } from "../interfaces/common/consolelogger";
 import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IGraphHelper, IGraphIdentity } from "../interfaces/helpers/graphhelper";
 import { IHelper } from "../interfaces/common/helper";
 import { IReleaseHelper } from "../interfaces/helpers/releasehelper";
 import { IReleaseUpdater } from "../interfaces/updaters/releaseupdater";
-import { INamespace, ISecurityHelper, ISecurityIdentity } from "../interfaces/helpers/securityhelper";
+import { INamespace, ISecurityHelper, ISecurityIdentity, IGraphIdentity } from "../interfaces/helpers/securityhelper";
 import { ITaskAgentHelper } from "../interfaces/helpers/taskagenthelper";
 
 export class ReleaseUpdater implements IReleaseUpdater {
 
     public releaseHelper: IReleaseHelper;
     public taskAgentHelper: ITaskAgentHelper;
-    public graphHelper: IGraphHelper;
     public securityHelper: ISecurityHelper;
 
     private debugLogger: Debug.Debugger;
     private logger: IConsoleLogger;
     private helper: IHelper;
 
-    constructor(releaseHelper: IReleaseHelper, taskAgentHelper: ITaskAgentHelper, graphHelper: IGraphHelper, securityHelper: ISecurityHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger, helper: IHelper) {
+    constructor(releaseHelper: IReleaseHelper, taskAgentHelper: ITaskAgentHelper, securityHelper: ISecurityHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger, helper: IHelper) {
 
         this.debugLogger = debugLogger.create(this.constructor.name);
         this.logger = consoleLogger;
@@ -33,7 +31,6 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
         this.releaseHelper = releaseHelper;
         this.taskAgentHelper = taskAgentHelper;
-        this.graphHelper = graphHelper;
         this.securityHelper = securityHelper;
 
     }
@@ -222,7 +219,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
                 debug(`Adding new <${groupName}> group identity`);
 
-                const identity: IGraphIdentity = await this.graphHelper.findIdentity(groupName);
+                const identity: IGraphIdentity = await this.securityHelper.findIdentity(groupName);
 
                 if (!identity) {
 

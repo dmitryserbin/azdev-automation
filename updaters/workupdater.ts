@@ -8,27 +8,24 @@ import { IDebugLogger } from "../interfaces/common/debuglogger";
 import { IHelper } from "../interfaces/common/helper";
 import { IWorkHelper } from "../interfaces/helpers/workhelper";
 import { IWorkUpdater } from "../interfaces/updaters/workupdater";
-import { INamespace, ISecurityHelper, ISecurityIdentity } from "../interfaces/helpers/securityhelper";
-import { IGraphIdentity, IGraphHelper } from "../interfaces/helpers/graphhelper";
+import { INamespace, ISecurityHelper, ISecurityIdentity, IGraphIdentity } from "../interfaces/helpers/securityhelper";
 
 export class WorkUpdater implements IWorkUpdater {
 
     public workHelper: IWorkHelper;
-    public graphHelper: IGraphHelper;
     public securityHelper: ISecurityHelper;
 
     private debugLogger: Debug.Debugger;
     private logger: IConsoleLogger;
     private helper: IHelper;
 
-    constructor(workHelper: IWorkHelper, graphHelper: IGraphHelper, securityHelper: ISecurityHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger, helper: IHelper) {
+    constructor(workHelper: IWorkHelper, securityHelper: ISecurityHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger, helper: IHelper) {
 
         this.debugLogger = debugLogger.create(this.constructor.name);
         this.logger = consoleLogger;
         this.helper = helper;
 
         this.workHelper = workHelper;
-        this.graphHelper = graphHelper;
         this.securityHelper = securityHelper;
 
     }
@@ -62,7 +59,7 @@ export class WorkUpdater implements IWorkUpdater {
 
                 debug(`Adding new <${groupName}> group identity`);
 
-                const identity: IGraphIdentity = await this.graphHelper.findIdentity(groupName);
+                const identity: IGraphIdentity = await this.securityHelper.findIdentity(groupName);
 
                 if (!identity) {
 

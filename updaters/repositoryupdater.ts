@@ -5,30 +5,27 @@ import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { IBuildPermission } from "../interfaces/readers/configurationreader";
 import { IConsoleLogger } from "../interfaces/common/consolelogger";
 import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IGraphHelper, IGraphIdentity } from "../interfaces/helpers/graphhelper";
 import { IHelper } from "../interfaces/common/helper";
 import { IRepositoryHelper } from "../interfaces/helpers/repositoryhelper";
 import { IRepositoryUpdater } from "../interfaces/updaters/repositoryupdater";
-import { INamespace, ISecurityHelper, ISecurityIdentity } from "../interfaces/helpers/securityhelper";
+import { INamespace, ISecurityHelper, ISecurityIdentity, IGraphIdentity } from "../interfaces/helpers/securityhelper";
 
 export class RepositoryUpdater implements IRepositoryUpdater {
 
     public repositoryHelper: IRepositoryHelper;
-    public graphHelper: IGraphHelper;
     public securityHelper: ISecurityHelper;
 
     private debugLogger: Debug.Debugger;
     private logger: IConsoleLogger;
     private helper: IHelper;
 
-    constructor(repositoryHelper: IRepositoryHelper, graphHelper: IGraphHelper, securityHelper: ISecurityHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger, helper: IHelper) {
+    constructor(repositoryHelper: IRepositoryHelper, securityHelper: ISecurityHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger, helper: IHelper) {
 
         this.debugLogger = debugLogger.create(this.constructor.name);
         this.logger = consoleLogger;
         this.helper = helper;
 
         this.repositoryHelper = repositoryHelper;
-        this.graphHelper = graphHelper;
         this.securityHelper = securityHelper;
 
     }
@@ -61,7 +58,7 @@ export class RepositoryUpdater implements IRepositoryUpdater {
 
                 debug(`Adding new <${groupName}> group identity`);
 
-                const identity: IGraphIdentity = await this.graphHelper.findIdentity(groupName);
+                const identity: IGraphIdentity = await this.securityHelper.findIdentity(groupName);
 
                 if (!identity) {
 
