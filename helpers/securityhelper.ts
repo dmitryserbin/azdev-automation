@@ -16,13 +16,13 @@ export class SecurityHelper implements ISecurityHelper {
     private helper: IHelper;
     private mapper: ISecurityMapper;
 
-    constructor(azdevClient: IAzDevClient, debugLogger: IDebugLogger, helper: IHelper, mapper: ISecurityMapper) {
+    constructor(azdevClient: IAzDevClient, helper: IHelper, mapper: ISecurityMapper, debugLogger: IDebugLogger) {
 
         this.debugLogger = debugLogger.create(this.constructor.name);
-        this.helper = helper;
-        this.mapper = mapper;
 
         this.azdevClient = azdevClient;
+        this.helper = helper;
+        this.mapper = mapper;
 
     }
 

@@ -163,7 +163,7 @@ debuggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debu
 describe("SecurityHelper", () => {
 
     const securityMapper: ISecurityMapper = new SecurityMapper(debugLoggerMock.target);
-    const securityHelper: ISecurityHelper = new SecurityHelper(azdevClientMock.target, debugLoggerMock.target, helperMock.target, securityMapper);
+    const securityHelper: ISecurityHelper = new SecurityHelper(azdevClientMock.target, helperMock.target, securityMapper, debugLoggerMock.target);
 
     it("Should find user identity", async () => {
 
