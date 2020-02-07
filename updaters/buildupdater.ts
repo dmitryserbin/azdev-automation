@@ -52,7 +52,7 @@ export class BuildUpdater implements IBuildUpdater {
             // Intermittent API connectivity issues
             await this.helper.wait(500, 3000);
 
-            let targetIdentity: ISecurityIdentity = await this.securityHelper.getExistingIdentity(groupName, project.id!, existingIdentities);
+            const targetIdentity: ISecurityIdentity = await this.securityHelper.getExistingIdentity(groupName, project.id!, existingIdentities);
 
             await this.securityHelper.updateIdentityPermissions(project.id!, targetIdentity, group.permissions, permissionSetId, permissionSetToken);
 
