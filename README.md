@@ -1,11 +1,11 @@
 # Azure DevOps Automation
 
-- [Overview](#Overview)
-- [Features](#Features)
-- [How To Use](#How-To-Use)
-- [Configuration](#Configuration)
-- [Console Guide](#Console-Guide)
-- [Support](#Support)
+- [Overview](#overview)
+- [Features](#features)
+- [How To Use](#how-to-use)
+- [Configuration](#configuration)
+- [Console Guide](#console-guide)
+- [Support](#support)
 
 ## Overview
 
@@ -22,6 +22,7 @@ Package  | Build   | Code
 - Manage build pipelines permissions
 - Manage release pipelines permissions
 - Manage repositories permissions
+- Manage work items permissions
 - Manage service connections _(to be implemented)_
 - Manage branch policies _(to be implemented)_
 - Execute console commands
@@ -69,6 +70,7 @@ Azure DevOps projects configuration contains target projects details and policy 
     "build": "My Build Policy",
     "release": "My Release Policy",
     "repository": "My Repository Policy",
+    "work": "My Work Items Policy"
   }
 }
 ```
@@ -81,6 +83,7 @@ Azure DevOps projects configuration contains target projects details and policy 
 - **Build Permissions** - permissions policies defining level of access to build pipelines
 - **Release Permissions** - permissions policies defining level of access to release pipelines
 - **Repository Permissions** - permissions policies defining level of access to project repositories
+- **Work Items Permissions** - permissions policies defining level of access to work items
 - **Branch Policies** - repositories branch policies configuration _(to be implemented)_
 - **Service Connections** - service connections definitions _(to be implemented)_
 

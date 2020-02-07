@@ -1,8 +1,8 @@
 import Debug from "debug";
 
-import { IDebugLogger } from "../interfaces/debuglogger";
-import { IIdentityPermission, INamespace, INamespaceAction, ISecurityIdentity, ISecurityPermission, IGroupProvider, ISubjectPermission } from "../interfaces/securityhelper";
-import { ISecurityMapper } from "../interfaces/securitymapper";
+import { IDebugLogger } from "../interfaces/common/debuglogger";
+import { IIdentityPermission, INamespace, INamespaceAction, ISecurityIdentity, ISecurityPermission, IGroupProvider, ISubjectPermission } from "../interfaces/helpers/securityhelper";
+import { ISecurityMapper } from "../interfaces/mappers/securitymapper";
 
 export class SecurityMapper implements ISecurityMapper {
 
@@ -16,7 +16,7 @@ export class SecurityMapper implements ISecurityMapper {
 
     public mapSecurityIdentity(input: any): ISecurityIdentity {
 
-        const debug = this.debugLogger.extend("mapSecurityIdentity");
+        const debug = this.debugLogger.extend(this.mapSecurityIdentity.name);
 
         const result: ISecurityIdentity = {
 
@@ -35,7 +35,7 @@ export class SecurityMapper implements ISecurityMapper {
 
     public mapIdentityPermission(input: any): IIdentityPermission {
 
-        const debug = this.debugLogger.extend("mapIdentityPermission");
+        const debug = this.debugLogger.extend(this.mapIdentityPermission.name);
 
         const result: IIdentityPermission = {
 
@@ -71,7 +71,7 @@ export class SecurityMapper implements ISecurityMapper {
 
     public mapGroupProvider(input: any): IGroupProvider {
 
-        const debug = this.debugLogger.extend("mapIdentityProvider");
+        const debug = this.debugLogger.extend(this.mapGroupProvider.name);
 
         const result: IGroupProvider = {
 
@@ -105,7 +105,7 @@ export class SecurityMapper implements ISecurityMapper {
 
     public mapNamespace(input: any): INamespace {
 
-        const debug = this.debugLogger.extend("mapNamespace");
+        const debug = this.debugLogger.extend(this.mapNamespace.name);
 
         const result: INamespace = {
 

@@ -2,40 +2,37 @@ import Debug from "debug";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IBuildHelper } from "../interfaces/buildhelper";
-import { IBuildUpdater } from "../interfaces/buildupdater";
-import { IBuildPermission, PermissionType } from "../interfaces/configurationreader";
-import { IConsoleLogger } from "../interfaces/consolelogger";
-import { IDebugLogger } from "../interfaces/debuglogger";
-import { IGraphHelper, IGraphIdentity } from "../interfaces/graphhelper";
-import { IHelper } from "../interfaces/helper";
-import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../interfaces/securityhelper";
+import { IBuildHelper } from "../interfaces/helpers/buildhelper";
+import { IBuildUpdater } from "../interfaces/updaters/buildupdater";
+import { IBuildPermission } from "../interfaces/readers/configurationreader";
+import { IConsoleLogger } from "../interfaces/common/consolelogger";
+import { IDebugLogger } from "../interfaces/common/debuglogger";
+import { IHelper } from "../interfaces/common/helper";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../interfaces/helpers/securityhelper";
 
 export class BuildUpdater implements IBuildUpdater {
 
     public buildHelper: IBuildHelper;
-    public graphHelper: IGraphHelper;
     public securityHelper: ISecurityHelper;
+    private helper: IHelper;
 
     private debugLogger: Debug.Debugger;
     private logger: IConsoleLogger;
-    private helper: IHelper;
 
-    constructor(buildHelper: IBuildHelper, graphHelper: IGraphHelper, securityHelper: ISecurityHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger, helper: IHelper) {
+    constructor(buildHelper: IBuildHelper, securityHelper: ISecurityHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
 
         this.debugLogger = debugLogger.create(this.constructor.name);
         this.logger = consoleLogger;
-        this.helper = helper;
 
         this.buildHelper = buildHelper;
-        this.graphHelper = graphHelper;
         this.securityHelper = securityHelper;
+        this.helper = helper;
 
     }
 
     public async updatePermissions(project: TeamProject, policy: IBuildPermission): Promise<void> {
 
-        const debug = this.debugLogger.extend("updatePermissions");
+        const debug = this.debugLogger.extend(this.updatePermissions.name);
 
         this.logger.log(`Applying <${policy.name}> build permissions policy`);
 
@@ -55,57 +52,9 @@ export class BuildUpdater implements IBuildUpdater {
             // Intermittent API connectivity issues
             await this.helper.wait(500, 3000);
 
-            let targetIdentity: ISecurityIdentity = existingIdentities.filter((i) => i.displayName === groupName)[0];
+            const targetIdentity: ISecurityIdentity = await this.securityHelper.getExistingIdentity(groupName, project.id!, existingIdentities);
 
-            if (!targetIdentity) {
-
-                debug(`Adding new <${groupName}> group identity`);
-
-                const identity: IGraphIdentity = await this.graphHelper.findIdentity(groupName);
-
-                if (!identity) {
-
-                    throw new Error(`Identity <${groupName}> not found`);
-
-                }
-
-                targetIdentity = await this.securityHelper.addIdentityToPermission(project.id!, identity);
-
-            }
-
-            const identityPermission: IIdentityPermission = await this.securityHelper.getIdentityPermission(project.id!, targetIdentity, permissionSetId, permissionSetToken);
-
-            for (const permission of group.permissions) {
-
-                const targetPermission: ISecurityPermission = identityPermission.permissions.filter((i) => i.displayName.trim() === permission.name)[0];
-
-                if (!targetPermission) {
-
-                    throw new Error(`Permission <${permission.name}> not found`);
-
-                }
-
-                // Some magic to address JSON enum parsing issue
-                // To be fixed with configuration reader refactoring
-                const type: PermissionType = PermissionType[permission.type.toString() as keyof typeof PermissionType];
-
-                // Skip updating identical permission
-                if (targetPermission.permissionId === type && targetPermission.explicitPermissionId === type) {
-
-                    debug(`Permission <${permission.name}> (${permission.type}) is identical`);
-
-                    continue;
-                }
-
-                debug(`Configuring <${permission.name}> (${permission.type}) permission`);
-
-                // Slow down parallel calls to address
-                // Intermittent API connectivity issues
-                await this.helper.wait(500, 1500);
-
-                const updatedPermission: any = await this.securityHelper.setIdentityAccessControl(permissionSetToken, identityPermission, targetPermission, type);
-
-            }
+            await this.securityHelper.updateIdentityPermissions(project.id!, targetIdentity, group.permissions, permissionSetId, permissionSetToken);
 
         }));
 

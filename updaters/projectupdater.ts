@@ -2,42 +2,39 @@ import Debug from "debug";
 
 import { OperationReference } from "azure-devops-node-api/interfaces/common/OperationsInterfaces";
 import { Process, ProjectVisibility, TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
-import { GraphGroup, GraphMembership } from "azure-devops-node-api/interfaces/GraphInterfaces";
+import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
-import { IProject, IProjectPermission, PermissionType, IPermission } from "../interfaces/configurationreader";
-import { IConsoleLogger } from "../interfaces/consolelogger";
-import { IDebugLogger } from "../interfaces/debuglogger";
-import { IGraphHelper } from "../interfaces/graphhelper";
-import { IHelper } from "../interfaces/helper";
-import { IProjectHelper } from "../interfaces/projecthelper";
-import { IProjectUpdater } from "../interfaces/projectupdater";
-import { ISecurityHelper, IGroupProvider, ISubjectPermission } from "../interfaces/securityhelper";
+import { IProject, IProjectPermission } from "../interfaces/readers/configurationreader";
+import { IConsoleLogger } from "../interfaces/common/consolelogger";
+import { IDebugLogger } from "../interfaces/common/debuglogger";
+import { IHelper } from "../interfaces/common/helper";
+import { IProjectHelper } from "../interfaces/helpers/projecthelper";
+import { IProjectUpdater } from "../interfaces/updaters/projectupdater";
+import { ISecurityHelper } from "../interfaces/helpers/securityhelper";
 
 export class ProjectUpdater implements IProjectUpdater {
 
     public projectHelper: IProjectHelper;
-    public graphHelper: IGraphHelper;
     public securityHelper: ISecurityHelper;
+    private helper: IHelper;
 
     private debugLogger: Debug.Debugger;
     private logger: IConsoleLogger;
-    private helper: IHelper;
 
-    constructor(projectHelper: IProjectHelper, graphHelper: IGraphHelper, securityHelper: ISecurityHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger, helper: IHelper) {
+    constructor(projectHelper: IProjectHelper, securityHelper: ISecurityHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
 
         this.debugLogger = debugLogger.create(this.constructor.name);
         this.logger = consoleLogger;
-        this.helper = helper;
 
         this.projectHelper = projectHelper;
-        this.graphHelper = graphHelper;
         this.securityHelper = securityHelper;
+        this.helper = helper;
 
     }
 
     public async getProject(name: string): Promise<TeamProject> {
 
-        const debug = this.debugLogger.extend("getProject");
+        const debug = this.debugLogger.extend(this.getProject.name);
 
         const targetProject: TeamProject = await this.projectHelper.findProject(name);
 
@@ -84,7 +81,7 @@ export class ProjectUpdater implements IProjectUpdater {
 
     public async updatePermissions(project: TeamProject, policy: IProjectPermission): Promise<void> {
 
-        const debug = this.debugLogger.extend("updatePermissions");
+        const debug = this.debugLogger.extend(this.updatePermissions.name);
 
         this.logger.log(`Applying <${policy.name}> project permissions policy`);
 
@@ -127,7 +124,7 @@ export class ProjectUpdater implements IProjectUpdater {
 
                 this.logger.log(`Updating <${groupName}> group members`);
 
-                await this.graphHelper.updateGroupMembers(group.members, targetGroup);
+                await this.securityHelper.updateGroupMembers(group.members, targetGroup);
 
             }
 

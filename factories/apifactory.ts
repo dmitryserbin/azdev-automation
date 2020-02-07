@@ -11,8 +11,8 @@ import * as vc from "azure-devops-node-api/VsoClient";
 
 import * as vi from "azure-devops-node-api/interfaces/common/VsoBaseInterfaces";
 
-import { IApiFactory } from "../interfaces/apifactory";
-import { IDebugLogger } from "../interfaces/debuglogger";
+import { IApiFactory } from "../interfaces/factories/apifactory";
+import { IDebugLogger } from "../interfaces/common/debuglogger";
 
 export class ApiFactory implements IApiFactory {
 
@@ -41,7 +41,7 @@ export class ApiFactory implements IApiFactory {
 
     public async createCoreApi(): Promise<ca.CoreApi> {
 
-        const debug = this.debugLogger.extend("getCoreApi");
+        const debug = this.debugLogger.extend(this.createCoreApi.name);
 
         const coreApi: ca.CoreApi = await this.webApi.getCoreApi();
 
@@ -53,7 +53,7 @@ export class ApiFactory implements IApiFactory {
 
     public async createReleaseApi(): Promise<ra.ReleaseApi> {
 
-        const debug = this.debugLogger.extend("getReleaseApi");
+        const debug = this.debugLogger.extend(this.createReleaseApi.name);
 
         const releaseApi: ra.ReleaseApi = await this.webApi.getReleaseApi();
 
@@ -65,7 +65,7 @@ export class ApiFactory implements IApiFactory {
 
     public async createBuildApi(): Promise<ba.BuildApi> {
 
-        const debug = this.debugLogger.extend("getBuildApi");
+        const debug = this.debugLogger.extend(this.createBuildApi.name);
 
         const buildApi: ba.BuildApi = await this.webApi.getBuildApi();
 
@@ -77,7 +77,7 @@ export class ApiFactory implements IApiFactory {
 
     public async createGitApi(): Promise<ga.GitApi> {
 
-        const debug = this.debugLogger.extend("getGitApi");
+        const debug = this.debugLogger.extend(this.createGitApi.name);
 
         const getApi: ga.GitApi = await this.webApi.getGitApi();
 
@@ -89,7 +89,7 @@ export class ApiFactory implements IApiFactory {
 
     public async createTaskAgentApi(): Promise<ta.ITaskAgentApi> {
 
-        const debug = this.debugLogger.extend("getTaskAgentApi");
+        const debug = this.debugLogger.extend(this.createTaskAgentApi.name);
 
         const taskAgentApi: ta.ITaskAgentApi = await this.webApi.getTaskAgentApi();
 
@@ -101,7 +101,7 @@ export class ApiFactory implements IApiFactory {
 
     public async createSecurityRolesApi(): Promise<sa.ISecurityRolesApi> {
 
-        const debug = this.debugLogger.extend("getSecurityRolesApi");
+        const debug = this.debugLogger.extend(this.createSecurityRolesApi.name);
 
         const securityRolesApi: sa.ISecurityRolesApi = await this.webApi.getSecurityRolesApi();
 
@@ -112,7 +112,7 @@ export class ApiFactory implements IApiFactory {
 
     public async createVsoClient(): Promise<vc.VsoClient> {
 
-        const debug = this.debugLogger.extend("getVsoClient");
+        const debug = this.debugLogger.extend(this.createVsoClient.name);
 
         debug(`Azure DevOps API client initialized`);
         debug(this.webApi.options);

@@ -2,9 +2,9 @@ import Ajv, { ValidateFunction } from "ajv";
 import Debug from "debug";
 import { readFileSync } from "fs";
 
-import { IArtifactFactory, IConfigArtifact } from "../interfaces/artifactfactory";
-import { IBuildPermission, IConfigurationReader, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission } from "../interfaces/configurationreader";
-import { IDebugLogger } from "../interfaces/debuglogger";
+import { IArtifactFactory, IConfigArtifact } from "../interfaces/factories/artifactfactory";
+import { IBuildPermission, IConfigurationReader, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IWorkPermission } from "../interfaces/readers/configurationreader";
+import { IDebugLogger } from "../interfaces/common/debuglogger";
 
 export class ConfigurationReader implements IConfigurationReader {
 
@@ -20,7 +20,7 @@ export class ConfigurationReader implements IConfigurationReader {
 
     public async read(): Promise<IProject[]> {
 
-        const debug = this.debugLogger.extend("read");
+        const debug = this.debugLogger.extend(this.read.name);
 
         // Read artifacts
         const projects: IProject[] = await this.parse<IProject[]>(this.artifactFactory.configuration);
@@ -28,6 +28,7 @@ export class ConfigurationReader implements IConfigurationReader {
         const buildPermissions: IBuildPermission[] = await this.parse<IBuildPermission[]>(this.artifactFactory.buildPermissions);
         const releasePermissions: IReleasePermission[] = await this.parse<IReleasePermission[]>(this.artifactFactory.releasePermissions);
         const repositoryPermissions: IRepositoryPermission[] = await this.parse<IRepositoryPermission[]>(this.artifactFactory.repositoryPermissions);
+        const workPermissions: IWorkPermission[] = await this.parse<IWorkPermission[]>(this.artifactFactory.workPermissions);
 
         for (const project of projects) {
 
@@ -61,6 +62,13 @@ export class ConfigurationReader implements IConfigurationReader {
 
             }
 
+            if (project.permissions.work) {
+
+                const policyName: string = project.permissions.work.toString();
+                project.permissions.work = this.getWorkPermission(policyName, workPermissions);
+
+            }
+
         }
 
         debug(projects);
@@ -71,7 +79,7 @@ export class ConfigurationReader implements IConfigurationReader {
 
     private async parse<T>(config: IConfigArtifact): Promise<T> {
 
-        const debug = this.debugLogger.extend("parse");
+        const debug = this.debugLogger.extend(this.parse.name);
 
         const validator: ValidateFunction = await this.readSchema(config.schema);
         const result: T = await this.readJson<T>(config.path);
@@ -89,7 +97,7 @@ export class ConfigurationReader implements IConfigurationReader {
 
     private async readSchema(path: string): Promise<ValidateFunction> {
 
-        const debug = this.debugLogger.extend("readSchema");
+        const debug = this.debugLogger.extend(this.readSchema.name);
 
         debug(`Reading <${path}> schema`);
 
@@ -103,7 +111,7 @@ export class ConfigurationReader implements IConfigurationReader {
 
     private async readJson<T>(path: string) {
 
-        const debug = this.debugLogger.extend("readJson");
+        const debug = this.debugLogger.extend(this.readJson.name);
 
         debug(`Reading <${path}> file`);
 
@@ -163,6 +171,20 @@ export class ConfigurationReader implements IConfigurationReader {
         if (!result.length) {
 
             throw new Error(`Repository permissions policy <${name}> not found`);
+
+        }
+
+        return result[0];
+
+    }
+
+    private getWorkPermission(name: string, policies: IWorkPermission[]): IWorkPermission {
+
+        const result = policies.filter((p) => p.name === name);
+
+        if (!result.length) {
+
+            throw new Error(`Work permissions policy <${name}> not found`);
 
         }
 

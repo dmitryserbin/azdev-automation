@@ -1,8 +1,8 @@
 import Debug from "debug";
 import meow from "meow";
 
-import { IDebugLogger } from "../interfaces/debuglogger";
-import { IConsoleParameters, IParameterReader } from "../interfaces/parameterreader";
+import { IDebugLogger } from "../interfaces/common/debuglogger";
+import { IConsoleParameters, IParameterReader } from "../interfaces/readers/parameterreader";
 
 export class ParameterReader implements IParameterReader {
 
@@ -16,7 +16,7 @@ export class ParameterReader implements IParameterReader {
 
     public readParameters(): IConsoleParameters {
 
-        const debug = this.debugLogger.extend("readParameters");
+        const debug = this.debugLogger.extend(this.readParameters.name);
 
         const usage: string = `
             Usage
@@ -108,7 +108,7 @@ export class ParameterReader implements IParameterReader {
 
     public readConsoleParameters(): IConsoleParameters {
 
-        const debug = this.debugLogger.extend("readConsoleParameters");
+        const debug = this.debugLogger.extend(this.readConsoleParameters.name);
 
         const usage: string = `
             Usage

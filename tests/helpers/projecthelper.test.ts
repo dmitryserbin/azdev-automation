@@ -10,9 +10,9 @@ import { Process, ProjectVisibility, TeamProject } from "azure-devops-node-api/i
 import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { ProjectHelper } from "../../helpers/projecthelper";
-import { IAzDevClient } from "../../interfaces/azdevclient";
-import { IDebugLogger } from "../../interfaces/debuglogger";
-import { IProjectHelper } from "../../interfaces/projecthelper";
+import { IAzDevClient } from "../../interfaces/common/azdevclient";
+import { IDebugLogger } from "../../interfaces/common/debuglogger";
+import { IProjectHelper } from "../../interfaces/helpers/projecthelper";
 
 const projectOne: string = "MyProjectOne";
 const projectOneDescription: string = "This is Project One";

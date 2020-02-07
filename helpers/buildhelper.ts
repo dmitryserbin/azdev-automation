@@ -2,8 +2,8 @@ import Debug from "debug";
 
 import * as ba from "azure-devops-node-api/BuildApi";
 
-import { IBuildHelper } from "../interfaces/buildhelper";
-import { IDebugLogger } from "../interfaces/debuglogger";
+import { IBuildHelper } from "../interfaces/helpers/buildhelper";
+import { IDebugLogger } from "../interfaces/common/debuglogger";
 
 export class BuildHelper implements IBuildHelper {
 

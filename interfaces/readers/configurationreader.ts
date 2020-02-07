@@ -13,6 +13,7 @@ export interface IProject {
         build: IBuildPermission;
         release: IReleasePermission;
         repository: IRepositoryPermission;
+        work: IWorkPermission;
     };
 
 }
@@ -41,7 +42,14 @@ export interface IReleasePermission {
 export interface IRepositoryPermission {
 
     name: string;
-    definition: any[];
+    definition: IGroupPermission[];
+
+}
+
+export interface IWorkPermission {
+
+    name: string;
+    definition: IGroupPermission[];
 
 }
 

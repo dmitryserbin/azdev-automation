@@ -6,16 +6,16 @@ import * as TypeMoq from "typemoq";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IBuildHelper } from "../../interfaces/helpers/buildhelper";
-import { IBuildUpdater } from "../../interfaces/updaters/buildupdater";
-import { IBuildPermission, IGroupPermission, PermissionType } from "../../interfaces/readers/configurationreader";
+import { IGroupPermission, PermissionType, IWorkPermission } from "../../interfaces/readers/configurationreader";
 import { IConsoleLogger } from "../../interfaces/common/consolelogger";
 import { IDebugLogger } from "../../interfaces/common/debuglogger";
 import { IHelper } from "../../interfaces/common/helper";
 import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../interfaces/helpers/securityhelper";
-import { BuildUpdater } from "../../updaters/buildupdater";
+import { IWorkUpdater } from "../../interfaces/updaters/workupdater";
+import { WorkUpdater } from "../../updaters/workupdater";
+import { IWorkHelper } from "../../interfaces/helpers/workhelper";
 
-const buildHelperMock = TypeMoq.Mock.ofType<IBuildHelper>();
+const workHelperMock = TypeMoq.Mock.ofType<IWorkHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
 
 const helperMock = TypeMoq.Mock.ofType<IHelper>();
@@ -36,7 +36,7 @@ const projectOne: TeamProject = {
 
 };
 
-const buildPermission: IBuildPermission = {
+const workPermission: IWorkPermission = {
 
     name: "Default",
     definition: [
@@ -65,15 +65,15 @@ const groupPermission: IGroupPermission = {
 
 };
 
-const namespaceName: string = "Build";
+const namespaceName: string = "CSS";
 
-describe("BuildUpdater", () => {
+describe("WorkUpdater", () => {
 
-    const buildUpdater: IBuildUpdater = new BuildUpdater(buildHelperMock.target, securityHelperMock.target, helperMock.target, debugLoggerMock.target, consoleLoggerMock.target);
+    const workUpdater: IWorkUpdater = new WorkUpdater(workHelperMock.target, securityHelperMock.target, helperMock.target, debugLoggerMock.target, consoleLoggerMock.target);
 
     it("Should update permissions", async () => {
 
-        const buildNamespace: INamespace = {
+        const workNamespace: INamespace = {
 
             namespaceId: "1",
             name: namespaceName,
@@ -97,14 +97,17 @@ describe("BuildUpdater", () => {
 
         };
 
+        const nodeIdentifier: string = "1";
+
         // Arrange
-        securityHelperMock.setup((x) => x.getNamespace(TypeMoq.It.isAnyString())).returns(() => Promise.resolve(buildNamespace));
+        securityHelperMock.setup((x) => x.getNamespace(TypeMoq.It.isAnyString())).returns(() => Promise.resolve(workNamespace));
+        workHelperMock.setup((x) => x.getNodeIdentifier(TypeMoq.It.isAnyString(), TypeMoq.It.isAny())).returns(() => Promise.resolve(nodeIdentifier));
         securityHelperMock.setup((x) => x.getExplicitIdentities(TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString())).returns(() => Promise.resolve([ targetIdentityOne ]));
         securityHelperMock.setup((x) => x.getExistingIdentity(TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString(), TypeMoq.It.isAny())).returns(() => Promise.resolve(targetIdentityOne));
         securityHelperMock.setup((x) => x.updateIdentityPermissions(TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAny(), TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString())).returns(() => Promise.resolve());
 
         // Act & Assert
-        chai.expect(async () => await buildUpdater.updatePermissions(projectOne, buildPermission)).to.not.throw();
+        chai.expect(async () => await workUpdater.updatePermissions(projectOne, workPermission)).to.not.throw();
 
     });
 

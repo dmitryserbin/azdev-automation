@@ -5,16 +5,16 @@ import * as chai from "chai";
 import * as TypeMoq from "typemoq";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
-import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
+import { GraphGroup, GraphMembership, GraphMember } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { SecurityHelper } from "../../helpers/securityhelper";
-import { IAzDevClient } from "../../interfaces/azdevclient";
-import { PermissionType } from "../../interfaces/configurationreader";
-import { IDebugLogger } from "../../interfaces/debuglogger";
-import { IGraphIdentity } from "../../interfaces/graphhelper";
-import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission, IGroupProvider } from "../../interfaces/securityhelper";
-import { ISecurityMapper } from "../../interfaces/securitymapper";
+import { IAzDevClient } from "../../interfaces/common/azdevclient";
+import { PermissionType } from "../../interfaces/readers/configurationreader";
+import { IDebugLogger } from "../../interfaces/common/debuglogger";
+import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission, IGroupProvider, IGraphIdentity } from "../../interfaces/helpers/securityhelper";
+import { ISecurityMapper } from "../../interfaces/mappers/securitymapper";
 import { SecurityMapper } from "../../mappers/securitymapper";
+import { IHelper } from "../../interfaces/common/helper";
 
 const projectOne: TeamProject = {
 
@@ -26,6 +26,22 @@ const projectOne: TeamProject = {
 const groupOne: GraphGroup = {
 
     principalName: "MyGroup",
+
+};
+
+const userIdentityOne: IGraphIdentity = {
+
+    displayName: "MyAdUser@domain.com",
+    entityType: "User",
+    subjectDescriptor: "1",
+
+};
+
+const groupIdentityOne: IGraphIdentity = {
+
+    displayName: "MyAdGroup",
+    entityType: "Group",
+    subjectDescriptor: "2",
 
 };
 
@@ -130,10 +146,14 @@ const namespace: INamespace = {
 
 };
 
+const graphMemberMock: TypeMoq.IMock<GraphMember> = TypeMoq.Mock.ofType<GraphMember>();
+const graphMembershipMock: TypeMoq.IMock<GraphMembership> = TypeMoq.Mock.ofType<GraphMembership>();
+
 const permissionSetId: string = "1";
 const permissionSetToken: string = "1";
 
 const azdevClientMock = TypeMoq.Mock.ofType<IAzDevClient>();
+const helperMock = TypeMoq.Mock.ofType<IHelper>();
 
 const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
 const debugLoggerMock = TypeMoq.Mock.ofType<IDebugLogger>();
@@ -143,7 +163,64 @@ debuggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debu
 describe("SecurityHelper", () => {
 
     const securityMapper: ISecurityMapper = new SecurityMapper(debugLoggerMock.target);
-    const securityHelper: ISecurityHelper = new SecurityHelper(azdevClientMock.target, debugLoggerMock.target, securityMapper);
+    const securityHelper: ISecurityHelper = new SecurityHelper(azdevClientMock.target, helperMock.target, securityMapper, debugLoggerMock.target);
+
+    it("Should find user identity", async () => {
+
+        // Arrange
+        azdevClientMock.setup((x) => x.post(TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString(), TypeMoq.It.isAny())).returns(() => Promise.resolve({ results: [ { identities: [ userIdentityOne ] } ] }));
+
+        // Act
+        const result: IGraphIdentity = await securityHelper.findIdentity(userIdentityOne.displayName!);
+
+        // Assert
+        chai.expect(result).not.eq(null);
+        chai.expect(result.entityType).eq(userIdentityOne.entityType);
+        chai.expect(result.displayName).eq(userIdentityOne.displayName);
+
+    });
+
+    it("Should find group identity", async () => {
+
+        // Arrange
+        azdevClientMock.setup((x) => x.post(TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString(), TypeMoq.It.isAny())).returns(() => Promise.resolve({ results: [ { identities: [ groupIdentityOne ] } ] }));
+
+        // Act
+        const result: IGraphIdentity = await securityHelper.findIdentity(groupIdentityOne.displayName!);
+
+        // Assert
+        chai.expect(result).not.eq(null);
+        chai.expect(result.entityType).eq(groupIdentityOne.entityType);
+        chai.expect(result.displayName).eq(groupIdentityOne.displayName);
+
+    });
+
+    it("Should get identity membership", async () => {
+
+        // Arrange
+        azdevClientMock.setup((x) => x.get(TypeMoq.It.isAnyString(), TypeMoq.It.isAny())).returns(() => Promise.resolve(graphMembershipMock.target));
+
+        // Act
+        const result: GraphMembership = await securityHelper.getIdentityMembership(groupOne, userIdentityOne);
+
+        // Assert
+        chai.expect(result).not.eq(null);
+
+    });
+
+    it("Should add identity membership", async () => {
+
+        // Arrange
+        azdevClientMock.setup((x) => x.post(TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve(graphMemberMock.target));
+        azdevClientMock.setup((x) => x.get(TypeMoq.It.isAnyString(), TypeMoq.It.isAny())).returns(() => Promise.resolve({ value: [ graphMembershipMock.target ]}));
+
+        // Act
+        const result: GraphMembership = await securityHelper.addIdentityMembership(groupOne, userIdentityOne);
+
+        // Assert
+        chai.expect(result).not.eq(null);
+
+    });
 
     it("Should set group access control", async () => {
 

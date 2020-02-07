@@ -4,43 +4,40 @@ import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { ReleaseDefinition } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
-import { IReleasePermission, ITask, PermissionType } from "../interfaces/configurationreader";
-import { IConsoleLogger } from "../interfaces/consolelogger";
-import { IDebugLogger } from "../interfaces/debuglogger";
-import { IGraphHelper, IGraphIdentity } from "../interfaces/graphhelper";
-import { IHelper } from "../interfaces/helper";
-import { IReleaseHelper } from "../interfaces/releasehelper";
-import { IReleaseUpdater } from "../interfaces/releaseupdater";
-import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../interfaces/securityhelper";
-import { ITaskAgentHelper } from "../interfaces/taskagenthelper";
+import { IReleasePermission, ITask } from "../interfaces/readers/configurationreader";
+import { IConsoleLogger } from "../interfaces/common/consolelogger";
+import { IDebugLogger } from "../interfaces/common/debuglogger";
+import { IHelper } from "../interfaces/common/helper";
+import { IReleaseHelper } from "../interfaces/helpers/releasehelper";
+import { IReleaseUpdater } from "../interfaces/updaters/releaseupdater";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../interfaces/helpers/securityhelper";
+import { ITaskAgentHelper } from "../interfaces/helpers/taskagenthelper";
 
 export class ReleaseUpdater implements IReleaseUpdater {
 
     public releaseHelper: IReleaseHelper;
     public taskAgentHelper: ITaskAgentHelper;
-    public graphHelper: IGraphHelper;
     public securityHelper: ISecurityHelper;
+    private helper: IHelper;
 
     private debugLogger: Debug.Debugger;
     private logger: IConsoleLogger;
-    private helper: IHelper;
 
-    constructor(releaseHelper: IReleaseHelper, taskAgentHelper: ITaskAgentHelper, graphHelper: IGraphHelper, securityHelper: ISecurityHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger, helper: IHelper) {
+    constructor(releaseHelper: IReleaseHelper, taskAgentHelper: ITaskAgentHelper, securityHelper: ISecurityHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
 
         this.debugLogger = debugLogger.create(this.constructor.name);
         this.logger = consoleLogger;
-        this.helper = helper;
 
         this.releaseHelper = releaseHelper;
         this.taskAgentHelper = taskAgentHelper;
-        this.graphHelper = graphHelper;
         this.securityHelper = securityHelper;
+        this.helper = helper;
 
     }
 
     public async removeDefinitionArtifact(projectName: string, artifactName: string, artifactType: string, mock?: boolean): Promise<void> {
 
-        const debug = this.debugLogger.extend("removeDefinitionArtifact");
+        const debug = this.debugLogger.extend(this.removeDefinitionArtifact.name);
 
         this.logger.log(`Configuring <${projectName}> project release defintion(s) (mock: ${mock})`);
 
@@ -96,7 +93,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
     public async removeDefinitionTasks(projectName: string, task: ITask, mock?: boolean): Promise<void> {
 
-        const debug = this.debugLogger.extend("removeReleaseDefinitionTask");
+        const debug = this.debugLogger.extend(this.removeDefinitionTasks.name);
 
         const ids: string[] = await this.getTaskIDs(task.name);
 
@@ -144,7 +141,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
     public async updateDefinitionTasks(projectName: string, task: ITask, mock?: boolean): Promise<void> {
 
-        const debug = this.debugLogger.extend("updateReleaseDefinitionTasks");
+        const debug = this.debugLogger.extend(this.updateDefinitionTasks.name);
 
         this.logger.log(`Configuring <${projectName}> project release defintion(s) (mock: ${mock})`);
 
@@ -196,7 +193,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
     public async updatePermissions(project: TeamProject, policy: IReleasePermission): Promise<void> {
 
-        const debug = this.debugLogger.extend("updatePermissions");
+        const debug = this.debugLogger.extend(this.updatePermissions.name);
 
         this.logger.log(`Applying <${policy.name}> release permissions policy`);
 
@@ -216,57 +213,9 @@ export class ReleaseUpdater implements IReleaseUpdater {
             // Intermittent API connectivity issues
             await this.helper.wait(500, 3000);
 
-            let targetIdentity: ISecurityIdentity = existingIdentities.filter((i) => i.displayName === groupName)[0];
+            const targetIdentity: ISecurityIdentity = await this.securityHelper.getExistingIdentity(groupName, project.id!, existingIdentities);
 
-            if (!targetIdentity) {
-
-                debug(`Adding new <${groupName}> group identity`);
-
-                const identity: IGraphIdentity = await this.graphHelper.findIdentity(groupName);
-
-                if (!identity) {
-
-                    throw new Error(`Identity <${groupName}> not found`);
-
-                }
-
-                targetIdentity = await this.securityHelper.addIdentityToPermission(project.id!, identity);
-
-            }
-
-            const identityPermission: IIdentityPermission = await this.securityHelper.getIdentityPermission(project.id!, targetIdentity, permissionSetId, permissionSetToken);
-
-            for (const permission of group.permissions) {
-
-                const targetPermission: ISecurityPermission = identityPermission.permissions.filter((i) => i.displayName.trim() === permission.name)[0];
-
-                if (!targetPermission) {
-
-                    throw new Error(`Permission <${permission.name}> not found`);
-
-                }
-
-                // Some magic to address JSON enum parsing issue
-                // To be fixed with configuration reader refactoring
-                const type: PermissionType = PermissionType[permission.type.toString() as keyof typeof PermissionType];
-
-                // Skip updating identical permission
-                if (targetPermission.permissionId === type && targetPermission.explicitPermissionId === type) {
-
-                    debug(`Permission <${permission.name}> (${permission.type}) is identical`);
-
-                    continue;
-                }
-
-                debug(`Configuring <${permission.name}> (${permission.type}) permission`);
-
-                // Slow down parallel calls to address
-                // Intermittent API connectivity issues
-                await this.helper.wait(500, 1500);
-
-                const updatedPermission: any = await this.securityHelper.setIdentityAccessControl(permissionSetToken, identityPermission, targetPermission, type);
-
-            }
+            await this.securityHelper.updateIdentityPermissions(project.id!, targetIdentity, group.permissions, permissionSetId, permissionSetToken);
 
         }));
 

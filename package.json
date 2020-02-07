@@ -1,6 +1,6 @@
 {
   "name": "azdev-automation",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Azure DevOps automation framework enables access control automation of projects, pipelines and repositories configuration in Azure DevOps Services",
   "main": "./automation.js",
   "types": "./automation.d.ts",
@@ -17,7 +17,7 @@
     "schemas/*.json"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --build --clean && tsc",
     "test": "mocha -r ts-node/register tests/**/*.test.ts --no-timeouts --reporter mocha-multi-reporters --reporter-options configFile=mocha.json",
     "patch": "npm version patch --no-git-tag-version",
     "clean": "npm prune --production"

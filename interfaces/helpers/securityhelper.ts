@@ -1,10 +1,10 @@
-import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
+import { GraphGroup, GraphMembership } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
-import { PermissionType, IPermission } from "./configurationreader";
-import { IGraphIdentity } from "./graphhelper";
+import { PermissionType, IPermission } from "../readers/configurationreader";
 
 export interface ISecurityHelper {
 
+    findIdentity(name: string): Promise<IGraphIdentity>;
     getNamespace(name: string, actionFilter?: string): Promise<INamespace>;
     getGroupProvider(id: string, projectName: string, group: GraphGroup): Promise<IGroupProvider>;
     getExplicitIdentities(projectId: string, permissionSetId: string, permissionSetToken: string): Promise<ISecurityIdentity[]>;
@@ -13,6 +13,36 @@ export interface ISecurityHelper {
     setGroupAccessControl(identity: string, action: INamespaceAction, type: PermissionType): Promise<any>;
     setIdentityAccessControl(projectId: string, identity: IIdentityPermission, permission: ISecurityPermission, type: PermissionType): Promise<any>;
     updateGroupPermissions(projectName: string, group: GraphGroup, permissions: IPermission[]): Promise<void>;
+    updateIdentityPermissions(projectId: string, identity: ISecurityIdentity, permissions: IPermission[], permissionSetId: string, permissionSetToken: string): Promise<void>;
+    getIdentityMembership(group: GraphGroup, identity: IGraphIdentity): Promise<GraphMembership>;
+    addIdentityMembership(group: GraphGroup, identity: IGraphIdentity): Promise<GraphMembership>;
+    getGroupMemberships(group: GraphGroup): Promise<GraphMembership[]>;
+    removeGroupMembership(group: GraphGroup, member: GraphMembership): Promise<void>;
+    addGroupMemberships(group: GraphGroup, members: string[]): Promise<GraphMembership[]>;
+    removeGroupMemberships(group: GraphGroup, memberships: GraphMembership[]): Promise<void>;
+    getObsoleteGroupMemberships(group: GraphGroup, validMemberships: GraphMembership[]): Promise<GraphMembership[]>;
+    updateGroupMembers(members: string[], group: GraphGroup): Promise<void>;
+    getExistingIdentity(name: string, projectId: string, existingIdentities: ISecurityIdentity[]): Promise<ISecurityIdentity>;
+
+}
+
+export interface IGraphIdentity {
+
+    entityId?: string;
+    entityType?: string;
+    originDirectory?: string;
+    originId?: string;
+    localDirectory?: string;
+    localId?: string;
+    displayName?: string;
+    scopeName?: string;
+    samAccountName?: string;
+    active?: boolean;
+    subjectDescriptor?: string;
+    mail?: string;
+    mailNickname?: string;
+    guest?: boolean;
+    isMru?: boolean;
 
 }
 

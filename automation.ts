@@ -5,18 +5,19 @@ import { DebugLogger } from "./common/debuglogger";
 import { ApiFactory } from "./factories/apifactory";
 import { ArtifactFactory } from "./factories/artifactfactory";
 import { AutomationFactory } from "./factories/automationfactory";
-import { IApiFactory } from "./interfaces/apifactory";
-import { IArtifactFactory } from "./interfaces/artifactfactory";
+import { IApiFactory } from "./interfaces/factories/apifactory";
+import { IArtifactFactory } from "./interfaces/factories/artifactfactory";
 import { IAutomation, IEndpoint, IParameters } from "./interfaces/automation";
-import { IAutomationFactory } from "./interfaces/automationfactory";
-import { IBuildUpdater } from "./interfaces/buildupdater";
-import { IProject } from "./interfaces/configurationreader";
-import { IConsoleLogger } from "./interfaces/consolelogger";
-import { IDebugLogger } from "./interfaces/debuglogger";
-import { IProjectUpdater } from "./interfaces/projectupdater";
-import { IReleaseUpdater } from "./interfaces/releaseupdater";
-import { IRepositoryUpdater } from "./interfaces/repositoryupdater";
+import { IAutomationFactory } from "./interfaces/factories/automationfactory";
+import { IBuildUpdater } from "./interfaces/updaters/buildupdater";
+import { IProject } from "./interfaces/readers/configurationreader";
+import { IConsoleLogger } from "./interfaces/common/consolelogger";
+import { IDebugLogger } from "./interfaces/common/debuglogger";
+import { IProjectUpdater } from "./interfaces/updaters/projectupdater";
+import { IReleaseUpdater } from "./interfaces/updaters/releaseupdater";
+import { IRepositoryUpdater } from "./interfaces/updaters/repositoryupdater";
 import { ConfigurationReader } from "./readers/configurationreader";
+import { IWorkUpdater } from "./interfaces/updaters/workupdater";
 
 export class Automation implements IAutomation {
 
@@ -55,6 +56,7 @@ export class Automation implements IAutomation {
         const buildUpdater: IBuildUpdater = await this.automationFactory.createBuildUpdater();
         const releaseUpdater: IReleaseUpdater = await this.automationFactory.createReleaseUpdater();
         const repositoryUpdater: IRepositoryUpdater = await this.automationFactory.createRepositoryUpdater();
+        const workUpdater: IWorkUpdater = await this.automationFactory.createWorkUpdater();
 
         for (const project of projects) {
 
@@ -114,6 +116,13 @@ export class Automation implements IAutomation {
                 if (project.permissions.repository) {
 
                     await repositoryUpdater.updatePermissions(targetProject, project.permissions.repository);
+
+                }
+
+                // Work items
+                if (project.permissions.work) {
+
+                    await workUpdater.updatePermissions(targetProject, project.permissions.work);
 
                 }
 

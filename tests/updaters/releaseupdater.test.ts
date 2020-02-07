@@ -8,15 +8,14 @@ import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { DeployPhase, ReleaseDefinition, ReleaseDefinitionEnvironment, WorkflowTask } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
-import { IGroupPermission, IReleasePermission, ITask, PermissionType } from "../../interfaces/configurationreader";
-import { IConsoleLogger } from "../../interfaces/consolelogger";
-import { IDebugLogger } from "../../interfaces/debuglogger";
-import { IGraphHelper } from "../../interfaces/graphhelper";
-import { IHelper } from "../../interfaces/helper";
-import { IReleaseHelper } from "../../interfaces/releasehelper";
-import { IReleaseUpdater } from "../../interfaces/releaseupdater";
-import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../../interfaces/securityhelper";
-import { ITaskAgentHelper } from "../../interfaces/taskagenthelper";
+import { IGroupPermission, IReleasePermission, ITask, PermissionType } from "../../interfaces/readers/configurationreader";
+import { IConsoleLogger } from "../../interfaces/common/consolelogger";
+import { IDebugLogger } from "../../interfaces/common/debuglogger";
+import { IHelper } from "../../interfaces/common/helper";
+import { IReleaseHelper } from "../../interfaces/helpers/releasehelper";
+import { IReleaseUpdater } from "../../interfaces/updaters/releaseupdater";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../interfaces/helpers/securityhelper";
+import { ITaskAgentHelper } from "../../interfaces/helpers/taskagenthelper";
 import { ReleaseUpdater } from "../../updaters/releaseupdater";
 
 const projectOne: TeamProject = {
@@ -141,9 +140,10 @@ const releasePermissions: IReleasePermission = {
 
 };
 
+const namespaceName: string = "ReleaseManagement";
+
 const releaseHelperMock = TypeMoq.Mock.ofType<IReleaseHelper>();
 const taskAgentHelperMock = TypeMoq.Mock.ofType<ITaskAgentHelper>();
-const graphHelperMock = TypeMoq.Mock.ofType<IGraphHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
 
 const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
@@ -159,7 +159,7 @@ helperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber(
 
 describe("ReleaseUpdater", () => {
 
-    const releaseUpdater: IReleaseUpdater = new ReleaseUpdater(releaseHelperMock.target, taskAgentHelperMock.target, graphHelperMock.target, securityHelperMock.target, debugLoggerMock.target, consoleLoggerMock.target, helperMock.target);
+    const releaseUpdater: IReleaseUpdater = new ReleaseUpdater(releaseHelperMock.target, taskAgentHelperMock.target, securityHelperMock.target, helperMock.target, debugLoggerMock.target, consoleLoggerMock.target);
 
     it("Should remove definition tasks", async () => {
 
@@ -211,8 +211,8 @@ describe("ReleaseUpdater", () => {
         const releaseNamespace: INamespace = {
 
             namespaceId: "1",
-            name: "ReleaseManagement",
-            displayName: "ReleaseManagement",
+            name: namespaceName,
+            displayName: namespaceName,
             separatorValue: "/",
             writePermission: 1,
             readPermission: 0,
@@ -232,33 +232,11 @@ describe("ReleaseUpdater", () => {
 
         };
 
-        const permissionOne: ISecurityPermission = {
-
-            permissionId: 0,
-            explicitPermissionId: 1,
-            originalPermissionId: 1,
-            permissionBit: 1,
-            namespaceId: "1",
-            displayName: "Permission One",
-
-        };
-
-        const identityPermissionOne: IIdentityPermission = {
-
-            currentTeamFoundationId: "1",
-            descriptorIdentityType: "Identity Type",
-            descriptorIdentifier: "1",
-            permissions: [
-                permissionOne,
-            ],
-
-        };
-
         // Arrange
         securityHelperMock.setup((x) => x.getNamespace(TypeMoq.It.isAnyString())).returns(() => Promise.resolve(releaseNamespace));
         securityHelperMock.setup((x) => x.getExplicitIdentities(TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString())).returns(() => Promise.resolve([ targetIdentityOne ]));
-        securityHelperMock.setup((x) => x.getIdentityPermission(TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString())).returns(() => Promise.resolve(identityPermissionOne));
-        securityHelperMock.setup((x) => x.setIdentityAccessControl(TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve());
+        securityHelperMock.setup((x) => x.getExistingIdentity(TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString(), TypeMoq.It.isAny())).returns(() => Promise.resolve(targetIdentityOne));
+        securityHelperMock.setup((x) => x.updateIdentityPermissions(TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAny(), TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString())).returns(() => Promise.resolve());
 
         // Act & Assert
         chai.expect(async () => await releaseUpdater.updatePermissions(projectOne, releasePermissions)).to.not.throw();

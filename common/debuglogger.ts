@@ -1,6 +1,6 @@
 import Debug from "debug";
 
-import { IDebugLogger } from "../interfaces/debuglogger";
+import { IDebugLogger } from "../interfaces/common/debuglogger";
 
 export class DebugLogger implements IDebugLogger {
 

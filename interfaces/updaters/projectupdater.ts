@@ -1,12 +1,7 @@
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
-import { IProject, IProjectPermission } from "./configurationreader";
-import { IGraphHelper } from "./graphhelper";
-import { IProjectHelper } from "./projecthelper";
+import { IProject, IProjectPermission } from "../readers/configurationreader";
 
 export interface IProjectUpdater {
-
-    projectHelper: IProjectHelper;
-    graphHelper: IGraphHelper;
 
     getProject(name: string): Promise<TeamProject>;
     createProject(project: IProject): Promise<TeamProject>;
