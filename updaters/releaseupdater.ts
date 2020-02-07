@@ -18,20 +18,20 @@ export class ReleaseUpdater implements IReleaseUpdater {
     public releaseHelper: IReleaseHelper;
     public taskAgentHelper: ITaskAgentHelper;
     public securityHelper: ISecurityHelper;
+    private helper: IHelper;
 
     private debugLogger: Debug.Debugger;
     private logger: IConsoleLogger;
-    private helper: IHelper;
 
-    constructor(releaseHelper: IReleaseHelper, taskAgentHelper: ITaskAgentHelper, securityHelper: ISecurityHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger, helper: IHelper) {
+    constructor(releaseHelper: IReleaseHelper, taskAgentHelper: ITaskAgentHelper, securityHelper: ISecurityHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
 
         this.debugLogger = debugLogger.create(this.constructor.name);
         this.logger = consoleLogger;
-        this.helper = helper;
 
         this.releaseHelper = releaseHelper;
         this.taskAgentHelper = taskAgentHelper;
         this.securityHelper = securityHelper;
+        this.helper = helper;
 
     }
 

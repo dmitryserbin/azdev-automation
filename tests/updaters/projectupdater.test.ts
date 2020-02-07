@@ -113,7 +113,7 @@ mockProject.setup((x) => x.id).returns(() => "1");
 
 describe("ProjectUpdater", () => {
 
-    const projectUpdater: IProjectUpdater = new ProjectUpdater(projectHelperMock.target, securityHelperMock.target, debugLoggerMock.target, consoleLoggerMock.target, helperMock.target);
+    const projectUpdater: IProjectUpdater = new ProjectUpdater(projectHelperMock.target, securityHelperMock.target, helperMock.target, debugLoggerMock.target, consoleLoggerMock.target);
 
     it("Should create new project", async () => {
 

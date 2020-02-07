@@ -67,7 +67,7 @@ export class AutomationFactory implements IAutomationFactory {
         const projectHelper: IProjectHelper = new ProjectHelper(coreApi, azdevClient, this.debugLogger);
         const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, this.debugLogger, helper, securityMapper);
 
-        return new ProjectUpdater(projectHelper, securityHelper, this.debugLogger, this.consoleLogger, helper);
+        return new ProjectUpdater(projectHelper, securityHelper, helper, this.debugLogger, this.consoleLogger);
 
     }
 
@@ -83,7 +83,7 @@ export class AutomationFactory implements IAutomationFactory {
         const securityMapper: ISecurityMapper = new SecurityMapper(this.debugLogger);
         const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, this.debugLogger, helper, securityMapper);
 
-        return new BuildUpdater(buildHelper, securityHelper, this.debugLogger, this.consoleLogger, helper);
+        return new BuildUpdater(buildHelper, securityHelper, helper, this.debugLogger, this.consoleLogger);
 
     }
 
@@ -101,7 +101,7 @@ export class AutomationFactory implements IAutomationFactory {
         const taskAgentHelper: ITaskAgentHelper = new TaskAgentHelper(taskAgentApi, this.debugLogger);
         const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, this.debugLogger, helper, securityMapper);
 
-        return new ReleaseUpdater(releaseHelper, taskAgentHelper, securityHelper, this.debugLogger, this.consoleLogger, helper);
+        return new ReleaseUpdater(releaseHelper, taskAgentHelper, securityHelper, helper, this.debugLogger, this.consoleLogger);
 
     }
 
@@ -117,7 +117,7 @@ export class AutomationFactory implements IAutomationFactory {
         const securityMapper: ISecurityMapper = new SecurityMapper(this.debugLogger);
         const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, this.debugLogger, helper, securityMapper);
 
-        return new RepositoryUpdater(repositoryHelper, securityHelper, this.debugLogger, this.consoleLogger, helper);
+        return new RepositoryUpdater(repositoryHelper, securityHelper, helper, this.debugLogger, this.consoleLogger);
 
     }
 
@@ -131,7 +131,7 @@ export class AutomationFactory implements IAutomationFactory {
         const securityMapper: ISecurityMapper = new SecurityMapper(this.debugLogger);
         const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, this.debugLogger, helper, securityMapper);
 
-        return new WorkUpdater(workHelper, securityHelper, this.debugLogger, this.consoleLogger, helper);
+        return new WorkUpdater(workHelper, securityHelper, helper, this.debugLogger, this.consoleLogger);
 
     }
 

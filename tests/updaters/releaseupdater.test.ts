@@ -14,7 +14,7 @@ import { IDebugLogger } from "../../interfaces/common/debuglogger";
 import { IHelper } from "../../interfaces/common/helper";
 import { IReleaseHelper } from "../../interfaces/helpers/releasehelper";
 import { IReleaseUpdater } from "../../interfaces/updaters/releaseupdater";
-import { INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../../interfaces/helpers/securityhelper";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../interfaces/helpers/securityhelper";
 import { ITaskAgentHelper } from "../../interfaces/helpers/taskagenthelper";
 import { ReleaseUpdater } from "../../updaters/releaseupdater";
 
@@ -157,7 +157,7 @@ helperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber(
 
 describe("ReleaseUpdater", () => {
 
-    const releaseUpdater: IReleaseUpdater = new ReleaseUpdater(releaseHelperMock.target, taskAgentHelperMock.target, securityHelperMock.target, debugLoggerMock.target, consoleLoggerMock.target, helperMock.target);
+    const releaseUpdater: IReleaseUpdater = new ReleaseUpdater(releaseHelperMock.target, taskAgentHelperMock.target, securityHelperMock.target, helperMock.target, debugLoggerMock.target, consoleLoggerMock.target);
 
     it("Should remove definition tasks", async () => {
 

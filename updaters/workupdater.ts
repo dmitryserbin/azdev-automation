@@ -19,14 +19,14 @@ export class WorkUpdater implements IWorkUpdater {
     private logger: IConsoleLogger;
     private helper: IHelper;
 
-    constructor(workHelper: IWorkHelper, securityHelper: ISecurityHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger, helper: IHelper) {
+    constructor(workHelper: IWorkHelper, securityHelper: ISecurityHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
 
         this.debugLogger = debugLogger.create(this.constructor.name);
         this.logger = consoleLogger;
-        this.helper = helper;
 
         this.workHelper = workHelper;
         this.securityHelper = securityHelper;
+        this.helper = helper;
 
     }
 

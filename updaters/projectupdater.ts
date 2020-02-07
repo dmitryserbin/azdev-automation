@@ -16,19 +16,19 @@ export class ProjectUpdater implements IProjectUpdater {
 
     public projectHelper: IProjectHelper;
     public securityHelper: ISecurityHelper;
+    private helper: IHelper;
 
     private debugLogger: Debug.Debugger;
     private logger: IConsoleLogger;
-    private helper: IHelper;
 
-    constructor(projectHelper: IProjectHelper, securityHelper: ISecurityHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger, helper: IHelper) {
+    constructor(projectHelper: IProjectHelper, securityHelper: ISecurityHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
 
         this.debugLogger = debugLogger.create(this.constructor.name);
         this.logger = consoleLogger;
-        this.helper = helper;
 
         this.projectHelper = projectHelper;
         this.securityHelper = securityHelper;
+        this.helper = helper;
 
     }
 

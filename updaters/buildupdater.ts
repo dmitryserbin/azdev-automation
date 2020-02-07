@@ -14,19 +14,19 @@ export class BuildUpdater implements IBuildUpdater {
 
     public buildHelper: IBuildHelper;
     public securityHelper: ISecurityHelper;
+    private helper: IHelper;
 
     private debugLogger: Debug.Debugger;
     private logger: IConsoleLogger;
-    private helper: IHelper;
 
-    constructor(buildHelper: IBuildHelper, securityHelper: ISecurityHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger, helper: IHelper) {
+    constructor(buildHelper: IBuildHelper, securityHelper: ISecurityHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
 
         this.debugLogger = debugLogger.create(this.constructor.name);
         this.logger = consoleLogger;
-        this.helper = helper;
 
         this.buildHelper = buildHelper;
         this.securityHelper = securityHelper;
+        this.helper = helper;
 
     }
 
