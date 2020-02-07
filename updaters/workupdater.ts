@@ -8,7 +8,7 @@ import { IDebugLogger } from "../interfaces/common/debuglogger";
 import { IHelper } from "../interfaces/common/helper";
 import { IWorkHelper } from "../interfaces/helpers/workhelper";
 import { IWorkUpdater } from "../interfaces/updaters/workupdater";
-import { INamespace, ISecurityHelper, ISecurityIdentity, IGraphIdentity } from "../interfaces/helpers/securityhelper";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../interfaces/helpers/securityhelper";
 
 export class WorkUpdater implements IWorkUpdater {
 
@@ -53,23 +53,7 @@ export class WorkUpdater implements IWorkUpdater {
             // Intermittent API connectivity issues
             await this.helper.wait(500, 3000);
 
-            let targetIdentity: ISecurityIdentity = existingIdentities.filter((i) => i.displayName === groupName)[0];
-
-            if (!targetIdentity) {
-
-                debug(`Adding new <${groupName}> group identity`);
-
-                const identity: IGraphIdentity = await this.securityHelper.findIdentity(groupName);
-
-                if (!identity) {
-
-                    throw new Error(`Identity <${groupName}> not found`);
-
-                }
-
-                targetIdentity = await this.securityHelper.addIdentityToPermission(project.id!, identity);
-
-            }
+            let targetIdentity: ISecurityIdentity = await this.securityHelper.getExistingIdentity(groupName, project.id!, existingIdentities);
 
             await this.securityHelper.updateIdentityPermissions(project.id!, targetIdentity, group.permissions, permissionSetId, permissionSetToken);
 

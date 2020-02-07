@@ -683,6 +683,32 @@ export class SecurityHelper implements ISecurityHelper {
 
     }
 
+    public async getExistingIdentity(name: string, projectId: string, existingIdentities: ISecurityIdentity[]): Promise<ISecurityIdentity> {
+
+        const debug = this.debugLogger.extend("getExistingIdentity");
+
+        let targetIdentity: ISecurityIdentity = existingIdentities.filter((i) => i.displayName === name)[0];
+
+        if (!targetIdentity) {
+
+            const identity: IGraphIdentity = await this.findIdentity(name);
+
+            if (!identity) {
+
+                throw new Error(`Identity <${name}> not found`);
+
+            }
+
+            debug(`Adding new <${name}> identity permission`);
+
+            targetIdentity = await this.addIdentityToPermission(projectId, identity);
+
+        }
+
+        return targetIdentity;
+
+    }
+
     private isSecurityPermissionEqual(permission: IPermission, targetPermission: ISecurityPermission): boolean {
 
         const type: PermissionType = this.getPermissionType(permission);

@@ -22,6 +22,7 @@ export interface ISecurityHelper {
     removeGroupMemberships(group: GraphGroup, memberships: GraphMembership[]): Promise<void>;
     getObsoleteGroupMemberships(group: GraphGroup, validMemberships: GraphMembership[]): Promise<GraphMembership[]>;
     updateGroupMembers(members: string[], group: GraphGroup): Promise<void>;
+    getExistingIdentity(name: string, projectId: string, existingIdentities: ISecurityIdentity[]): Promise<ISecurityIdentity>;
 
 }
 
