@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.5
+
+- Address package reference issue
+
 ## 1.0.4
 
 - Add work items permission support
