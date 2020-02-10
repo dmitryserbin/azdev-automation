@@ -14,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/q": "^1.5.2",
-    "azdev-automation": "^1.0.4",
+    "azdev-automation": "^1.0.5",
     "azure-pipelines-task-lib": "^2.9.3",
     "q": "^1.5.1"
   },
