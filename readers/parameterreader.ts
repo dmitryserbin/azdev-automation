@@ -18,13 +18,13 @@ export class ParameterReader implements IParameterReader {
 
         const debug = this.debugLogger.extend(this.newParameters.name);
 
-        const options: meow.Options = {
+        const options: any = {
 
             flags: flags,
 
         };
 
-        const parameters: meow.Result = meow(usage, options);
+        const parameters: meow.Result<meow.AnyFlags> = meow(usage, options);
 
         debug(parameters.flags);
 

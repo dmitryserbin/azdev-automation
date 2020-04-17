@@ -19,6 +19,6 @@
     "q": "^1.5.1"
   },
   "devDependencies": {
-    "@types/node": "^13.7.0"
+    "@types/node": "^13.11.1"
   }
 }
