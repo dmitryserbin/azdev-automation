@@ -5,22 +5,116 @@ import { IDebugLogger } from "./interfaces/common/debuglogger";
 import { IConsoleParameters } from "./interfaces/readers/parameterreader";
 import { ParameterReader } from "./readers/parameterreader";
 
-async function run(): Promise<void> {
+const debugLogger: IDebugLogger = new DebugLogger("azdev-console");
+const parameterReader: ParameterReader = new ParameterReader(debugLogger);
 
-    const debugLogger: IDebugLogger = new DebugLogger("azdev-console");
-    const parameterReader: ParameterReader = new ParameterReader(debugLogger);
-    const consoleParameters: IConsoleParameters = parameterReader.readParameters();
+function newEndpoint(account: string, token: string): IEndpoint {
 
-    // Get endpoint
+    const debug = debugLogger.create("newEndpoint");
+
     const endpoint: IEndpoint = {
 
-        account: consoleParameters.account,
-        token: consoleParameters.token,
-        url: `https://dev.azure.com/${consoleParameters.account}`,
+        account: account,
+        token: token,
+        url: `https://dev.azure.com/${account}`,
 
     };
 
-    // Get parameters
+    debug(endpoint);
+
+    return endpoint;
+
+}
+
+function readParameters(): IConsoleParameters {
+
+    const usage: string = `
+        Usage:
+            $ ./console.js <parameters>
+
+        Options:
+            --config, -c [string], path to configuration file
+            --policies, -p [string], path to policies directory
+            --schemas, -s [string], path to schemas directory
+            --account, -a [string], Azure DevOps account name
+            --token, -t [string], Azure DevOps account PAT token
+            --projectSetup [boolean], control project setup feature
+            --accessPermissions [boolean], control access permissions feature
+            --serviceConnections [boolean], control service connections feature
+            --branchPolicies [boolean], control branch policies feature`;
+
+    const flags: any = {
+
+        config: {
+
+            type: "string",
+            alias: "c",
+
+        },
+        policies: {
+
+            type: "string",
+            alias: "p",
+            default: "policies",
+
+        },
+        schemas: {
+
+            type: "string",
+            alias: "s",
+            default: "schemas",
+
+        },
+        account: {
+
+            type: "string",
+            alias: "a",
+
+        },
+        token: {
+
+            type: "string",
+            alias: "t",
+
+        },
+        projectSetup: {
+
+            type: "boolean",
+            default: false,
+
+        },
+        accessPermissions: {
+
+            type: "boolean",
+            default: false,
+
+        },
+        serviceConnections: {
+
+            type: "boolean",
+            default: false,
+
+        },
+        branchPolicies: {
+
+            type: "boolean",
+            default: false,
+
+        },
+
+    }
+
+    const parameters: IConsoleParameters = parameterReader.newParameters(usage, flags);
+
+    return parameters;
+
+}
+
+async function run(): Promise<void> {
+
+    const consoleParameters: IConsoleParameters = readParameters();
+    const endpoint: IEndpoint = newEndpoint(consoleParameters.account, consoleParameters.token);
+
     const parameters: IParameters = {
 
         config: consoleParameters.config,
