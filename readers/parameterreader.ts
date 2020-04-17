@@ -14,6 +14,24 @@ export class ParameterReader implements IParameterReader {
 
     }
 
+    public newParameters(usage: string, flags: any): IConsoleParameters {
+
+        const debug = this.debugLogger.extend(this.newParameters.name);
+
+        const options: meow.Options = {
+
+            flags: flags,
+
+        };
+
+        const parameters: meow.Result = meow(usage, options);
+
+        debug(parameters.flags);
+
+        return parameters.flags;
+
+    }
+
     public readParameters(): IConsoleParameters {
 
         const debug = this.debugLogger.extend(this.readParameters.name);
@@ -33,76 +51,70 @@ export class ParameterReader implements IParameterReader {
                 --serviceConnections [boolean], control service connections feature
                 --branchPolicies [boolean], control branch policies feature`;
 
-        const options: meow.Options = {
+        const flags: any = {
 
-            flags: {
+            config: {
 
-                config: {
+                type: "string",
+                alias: "c",
 
-                    type: "string",
-                    alias: "c",
+            },
+            policies: {
 
-                },
-                policies: {
+                type: "string",
+                alias: "p",
+                default: "policies",
 
-                    type: "string",
-                    alias: "p",
-                    default: "policies",
+            },
+            schemas: {
 
-                },
-                schemas: {
+                type: "string",
+                alias: "s",
+                default: "schemas",
 
-                    type: "string",
-                    alias: "s",
-                    default: "schemas",
+            },
+            account: {
 
-                },
-                account: {
+                type: "string",
+                alias: "a",
 
-                    type: "string",
-                    alias: "a",
+            },
+            token: {
 
-                },
-                token: {
+                type: "string",
+                alias: "t",
 
-                    type: "string",
-                    alias: "t",
+            },
+            projectSetup: {
 
-                },
-                projectSetup: {
+                type: "boolean",
+                default: false,
 
-                    type: "boolean",
-                    default: false,
+            },
+            accessPermissions: {
 
-                },
-                accessPermissions: {
+                type: "boolean",
+                default: false,
 
-                    type: "boolean",
-                    default: false,
+            },
+            serviceConnections: {
 
-                },
-                serviceConnections: {
+                type: "boolean",
+                default: false,
 
-                    type: "boolean",
-                    default: false,
+            },
+            branchPolicies: {
 
-                },
-                branchPolicies: {
-
-                    type: "boolean",
-                    default: false,
-
-                },
+                type: "boolean",
+                default: false,
 
             },
 
         }
 
-        const parameters: meow.Result = meow(usage, options);
+        const parameters: IConsoleParameters = this.newParameters(usage, flags);
 
-        debug(parameters.flags);
-
-        return parameters.flags;
+        return parameters;
 
     }
 
