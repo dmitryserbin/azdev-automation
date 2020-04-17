@@ -20,7 +20,7 @@ export class ParameterReader implements IParameterReader {
 
         const options: any = {
 
-            flags: flags,
+            flags,
 
         };
 

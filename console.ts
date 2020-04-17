@@ -14,8 +14,8 @@ function newEndpoint(account: string, token: string): IEndpoint {
 
     const endpoint: IEndpoint = {
 
-        account: account,
-        token: token,
+        account,
+        token,
         url: `https://dev.azure.com/${account}`,
 
     };
