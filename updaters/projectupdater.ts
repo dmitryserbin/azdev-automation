@@ -42,6 +42,16 @@ export class ProjectUpdater implements IProjectUpdater {
 
     }
 
+    public async getProjects(name: string): Promise<TeamProject[]> {
+
+        const debug = this.debugLogger.extend(this.getProject.name);
+
+        const targetProjects: TeamProject[] = await this.projectHelper.findProjects(name);
+
+        return targetProjects;
+
+    }
+
     public async createProject(project: IProject): Promise<TeamProject> {
 
         this.logger.log(`Creating new <${project.name}> team project`);

@@ -3,6 +3,8 @@ import Debug from "debug";
 import * as ra from "azure-devops-node-api/ReleaseApi";
 
 import { Artifact, ReleaseDefinition, WorkflowTask } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
+import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
+
 import { IDebugLogger } from "../interfaces/common/debuglogger";
 import { IReleaseHelper } from "../interfaces/helpers/releasehelper";
 
@@ -26,7 +28,7 @@ export class ReleaseHelper implements IReleaseHelper {
         const result: ReleaseDefinition[] = [];
         const projectDefinitions: ReleaseDefinition[] = await this.releaseApi.getReleaseDefinitions(projectName);
 
-        debug(`Found ${projectName} project ${projectDefinitions.length} definitions`);
+        debug(`Found <${projectName}> project <${projectDefinitions.length}> definition(s)`);
 
         for (const definitioin of projectDefinitions) {
 
@@ -44,22 +46,21 @@ export class ReleaseHelper implements IReleaseHelper {
 
         }
 
-        debug(`Found ${result.length} filtered definitions`);
+        debug(`Found <${result.length}> filtered definition(s)`);
 
         return result;
 
     }
 
-    public async findDefinitionsWithTasks(projectName: string, taskIDs: string[]): Promise<ReleaseDefinition[]> {
+    public async findDefinitionsWithTasks(name: string, projectName: string, tasks: TaskDefinition[]): Promise<ReleaseDefinition[]> {
 
         const debug = this.debugLogger.extend(this.findDefinitionsWithTasks.name);
 
         const result: ReleaseDefinition[] = [];
-        const projectDefinitions: ReleaseDefinition[] = await this.releaseApi.getReleaseDefinitions(projectName);
+        const projectDefinitions: ReleaseDefinition[] = await this.releaseApi.getReleaseDefinitions(projectName, name);
+        const taskIDs: string[] = tasks.map((t) => t.id!);
 
-        debug(`Found ${projectName} project ${projectDefinitions.length} definitions`);
-
-        debug(taskIDs);
+        debug(`Found <${projectName}> project <${projectDefinitions.length}> definition(s)`);
 
         await Promise.all(projectDefinitions.map(async (definition) => {
 
@@ -70,7 +71,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
             if (exists) {
 
-                debug(`Task(s) found`);
+                debug(`Target task(s) found`);
 
                 result.push(targetDefinition);
 
@@ -78,16 +79,17 @@ export class ReleaseHelper implements IReleaseHelper {
 
         }));
 
-        debug(`Found ${result.length} filtered definitions`);
+        debug(`Found <${result.length}> filtered definition(s)`);
 
         return result;
 
     }
 
-    public async removeDefinitionTasks(definition: ReleaseDefinition, taskIDs: string[]): Promise<ReleaseDefinition> {
+    public async removeDefinitionTasks(definition: ReleaseDefinition, tasks: TaskDefinition[]): Promise<ReleaseDefinition> {
 
         const debug = this.debugLogger.extend(this.removeDefinitionTasks.name);
 
+        const taskIDs: string[] = tasks.map((t) => t.id!);
         const removedTasks: string[] = [];
 
         for (const stage of definition.environments!) {
@@ -100,7 +102,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
                     if (taskIDs.some((t) => t === task.taskId)) {
 
-                        debug(`Removing ${stage.name} stage ${task.name} task`);
+                        debug(`Removing <${stage.name}> stage <${task.name}> task`);
 
                         if (!removedTasks.includes(task.name!)) {
 
@@ -132,11 +134,12 @@ export class ReleaseHelper implements IReleaseHelper {
 
     }
 
-    public async updateDefinitionTasks(definition: ReleaseDefinition, taskIDs: string[], taskParameters: { [name: string]: any }): Promise<ReleaseDefinition> {
+    public async updateDefinitionTasks(definition: ReleaseDefinition, tasks: TaskDefinition[], taskParameters: { [name: string]: any }): Promise<ReleaseDefinition> {
 
         const debug = this.debugLogger.extend(this.updateDefinitionTasks.name);
 
-        const updatedTasks: string[] = [];
+        const taskIDs: string[] = tasks.map((t) => t.id!);
+        const updatedStages: string[] = [];
 
         for (const stage of definition.environments!) {
 
@@ -148,27 +151,29 @@ export class ReleaseHelper implements IReleaseHelper {
 
                     if (taskIDs.some((t) => t === task.taskId)) {
 
-                        debug(`Updating ${stage.name} stage ${task.name} task`);
+                        debug(`Updating <${stage.name}> stage <${task.name}> (${task.taskId}) task`);
 
-                        if (!updatedTasks.includes(task.name!)) {
+                        if (!updatedStages.includes(stage.name!)) {
 
-                            updatedTasks.push(task.name!);
+                            updatedStages.push(stage.name!);
 
                         }
 
                         for (const parameter of Object.keys(taskParameters)) {
 
+                            const value: string = taskParameters[parameter];
+
                             if (task.inputs!.hasOwnProperty(parameter)) {
 
-                                debug(`Updating existing input ${parameter} parameter`);
+                                debug(`Updating existing <${parameter}> parameter <${value}> value`);
 
                             } else {
 
-                                debug(`Adding new input ${parameter} parameter`);
+                                debug(`Adding new <${parameter}> parameter with <${value}> value`);
 
                             }
 
-                            task.inputs![parameter] = taskParameters[parameter];
+                            task.inputs![parameter] = value;
 
                         }
 
@@ -184,9 +189,9 @@ export class ReleaseHelper implements IReleaseHelper {
 
         }
 
-        if (updatedTasks.length > 0) {
+        if (updatedStages.length > 0) {
 
-            definition.comment = `Update ${updatedTasks.join(", ")} task(s)`;
+            definition.comment = `Update <${updatedStages.join("|")}> stage(s) task parameters`;
 
         }
 
@@ -204,7 +209,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
             if (artifact.alias === artifactName && artifact.type === artifactType) {
 
-                debug(`Removing ${artifact.alias} type ${artifact.type} artifact`);
+                debug(`Removing <${artifact.alias}> type <${artifact.type}> artifact`);
 
                 continue;
 
@@ -225,7 +230,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
         const debug = this.debugLogger.extend(this.updateDefinition.name);
 
-        debug(`Updating ${projectName} project ${definition.name} definition`);
+        debug(`Updating <${projectName}> project <${definition.name}> definition`);
 
         await this.releaseApi.updateReleaseDefinition(definition, projectName);
 

@@ -26,11 +26,17 @@ export class TaskAgentHelper implements ITaskAgentHelper {
 
         const allTasks: TaskDefinition[] = await this.taskAgentApi.getTaskDefinitions();
 
-        debug(`Found total ${allTasks.length} tasks`);
+        debug(`Found <${allTasks.length}> available tasks`);
 
         const filteredTasks: TaskDefinition[] = allTasks.filter((t) => t.name!.match(name));
 
-        debug(`Filtered ${filteredTasks.length} tasks by ${name} name`);
+        debug(`Filtered <${filteredTasks.length}> tasks matching <${name}> name`);
+
+        for (const task of filteredTasks) {
+
+            debug(`Task <${task.name}@${task.version?.major}> (${task.id}) found`);
+
+        }
 
         return filteredTasks;
 
