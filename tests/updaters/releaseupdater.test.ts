@@ -184,25 +184,33 @@ describe("ReleaseUpdater", () => {
         ];
 
         // Arrange
-        releaseHelperMock.setup((x) => x.findDefinitionsWithTasks(TypeMoq.It.isAnyString(), TypeMoq.It.isAny())).returns(() => Promise.resolve(definitionsWithTask));
+        releaseHelperMock.setup((x) => x.findDefinitionsWithTasks(TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString(), TypeMoq.It.isAny())).returns(() => Promise.resolve(definitionsWithTask));
         releaseHelperMock.setup((x) => x.removeDefinitionTasks(TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve(definitionOne));
         releaseHelperMock.setup((x) => x.updateDefinition(TypeMoq.It.isAny(), TypeMoq.It.isAnyString())).returns(() => Promise.resolve());
         taskAgentHelperMock.setup((x) => x.findTasks(TypeMoq.It.isAnyString())).returns(() => Promise.resolve(tasks));
 
         // Act & Assert
-        chai.expect(async () => await releaseUpdater.removeDefinitionTasks(projectOne.name!, removeTask)).to.not.throw();
+        chai.expect(async () => await releaseUpdater.removeDefinitionsTasks(definitionOne.name!, projectOne.name!, removeTask)).to.not.throw();
 
     });
 
     it("Should skip removing definition task", async () => {
 
+        const definitionOne: ReleaseDefinition = {
+
+            id: 1,
+            name: "My-Definition-One",
+            description: "My-Definition-Description"
+
+        };
+
         const definitionsWithTask: ReleaseDefinition[] = [];
 
         // Arrange
-        releaseHelperMock.setup((x) => x.findDefinitionsWithTasks(TypeMoq.It.isAnyString(), TypeMoq.It.isAny())).returns(() => Promise.resolve(definitionsWithTask));
+        releaseHelperMock.setup((x) => x.findDefinitionsWithTasks(TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString(), TypeMoq.It.isAny())).returns(() => Promise.resolve(definitionsWithTask));
 
         // Act & Assert
-        chai.expect(async () => await releaseUpdater.removeDefinitionTasks(projectOne.name!, updateTask)).to.not.throw();
+        chai.expect(async () => await releaseUpdater.removeDefinitionsTasks(definitionOne.name!, projectOne.name!, updateTask)).to.not.throw();
 
     });
 

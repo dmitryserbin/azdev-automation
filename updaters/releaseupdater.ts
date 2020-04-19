@@ -35,11 +35,11 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
     }
 
-    public async removeDefinitionArtifact(projectName: string, artifactName: string, artifactType: string, mock?: boolean): Promise<void> {
+    public async removeDefinitionsArtifact(projectName: string, artifactName: string, artifactType: string, mock?: boolean): Promise<void> {
 
-        const debug = this.debugLogger.extend(this.removeDefinitionArtifact.name);
+        const debug = this.debugLogger.extend(this.removeDefinitionsArtifact.name);
 
-        this.logger.log(`Configuring <${projectName}> project release defintion(s) (mock: ${mock})`);
+        this.logger.log(`Configuring <${projectName}> project release definition(s) (mock: ${mock})`);
 
         const filteredDefinitions: ReleaseDefinition[] = await this.releaseHelper.findDefinitionsWithArtifact(projectName, artifactName, artifactType);
 
@@ -75,7 +75,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
                 if (mock) {
 
-                    debug(`Release definition <${definition.name}> will not be updated (MOCK)`);
+                    debug(`Release definition <${definition.name}> will NOT be updated (MOCK)`);
 
                     continue;
 
@@ -91,21 +91,21 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
     }
 
-    public async removeDefinitionTasks(projectName: string, task: ITask, mock?: boolean): Promise<void> {
+    public async removeDefinitionsTasks(name: string, projectName: string, task: ITask, mock?: boolean): Promise<void> {
 
-        const debug = this.debugLogger.extend(this.removeDefinitionTasks.name);
+        const debug = this.debugLogger.extend(this.removeDefinitionsTasks.name);
 
-        const ids: string[] = await this.getTaskIDs(task.name);
+        const tasks: TaskDefinition[] = await this.taskAgentHelper.findTasks(task.name);
 
-        if (ids.length < 0) {
+        if (tasks.length < 0) {
 
-            this.logger.log(`No ${task.name} tasks found`);
+            this.logger.log(`No tasks mathing <${task.name}> filter found`);
 
             return;
 
         }
 
-        const filteredDefinitions: ReleaseDefinition[] = await this.releaseHelper.findDefinitionsWithTasks(projectName, ids);
+        const filteredDefinitions: ReleaseDefinition[] = await this.releaseHelper.findDefinitionsWithTasks(name, projectName, tasks);
 
         if (filteredDefinitions.length === 0) {
 
@@ -119,13 +119,13 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
         for (const definition of filteredDefinitions) {
 
-            const updatedDefinition: ReleaseDefinition = await this.releaseHelper.removeDefinitionTasks(definition, ids);
+            const updatedDefinition: ReleaseDefinition = await this.releaseHelper.removeDefinitionTasks(definition, tasks);
 
             this.logger.log(`${projectName} | ${definition.name} | ${task.name}`);
 
             if (mock) {
 
-                debug(`Release definition <${definition.name}> will not be updated (MOCK)`);
+                debug(`Release definition <${definition.name}> will NOT be updated (MOCK)`);
 
                 continue;
 
@@ -139,51 +139,51 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
     }
 
-    public async updateDefinitionTasks(projectName: string, task: ITask, mock?: boolean): Promise<void> {
+    public async updateDefinitionsTasks(name: string, projectName: string, task: ITask, mock?: boolean): Promise<void> {
 
-        const debug = this.debugLogger.extend(this.updateDefinitionTasks.name);
+        const debug = this.debugLogger.extend(this.updateDefinitionsTasks.name);
 
-        this.logger.log(`Configuring <${projectName}> project release defintion(s) (mock: ${mock})`);
+        this.logger.log(`Configuring <${projectName}> project <${name}> release definition(s) (mock: ${mock})`);
 
-        const targetIDs: string[] = await this.getTaskIDs(task.name);
+        const tasks: TaskDefinition[] = await this.taskAgentHelper.findTasks(task.name);
 
-        if (targetIDs.length < 0) {
+        if (tasks.length <= 0) {
 
-            this.logger.log(`No <${task.name}> tasks found`);
-
-            return;
-
-        }
-
-        this.logger.log(`Found <${targetIDs.length}> task(s) matching <${task.name}> filter`);
-
-        const filteredDefinitions: ReleaseDefinition[] = await this.releaseHelper.findDefinitionsWithTasks(projectName, targetIDs);
-
-        if (filteredDefinitions.length === 0) {
-
-            debug(`No project <${projectName}> definitions with <${task.name}> task(s) found`);
+            this.logger.log(`No tasks mathing <${task.name}> filter found`);
 
             return;
 
         }
 
-        this.logger.log(`Found <${filteredDefinitions.length}> release definition(s) with matching tasks`);
+        debug(`Found <${tasks.length}> task(s) matching <${task.name}> filter`);
+
+        const filteredDefinitions: ReleaseDefinition[] = await this.releaseHelper.findDefinitionsWithTasks(name, projectName, tasks);
+
+        if (filteredDefinitions.length <= 0) {
+
+            this.logger.log(`No definitions mathing <${name}> filter found`);
+
+            return;
+
+        }
+
+        debug(`Found <${filteredDefinitions.length}> release definition(s) with matching tasks`);
 
         await Promise.all(filteredDefinitions.map(async (definition) => {
 
-            this.logger.log(`Updating <${definition.name}> definition task(s)`);
+            this.logger.log(`Updating <${definition.name}> (${definition.id}) definition task(s) parameters`);
 
-            const updatedDefinition: ReleaseDefinition = await this.releaseHelper.updateDefinitionTasks(definition, targetIDs, task.parameters!);
+            const updatedDefinition: ReleaseDefinition = await this.releaseHelper.updateDefinitionTasks(definition, tasks, task.parameters!);
 
             if (mock) {
 
-                debug(`Definition <${updatedDefinition.name}> will not be updated (MOCK)`);
+                debug(`Definition <${updatedDefinition.name}> will NOT be updated (MOCK)`);
 
                 return;
 
             }
 
-            debug(`Updating <${updatedDefinition.name}> definition tasks parameters`);
+            debug(`Updating <${updatedDefinition.name}> (${definition.id}) definition`);
 
             await this.releaseHelper.updateDefinition(updatedDefinition, projectName);
 
@@ -218,22 +218,6 @@ export class ReleaseUpdater implements IReleaseUpdater {
             await this.securityHelper.updateIdentityPermissions(project.id!, targetIdentity, group.permissions, permissionSetId, permissionSetToken);
 
         }));
-
-    }
-
-    private async getTaskIDs(name: string): Promise<string[]> {
-
-        const result: string[] = [];
-
-        const tasks: TaskDefinition[] = await this.taskAgentHelper.findTasks(name);
-
-        if (tasks.length > 0) {
-
-            tasks.map((t) => result.push(t.id!));
-
-        }
-
-        return result;
 
     }
 

@@ -14,160 +14,17 @@ export class ParameterReader implements IParameterReader {
 
     }
 
-    public readParameters(): IConsoleParameters {
+    public newParameters(usage: string, flags: any): IConsoleParameters {
 
-        const debug = this.debugLogger.extend(this.readParameters.name);
+        const debug = this.debugLogger.extend(this.newParameters.name);
 
-        const usage: string = `
-            Usage
-                $ ./automation.js <parameters>
+        const options: any = {
 
-            Options
-                --config, -c [string], path to configuration file
-                --policies, -p [string], path to policies directory
-                --schemas, -s [string], path to schemas directory
-                --account, -a [string], Azure DevOps account name
-                --token, -t [string], Azure DevOps account PAT token
-                --projectSetup [boolean], control project setup feature
-                --accessPermissions [boolean], control access permissions feature
-                --serviceConnections [boolean], control service connections feature
-                --branchPolicies [boolean], control branch policies feature`;
-
-        const options: meow.Options = {
-
-            flags: {
-
-                config: {
-
-                    type: "string",
-                    alias: "c",
-
-                },
-                policies: {
-
-                    type: "string",
-                    alias: "p",
-                    default: "policies",
-
-                },
-                schemas: {
-
-                    type: "string",
-                    alias: "s",
-                    default: "schemas",
-
-                },
-                account: {
-
-                    type: "string",
-                    alias: "a",
-
-                },
-                token: {
-
-                    type: "string",
-                    alias: "t",
-
-                },
-                projectSetup: {
-
-                    type: "boolean",
-                    default: false,
-
-                },
-                accessPermissions: {
-
-                    type: "boolean",
-                    default: false,
-
-                },
-                serviceConnections: {
-
-                    type: "boolean",
-                    default: false,
-
-                },
-                branchPolicies: {
-
-                    type: "boolean",
-                    default: false,
-
-                },
-
-            },
-
-        }
-
-        const parameters: meow.Result = meow(usage, options);
-
-        debug(parameters.flags);
-
-        return parameters.flags;
-
-    }
-
-    public readConsoleParameters(): IConsoleParameters {
-
-        const debug = this.debugLogger.extend(this.readConsoleParameters.name);
-
-        const usage: string = `
-            Usage
-                $ ./console.js <parameters>
-
-            Options
-                --config, -c [string], path to configuration file
-                --account, -a [string], Azure DevOps account name
-                --token, -t [string], Azure DevOps account PAT token
-                --project, -p [string], target project name filter
-                --feature, -f [string], feature name to execute
-                --mock, -m [boolean], enable mock`;
-
-        const options: meow.Options = {
-
-            flags: {
-
-                config: {
-
-                    type: "string",
-                    alias: "c",
-
-                },
-                account: {
-
-                    type: "string",
-                    alias: "a",
-
-                },
-                token: {
-
-                    type: "string",
-                    alias: "t",
-
-                },
-                project: {
-
-                    type: "string",
-                    alias: "p",
-
-                },
-                feature: {
-
-                    type: "string",
-                    alias: "f",
-
-                },
-                mock: {
-
-                    type: "boolean",
-                    alias: "m",
-
-                },
-
-            },
+            flags,
 
         };
 
-        const parameters: meow.Result = meow(usage, options);
+        const parameters: meow.Result<meow.AnyFlags> = meow(usage, options);
 
         debug(parameters.flags);
 

@@ -1,7 +1,6 @@
 export interface IParameterReader {
 
-    readParameters(): { [name: string]: any };
-    readConsoleParameters(): { [name: string]: any };
+    newParameters(usage: string, flags: any): IConsoleParameters;
 
 }
 
