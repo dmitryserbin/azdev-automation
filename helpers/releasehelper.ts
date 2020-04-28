@@ -2,7 +2,7 @@ import Debug from "debug";
 
 import * as ra from "azure-devops-node-api/ReleaseApi";
 
-import { Artifact, ReleaseDefinition, WorkflowTask, Release } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
+import { Artifact, ReleaseDefinition, WorkflowTask, Release, ReleaseDefinitionEnvironment, DeployPhase, ReleaseEnvironment } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
 import { IDebugLogger } from "../interfaces/common/debuglogger";
@@ -58,7 +58,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
         const result: ReleaseDefinition[] = [];
         const projectDefinitions: ReleaseDefinition[] = await this.releaseApi.getReleaseDefinitions(projectName, name);
-        const taskIDs: string[] = tasks.map((t) => t.id!);
+        const taskIDs: string[] = tasks.map((t: TaskDefinition) => t.id!);
 
         debug(`Found <${projectName}> project <${projectDefinitions.length}> definition(s)`);
 
@@ -66,8 +66,8 @@ export class ReleaseHelper implements IReleaseHelper {
 
             const targetDefinition: ReleaseDefinition = await this.releaseApi.getReleaseDefinition(projectName, definition.id!);
 
-            const exists: boolean = targetDefinition.environments!
-                .some((e) => e.deployPhases!.some((p) => p.workflowTasks!.some((t) => taskIDs.some((i) => i === t.taskId))));
+            const exists: boolean = targetDefinition.environments!.some((e: ReleaseDefinitionEnvironment) =>
+                e.deployPhases!.some((p: DeployPhase) => p.workflowTasks!.some((t: WorkflowTask) => taskIDs.some((i: string) => i === t.taskId))));
 
             if (exists) {
 
@@ -91,7 +91,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
         const result: Release[] = [];
         const definitionReleases: Release[] = await this.releaseApi.getReleases(projectName, definitionId);
-        const taskIDs: string[] = tasks.map((t) => t.id!);
+        const taskIDs: string[] = tasks.map((t: TaskDefinition) => t.id!);
 
         debug(`Found <${definitionId}> definition <${definitionReleases.length}> release(s)`);
 
@@ -99,8 +99,8 @@ export class ReleaseHelper implements IReleaseHelper {
 
             const targetRelease: Release = await this.releaseApi.getRelease(projectName, release.id!);
 
-            const exists: boolean = targetRelease.environments!
-                .some((e) => e.deployPhasesSnapshot!.some((p) => p.workflowTasks!.some((t) => taskIDs.some((i) => i === t.taskId))));
+            const exists: boolean = targetRelease.environments!.some((e: ReleaseEnvironment) =>
+                e.deployPhasesSnapshot!.some((p: DeployPhase) => p.workflowTasks!.some((t: WorkflowTask) => taskIDs.some((i: string) => i === t.taskId))));
 
             if (exists) {
 
