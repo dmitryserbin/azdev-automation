@@ -361,12 +361,12 @@ export class ReleaseHelper implements IReleaseHelper {
                 const taskValue: string = task.inputs![parameter];
                 const filterValue: string = parametersFilter[parameter];
 
-                const matchExpression: RegExp = new RegExp(filterValue);
+                const matchExpression: RegExp = new RegExp(`^${filterValue}$`);
                 const parameterMatch: boolean = matchExpression.test(taskValue);
 
                 if (parameterMatch) {
 
-                    debug(`Found maching filter <${parameter}:${taskValue}> parameter`);
+                    debug(`Found maching <${matchExpression}> filter <${parameter}:${taskValue}> parameter`);
 
                     taskMatch = true;
 
