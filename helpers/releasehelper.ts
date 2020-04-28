@@ -167,7 +167,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
     }
 
-    public async updateDefinitionTasks(definition: ReleaseDefinition, tasks: TaskDefinition[], taskParameters: { [name: string]: any }, parametersFilter?: { [name: string]: any }): Promise<ReleaseDefinition> {
+    public async updateDefinitionTasks(definition: ReleaseDefinition, tasks: TaskDefinition[], taskParameters: { [name: string]: any }, parametersFilter: { [name: string]: any }): Promise<ReleaseDefinition> {
 
         const debug = this.debugLogger.extend(this.updateDefinitionTasks.name);
 
@@ -219,7 +219,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
     }
 
-    public async updateReleaseTasks(release: Release, tasks: TaskDefinition[], taskParameters: { [name: string]: any }, parametersFilter?: { [name: string]: any }): Promise<Release> {
+    public async updateReleaseTasks(release: Release, tasks: TaskDefinition[], taskParameters: { [name: string]: any }, parametersFilter: { [name: string]: any }): Promise<Release> {
 
         const debug = this.debugLogger.extend(this.updateReleaseTasks.name);
 
@@ -344,7 +344,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
     }
 
-    private isTaskMatch(task: WorkflowTask, tasks: TaskDefinition[], parametersFilter?: { [name: string]: any }): boolean {
+    private isTaskMatch(task: WorkflowTask, tasks: TaskDefinition[], filter: { [name: string]: any }): boolean {
 
         const debug = this.debugLogger.extend(this.isTaskMatch.name);
 
@@ -352,14 +352,14 @@ export class ReleaseHelper implements IReleaseHelper {
 
         let taskMatch: boolean = false;
 
-        if (parametersFilter) {
+        if (Object.keys(filter).length > 0) {
 
             // Apply task parameter maching filter
             // When at least one parameter value maches
-            for (const parameter of Object.keys(parametersFilter)) {
+            for (const parameter of Object.keys(filter)) {
 
                 const taskValue: string = task.inputs![parameter];
-                const filterValue: string = parametersFilter[parameter];
+                const filterValue: string = filter[parameter];
 
                 const matchExpression: RegExp = new RegExp(`^${filterValue}$`);
                 const parameterMatch: boolean = matchExpression.test(taskValue);
@@ -377,6 +377,12 @@ export class ReleaseHelper implements IReleaseHelper {
         } else {
 
             taskMatch = taskIDs.some((t: string) => t === task.taskId);
+
+            if (taskMatch) {
+
+                debug(`Found maching ID filter <${task.name}> task`);
+
+            }
 
         }
 

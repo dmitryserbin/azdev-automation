@@ -28,6 +28,8 @@ const projectOne: TeamProject = {
 const removeTask: ITask = {
 
     name: "My-Task-One.*",
+    parameters: {},
+    filter: {},
 
 };
 
@@ -40,6 +42,7 @@ const updateTask: ITask = {
         MyParameterTwo: "ValueTwo",
 
     },
+    filter: {},
 
 };
 

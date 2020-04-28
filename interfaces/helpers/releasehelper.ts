@@ -7,8 +7,8 @@ export interface IReleaseHelper {
     findDefinitionsWithTasks(name: string, projectName: string, tasks: TaskDefinition[]): Promise<ReleaseDefinition[]>;
     findDefinitionReleasesWithTasks(definitionId: number, projectName: string, tasks: TaskDefinition[]): Promise<Release[]>;
     removeDefinitionTasks(definition: ReleaseDefinition, tasks: TaskDefinition[]): Promise<ReleaseDefinition>;
-    updateDefinitionTasks(definition: ReleaseDefinition, tasks: TaskDefinition[], taskParameters: { [name: string]: any }, parametersFilter?: { [name: string]: any }): Promise<ReleaseDefinition>;
-    updateReleaseTasks(release: Release, tasks: TaskDefinition[], taskParameters: { [name: string]: any }, parametersFilter?: { [name: string]: any }): Promise<Release>;
+    updateDefinitionTasks(definition: ReleaseDefinition, tasks: TaskDefinition[], taskParameters: { [name: string]: any }, parametersFilter: { [name: string]: any }): Promise<ReleaseDefinition>;
+    updateReleaseTasks(release: Release, tasks: TaskDefinition[], taskParameters: { [name: string]: any }, parametersFilter: { [name: string]: any }): Promise<Release>;
     removeDefinitionArtifact(definition: ReleaseDefinition, artifactName: string, artifactType: string): Promise<ReleaseDefinition>;
     updateDefinition(definition: ReleaseDefinition, projectName: string): Promise<void>;
     updateRelease(release: Release, projectName: string): Promise<void>;
