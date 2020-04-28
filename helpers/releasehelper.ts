@@ -2,7 +2,7 @@ import Debug from "debug";
 
 import * as ra from "azure-devops-node-api/ReleaseApi";
 
-import { Artifact, ReleaseDefinition, WorkflowTask } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
+import { Artifact, ReleaseDefinition, WorkflowTask, Release } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
 import { IDebugLogger } from "../interfaces/common/debuglogger";
@@ -85,6 +85,39 @@ export class ReleaseHelper implements IReleaseHelper {
 
     }
 
+    public async findDefinitionReleasesWithTasks(definitionId: number, projectName: string, tasks: TaskDefinition[]): Promise<Release[]> {
+
+        const debug = this.debugLogger.extend(this.findDefinitionReleasesWithTasks.name);
+
+        const result: Release[] = [];
+        const definitionReleases: Release[] = await this.releaseApi.getReleases(projectName, definitionId);
+        const taskIDs: string[] = tasks.map((t) => t.id!);
+
+        debug(`Found <${definitionId}> definition <${definitionReleases.length}> release(s)`);
+
+        await Promise.all(definitionReleases.map(async (release) => {
+
+            const targetRelease: Release = await this.releaseApi.getRelease(projectName, release.id!);
+
+            const exists: boolean = targetRelease.environments!
+                .some((e) => e.deployPhasesSnapshot!.some((p) => p.workflowTasks!.some((t) => taskIDs.some((i) => i === t.taskId))));
+
+            if (exists) {
+
+                debug(`Target task(s) found`);
+
+                result.push(targetRelease);
+
+            }
+
+        }));
+
+        debug(`Found <${result.length}> filtered release(s)`);
+
+        return result;
+
+    }
+
     public async removeDefinitionTasks(definition: ReleaseDefinition, tasks: TaskDefinition[]): Promise<ReleaseDefinition> {
 
         const debug = this.debugLogger.extend(this.removeDefinitionTasks.name);
@@ -134,11 +167,10 @@ export class ReleaseHelper implements IReleaseHelper {
 
     }
 
-    public async updateDefinitionTasks(definition: ReleaseDefinition, tasks: TaskDefinition[], taskParameters: { [name: string]: any }): Promise<ReleaseDefinition> {
+    public async updateDefinitionTasks(definition: ReleaseDefinition, tasks: TaskDefinition[], taskParameters: { [name: string]: any }, parametersFilter?: { [name: string]: any }): Promise<ReleaseDefinition> {
 
         const debug = this.debugLogger.extend(this.updateDefinitionTasks.name);
 
-        const taskIDs: string[] = tasks.map((t) => t.id!);
         const updatedStages: string[] = [];
 
         for (const stage of definition.environments!) {
@@ -147,33 +179,21 @@ export class ReleaseHelper implements IReleaseHelper {
 
                 const stageTasks: WorkflowTask[] = [];
 
-                for (const task of phase.workflowTasks!) {
+                for (let task of phase.workflowTasks!) {
 
-                    if (taskIDs.some((t) => t === task.taskId)) {
+                    debug(`Processing <${stage.name}> stage <${task.name}> task`);
+
+                    const match: boolean = this.isTaskMatch(task, tasks, parametersFilter);
+
+                    if (match) {
 
                         debug(`Updating <${stage.name}> stage <${task.name}> (${task.taskId}) task`);
+
+                        task = this.updateTaskParameters(task, taskParameters);
 
                         if (!updatedStages.includes(stage.name!)) {
 
                             updatedStages.push(stage.name!);
-
-                        }
-
-                        for (const parameter of Object.keys(taskParameters)) {
-
-                            const value: string = taskParameters[parameter];
-
-                            if (task.inputs!.hasOwnProperty(parameter)) {
-
-                                debug(`Updating existing <${parameter}> parameter <${value}> value`);
-
-                            } else {
-
-                                debug(`Adding new <${parameter}> parameter with <${value}> value`);
-
-                            }
-
-                            task.inputs![parameter] = value;
 
                         }
 
@@ -196,6 +216,58 @@ export class ReleaseHelper implements IReleaseHelper {
         }
 
         return definition;
+
+    }
+
+    public async updateReleaseTasks(release: Release, tasks: TaskDefinition[], taskParameters: { [name: string]: any }, parametersFilter?: { [name: string]: any }): Promise<Release> {
+
+        const debug = this.debugLogger.extend(this.updateReleaseTasks.name);
+
+        const updatedStages: string[] = [];
+
+        for (const stage of release.environments!) {
+
+            for (const phase of stage.deployPhasesSnapshot!) {
+
+                const stageTasks: WorkflowTask[] = [];
+
+                for (let task of phase.workflowTasks!) {
+
+                    debug(`Processing <${stage.name}> stage <${task.name}> task`);
+
+                    const match: boolean = this.isTaskMatch(task, tasks, parametersFilter);
+
+                    if (match) {
+
+                        debug(`Updating <${stage.name}> stage <${task.name}> (${task.taskId}) task`);
+
+                        task = this.updateTaskParameters(task, taskParameters);
+
+                        if (!updatedStages.includes(stage.name!)) {
+
+                            updatedStages.push(stage.name!);
+
+                        }
+
+                    }
+
+                    stageTasks.push(task);
+
+                }
+
+                phase.workflowTasks = stageTasks;
+
+            }
+
+        }
+
+        if (updatedStages.length > 0) {
+
+            release.comment = `Update <${updatedStages.join("|")}> stage(s) task parameters`;
+
+        }
+
+        return release;
 
     }
 
@@ -233,6 +305,82 @@ export class ReleaseHelper implements IReleaseHelper {
         debug(`Updating <${projectName}> project <${definition.name}> definition`);
 
         await this.releaseApi.updateReleaseDefinition(definition, projectName);
+
+    }
+
+    public async updateRelease(release: Release, projectName: string): Promise<void> {
+
+        const debug = this.debugLogger.extend(this.updateRelease.name);
+
+        debug(`Updating <${release.releaseDefinition!.id}> definition <${release.name}> definition`);
+
+        await this.releaseApi.updateRelease(release, projectName, release.id!);
+
+    }
+
+    private updateTaskParameters(task: WorkflowTask, parameters: { [name: string]: any }): WorkflowTask {
+
+        const debug = this.debugLogger.extend(this.updateTaskParameters.name);
+
+        for (const parameter of Object.keys(parameters)) {
+
+            const value: string = parameters[parameter];
+
+            if (task.inputs!.hasOwnProperty(parameter)) {
+
+                debug(`Updating existing <${parameter}:${value}> parameter`);
+
+            } else {
+
+                debug(`Adding new <${parameter}:${value}> parameter`);
+
+            }
+
+            task.inputs![parameter] = value;
+
+        }
+
+        return task;
+
+    }
+
+    private isTaskMatch(task: WorkflowTask, tasks: TaskDefinition[], parametersFilter?: { [name: string]: any }): boolean {
+
+        const debug = this.debugLogger.extend(this.isTaskMatch.name);
+
+        const taskIDs: string[] = tasks.map((t) => t.id!);
+
+        let taskMatch: boolean = false;
+
+        if (parametersFilter) {
+
+            // Apply task parameter maching filter
+            // When at least one parameter value maches
+            for (const parameter of Object.keys(parametersFilter)) {
+
+                const taskValue: string = task.inputs![parameter];
+                const filterValue: string = parametersFilter[parameter];
+
+                const matchExpression: RegExp = new RegExp(filterValue);
+                const parameterMatch: boolean = matchExpression.test(taskValue);
+
+                if (parameterMatch) {
+
+                    debug(`Found maching filter <${parameter}:${taskValue}> parameter`);
+
+                    taskMatch = true;
+
+                }
+
+            }
+
+        } else {
+
+            taskMatch = taskIDs.some((t: string) => t === task.taskId);
+
+        }
+
+        return taskMatch;
 
     }
 

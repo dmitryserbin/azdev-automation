@@ -86,6 +86,7 @@ export interface ITask {
 
     name: string;
     parameters?: { [name: string]: any };
+    filter?: { [name: string]: any };
 
 }
 

@@ -1,7 +1,7 @@
 import Debug from "debug";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
-import { ReleaseDefinition } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
+import { ReleaseDefinition, Release } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
 import { IReleasePermission, ITask } from "../interfaces/readers/configurationreader";
@@ -139,7 +139,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
     }
 
-    public async updateDefinitionsTasks(name: string, projectName: string, task: ITask, mock?: boolean): Promise<void> {
+    public async updateDefinitionsTasks(name: string, projectName: string, task: ITask, releases?: boolean, mock?: boolean): Promise<void> {
 
         const debug = this.debugLogger.extend(this.updateDefinitionsTasks.name);
 
@@ -173,19 +173,45 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
             this.logger.log(`Updating <${definition.name}> (${definition.id}) definition task(s) parameters`);
 
-            const updatedDefinition: ReleaseDefinition = await this.releaseHelper.updateDefinitionTasks(definition, tasks, task.parameters!);
+            const updatedDefinition: ReleaseDefinition = await this.releaseHelper.updateDefinitionTasks(definition, tasks, task.parameters!, task.filter);
 
             if (mock) {
 
                 debug(`Definition <${updatedDefinition.name}> will NOT be updated (MOCK)`);
 
-                return;
+            } else {
+
+                debug(`Updating <${updatedDefinition.name}> (${definition.id}) definition`);
+
+                await this.releaseHelper.updateDefinition(updatedDefinition, projectName);
 
             }
 
-            debug(`Updating <${updatedDefinition.name}> (${definition.id}) definition`);
+            if (releases) {
 
-            await this.releaseHelper.updateDefinition(updatedDefinition, projectName);
+                const filteredReleases: Release[] = await this.releaseHelper.findDefinitionReleasesWithTasks(definition.id!, projectName, tasks);
+
+                for (const release of filteredReleases) {
+
+                    this.logger.log(`Updating <${release.name}> (${release.id}) release task(s) parameters`);
+
+                    const updatedRelease: Release = await this.releaseHelper.updateReleaseTasks(release, tasks, task.parameters!, task.filter);
+
+                    if (mock) {
+
+                        debug(`Release <${updatedRelease.name}> will NOT be updated (MOCK)`);
+
+                    } else {
+
+                        debug(`Updating <${updatedRelease.name}> (${updatedRelease.id}) release`);
+
+                        await this.releaseHelper.updateRelease(updatedRelease, projectName);
+
+                    }
+
+                }
+
+            }
 
         }));
 
