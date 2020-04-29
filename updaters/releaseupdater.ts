@@ -175,15 +175,24 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
             const updatedDefinition: ReleaseDefinition = await this.releaseHelper.updateDefinitionTasks(definition, tasks, task.parameters!, task.filter);
 
-            if (mock) {
+            // Push updated definition only
+            if (updatedDefinition.comment) {
 
-                debug(`Definition <${updatedDefinition.name}> will NOT be updated (MOCK)`);
+                if (mock) {
+
+                    debug(`Definition <${updatedDefinition.name}> will NOT be updated (MOCK)`);
+
+                } else {
+
+                    debug(`Updating <${updatedDefinition.name}> (${definition.id}) definition`);
+
+                    await this.releaseHelper.updateDefinition(updatedDefinition, projectName);
+
+                }
 
             } else {
 
-                debug(`Updating <${updatedDefinition.name}> (${definition.id}) definition`);
-
-                await this.releaseHelper.updateDefinition(updatedDefinition, projectName);
+                debug(`Definition <${updatedDefinition.name}> update is not required`);
 
             }
 
@@ -197,15 +206,24 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
                     const updatedRelease: Release = await this.releaseHelper.updateReleaseTasks(release, tasks, task.parameters!, task.filter);
 
-                    if (mock) {
+                    // Push updated release only
+                    if (updatedRelease.comment) {
 
-                        debug(`Release <${updatedRelease.name}> will NOT be updated (MOCK)`);
+                        if (mock) {
+
+                            debug(`Release <${updatedRelease.name}> will NOT be updated (MOCK)`);
+
+                        } else {
+
+                            debug(`Updating <${updatedRelease.name}> (${updatedRelease.id}) release`);
+
+                            await this.releaseHelper.updateRelease(updatedRelease, projectName);
+
+                        }
 
                     } else {
 
-                        debug(`Updating <${updatedRelease.name}> (${updatedRelease.id}) release`);
-
-                        await this.releaseHelper.updateRelease(updatedRelease, projectName);
+                        debug(`Release <${updatedRelease.name}> update is not required`);
 
                     }
 

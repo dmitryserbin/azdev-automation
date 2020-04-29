@@ -66,12 +66,12 @@ export class ReleaseHelper implements IReleaseHelper {
 
             const targetDefinition: ReleaseDefinition = await this.releaseApi.getReleaseDefinition(projectName, definition.id!);
 
-            const exists: boolean = targetDefinition.environments!.some((e: ReleaseDefinitionEnvironment) =>
+            const taskExists: boolean = targetDefinition.environments!.some((e: ReleaseDefinitionEnvironment) =>
                 e.deployPhases!.some((p: DeployPhase) => p.workflowTasks!.some((t: WorkflowTask) => taskIDs.some((i: string) => i === t.taskId))));
 
-            if (exists) {
+            if (taskExists) {
 
-                debug(`Target task(s) found`);
+                debug(`Task(s) mathing ID found`);
 
                 result.push(targetDefinition);
 
