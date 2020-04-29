@@ -354,6 +354,8 @@ export class ReleaseHelper implements IReleaseHelper {
 
         if (Object.keys(filter).length > 0) {
 
+            let totalMatches: number = 0;
+
             // Apply task parameter maching filter
             // When at least one parameter value maches
             for (const parameter of Object.keys(filter)) {
@@ -366,9 +368,16 @@ export class ReleaseHelper implements IReleaseHelper {
 
                 if (parameterMatch) {
 
-                    debug(`Found maching <${matchExpression}> filter <${parameter}:${taskValue}> parameter`);
+                    totalMatches++;
 
-                    taskMatch = true;
+                    // Must match all task parameters
+                    if (totalMatches == Object.keys(filter).length) {
+
+                        debug(`Found maching <${matchExpression}> parameter(s) filter <${task.name}> task`);
+
+                        taskMatch = true;
+
+                    }
 
                 }
 
