@@ -192,7 +192,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
             } else {
 
-                debug(`Definition <${updatedDefinition.name}> update is not required`);
+                debug(`Definition <${updatedDefinition.name}> update not required`);
 
             }
 
@@ -223,7 +223,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
                     } else {
 
-                        debug(`Release <${updatedRelease.name}> update is not required`);
+                        debug(`Release <${updatedRelease.name}> update not required`);
 
                     }
 
