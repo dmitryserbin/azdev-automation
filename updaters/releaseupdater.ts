@@ -75,7 +75,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
                 if (mock) {
 
-                    debug(`Release definition <${definition.name}> will NOT be updated (MOCK)`);
+                    debug(`Definition <${definition.name}> (${definition.id}) will not be updated (MOCK)`);
 
                     continue;
 
@@ -125,7 +125,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
             if (mock) {
 
-                debug(`Release definition <${definition.name}> will NOT be updated (MOCK)`);
+                debug(`Definition <${definition.name}> (${definition.id}) will not be updated (MOCK)`);
 
                 continue;
 
@@ -171,7 +171,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
         await Promise.all(filteredDefinitions.map(async (definition) => {
 
-            this.logger.log(`Updating <${definition.name}> (${definition.id}) definition task(s) parameters`);
+            this.logger.log(`Configuring <${definition.name}> (${definition.id}) definition task(s)`);
 
             const updatedDefinition: ReleaseDefinition = await this.releaseHelper.updateDefinitionTasks(definition, tasks, task.parameters!, task.filter);
 
@@ -180,11 +180,11 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
                 if (mock) {
 
-                    debug(`Definition <${updatedDefinition.name}> will NOT be updated (MOCK)`);
+                    this.logger.log(`Definition <${updatedDefinition.name}> (${definition.id}) will not be updated (MOCK)`);
 
                 } else {
 
-                    debug(`Updating <${updatedDefinition.name}> (${definition.id}) definition`);
+                    this.logger.log(`Updating <${updatedDefinition.name}> (${definition.id}) definition`);
 
                     await this.releaseHelper.updateDefinition(updatedDefinition, projectName);
 
@@ -192,7 +192,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
             } else {
 
-                debug(`Definition <${updatedDefinition.name}> update not required`);
+                this.logger.log(`Definition <${updatedDefinition.name}> update not required`);
 
             }
 
@@ -202,7 +202,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
                 for (const release of filteredReleases) {
 
-                    this.logger.log(`Updating <${release.name}> (${release.id}) release task(s) parameters`);
+                    this.logger.log(`Configuring <${release.name}> (${release.id}) release task(s)`);
 
                     const updatedRelease: Release = await this.releaseHelper.updateReleaseTasks(release, tasks, task.parameters!, task.filter);
 
@@ -211,11 +211,11 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
                         if (mock) {
 
-                            debug(`Release <${updatedRelease.name}> will NOT be updated (MOCK)`);
+                            this.logger.log(`Release <${updatedRelease.name}> (${updatedRelease.id}) will not be updated (MOCK)`);
 
                         } else {
 
-                            debug(`Updating <${updatedRelease.name}> (${updatedRelease.id}) release`);
+                            this.logger.log(`Updating <${updatedRelease.name}> (${updatedRelease.id}) release`);
 
                             await this.releaseHelper.updateRelease(updatedRelease, projectName);
 
@@ -223,7 +223,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
                     } else {
 
-                        debug(`Release <${updatedRelease.name}> update not required`);
+                        this.logger.log(`Release <${updatedRelease.name}> update not required`);
 
                     }
 
