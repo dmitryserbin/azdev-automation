@@ -371,7 +371,7 @@ export class ReleaseHelper implements IReleaseHelper {
                     totalMatches++;
 
                     // Must match all task parameters
-                    if (totalMatches == Object.keys(filter).length) {
+                    if (totalMatches === Object.keys(filter).length) {
 
                         debug(`Found maching <${matchExpression}> parameter(s) filter <${task.name}> task`);
 
