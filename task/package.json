@@ -14,11 +14,11 @@
   "license": "MIT",
   "dependencies": {
     "@types/q": "^1.5.2",
-    "azdev-automation": "^1.0.5",
+    "azdev-automation": "^1.0.6",
     "azure-pipelines-task-lib": "^2.9.3",
     "q": "^1.5.1"
   },
   "devDependencies": {
-    "@types/node": "^13.11.1"
+    "@types/node": "^13.13.4"
   }
 }

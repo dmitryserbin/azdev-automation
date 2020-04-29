@@ -85,7 +85,8 @@ export interface IArtifact {
 export interface ITask {
 
     name: string;
-    parameters?: { [name: string]: any };
+    parameters: { [name: string]: any };
+    filter: { [name: string]: any };
 
 }
 

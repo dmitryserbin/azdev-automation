@@ -1,7 +1,7 @@
 import Debug from "debug";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
-import { ReleaseDefinition } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
+import { ReleaseDefinition, Release } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
 import { IReleasePermission, ITask } from "../interfaces/readers/configurationreader";
@@ -75,7 +75,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
                 if (mock) {
 
-                    debug(`Release definition <${definition.name}> will NOT be updated (MOCK)`);
+                    debug(`Definition <${definition.name}> (${definition.id}) will not be updated (MOCK)`);
 
                     continue;
 
@@ -125,7 +125,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
             if (mock) {
 
-                debug(`Release definition <${definition.name}> will NOT be updated (MOCK)`);
+                debug(`Definition <${definition.name}> (${definition.id}) will not be updated (MOCK)`);
 
                 continue;
 
@@ -139,7 +139,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
     }
 
-    public async updateDefinitionsTasks(name: string, projectName: string, task: ITask, mock?: boolean): Promise<void> {
+    public async updateDefinitionsTasks(name: string, projectName: string, task: ITask, releases?: boolean, mock?: boolean): Promise<void> {
 
         const debug = this.debugLogger.extend(this.updateDefinitionsTasks.name);
 
@@ -171,21 +171,65 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
         await Promise.all(filteredDefinitions.map(async (definition) => {
 
-            this.logger.log(`Updating <${definition.name}> (${definition.id}) definition task(s) parameters`);
+            this.logger.log(`Configuring <${definition.name}> (${definition.id}) definition task(s)`);
 
-            const updatedDefinition: ReleaseDefinition = await this.releaseHelper.updateDefinitionTasks(definition, tasks, task.parameters!);
+            const updatedDefinition: ReleaseDefinition = await this.releaseHelper.updateDefinitionTasks(definition, tasks, task.parameters!, task.filter);
 
-            if (mock) {
+            // Push updated definition only
+            if (updatedDefinition.comment) {
 
-                debug(`Definition <${updatedDefinition.name}> will NOT be updated (MOCK)`);
+                if (mock) {
 
-                return;
+                    this.logger.log(`Definition <${updatedDefinition.name}> (${definition.id}) will not be updated (MOCK)`);
+
+                } else {
+
+                    this.logger.log(`Updating <${updatedDefinition.name}> (${definition.id}) definition`);
+
+                    await this.releaseHelper.updateDefinition(updatedDefinition, projectName);
+
+                }
+
+            } else {
+
+                this.logger.log(`Definition <${updatedDefinition.name}> update not required`);
 
             }
 
-            debug(`Updating <${updatedDefinition.name}> (${definition.id}) definition`);
+            if (releases) {
 
-            await this.releaseHelper.updateDefinition(updatedDefinition, projectName);
+                const filteredReleases: Release[] = await this.releaseHelper.findDefinitionReleasesWithTasks(definition.id!, projectName, tasks);
+
+                for (const release of filteredReleases) {
+
+                    this.logger.log(`Configuring <${release.name}> (${release.id}) release task(s)`);
+
+                    const updatedRelease: Release = await this.releaseHelper.updateReleaseTasks(release, tasks, task.parameters!, task.filter);
+
+                    // Push updated release only
+                    if (updatedRelease.comment) {
+
+                        if (mock) {
+
+                            this.logger.log(`Release <${updatedRelease.name}> (${updatedRelease.id}) will not be updated (MOCK)`);
+
+                        } else {
+
+                            this.logger.log(`Updating <${updatedRelease.name}> (${updatedRelease.id}) release`);
+
+                            await this.releaseHelper.updateRelease(updatedRelease, projectName);
+
+                        }
+
+                    } else {
+
+                        this.logger.log(`Release <${updatedRelease.name}> update not required`);
+
+                    }
+
+                }
+
+            }
 
         }));
 

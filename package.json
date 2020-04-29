@@ -1,6 +1,6 @@
 {
   "name": "azdev-automation",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Azure DevOps automation framework enables access control automation of projects, pipelines and repositories configuration in Azure DevOps Services",
   "main": "./automation.js",
   "types": "./automation.d.ts",
@@ -42,7 +42,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/debug": "^4.1.5",
-    "ajv": "^6.12.0",
+    "ajv": "^6.12.2",
     "azure-devops-node-api": "^10.1.1",
     "debug": "^4.1.1",
     "meow": "^6.1.0"
@@ -51,15 +51,15 @@
     "@types/chai": "^4.2.11",
     "@types/meow": "^5.0.0",
     "@types/mocha": "^7.0.2",
-    "@types/node": "^13.11.1",
+    "@types/node": "^13.13.4",
     "@types/sinon-chai": "^3.2.4",
     "chai": "^4.2.0",
-    "mocha": "^7.1.1",
+    "mocha": "^7.1.2",
     "mocha-junit-reporter": "^1.23.3",
     "mocha-multi-reporters": "^1.1.7",
     "sinon": "^9.0.2",
     "sinon-chai": "^3.5.0",
-    "ts-node": "^8.8.2",
+    "ts-node": "^8.9.1",
     "typemoq": "^2.1.0",
     "typescript": "^3.8.3"
   }
