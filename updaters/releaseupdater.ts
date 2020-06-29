@@ -145,7 +145,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
         const debug = this.debugLogger.extend(this.updateDefinitionsTasks.name);
 
-        this.logger.log(`Configuring <${projectName}> project <${name}> release definition(s)`);
+        this.logger.log(`Updating <${projectName}> project <${name}> release definition(s)`);
 
         const tasks: TaskDefinition[] = await this.taskAgentHelper.findTasks(task.name);
 
