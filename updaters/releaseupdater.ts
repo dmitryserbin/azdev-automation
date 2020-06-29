@@ -39,7 +39,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
         const debug = this.debugLogger.extend(this.removeDefinitionsArtifact.name);
 
-        this.logger.log(`Configuring <${projectName}> project release definition(s)`);
+        this.logger.log(`Updating <${projectName}> project release definition(s)`);
 
         const filteredDefinitions: ReleaseDefinition[] = await this.releaseHelper.findDefinitionsWithArtifact(projectName, artifactName, artifactType);
 
@@ -95,7 +95,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
         const debug = this.debugLogger.extend(this.removeDefinitionsTasks.name);
 
-        this.logger.log(`Configuring <${projectName}> project <${name}> release definition(s)`);
+        this.logger.log(`Updating <${projectName}> project <${name}> release definition(s)`);
 
         const tasks: TaskDefinition[] = await this.taskAgentHelper.findTasks(task.name);
 
@@ -151,7 +151,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
         if (tasks.length <= 0) {
 
-            this.logger.log(`No tasks mathing <${task.name}> filter found`);
+            debug(`No tasks mathing <${task.name}> filter found`);
 
             return;
 
@@ -163,7 +163,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
         if (filteredDefinitions.length <= 0) {
 
-            this.logger.log(`No definitions mathing <${name}> filter found`);
+            debug(`No definitions mathing <${name}> filter found`);
 
             return;
 
