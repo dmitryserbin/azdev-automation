@@ -145,7 +145,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
         const debug = this.debugLogger.extend(this.updateDefinitionsTasks.name);
 
-        this.logger.log(`Updating <${projectName}> project <${name}> release definition(s)`);
+        this.logger.log(`Scanning <${projectName}> project <${name}> release definition(s)`);
 
         const tasks: TaskDefinition[] = await this.taskAgentHelper.findTasks(task.name);
 
@@ -182,7 +182,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
                 if (mock) {
 
-                    this.logger.log(`Updating <${updatedDefinition.name}> (${definition.id}) definition (MOCK)`);
+                    this.logger.log(`Definition <${updatedDefinition.name}> (${definition.id}) update required (MOCK)`);
 
                 } else {
 
@@ -213,7 +213,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
                         if (mock) {
 
-                            this.logger.log(`Updating <${updatedRelease.name}> (${updatedRelease.id}) release (MOCK)`);
+                            this.logger.log(`Release <${updatedRelease.name}> (${updatedRelease.id}) update required (MOCK)`);
 
                         } else {
 
