@@ -39,7 +39,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
         const debug = this.debugLogger.extend(this.removeDefinitionsArtifact.name);
 
-        this.logger.log(`Configuring <${projectName}> project release definition(s) (mock: ${mock})`);
+        this.logger.log(`Updating <${projectName}> project release definition(s)`);
 
         const filteredDefinitions: ReleaseDefinition[] = await this.releaseHelper.findDefinitionsWithArtifact(projectName, artifactName, artifactType);
 
@@ -95,6 +95,8 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
         const debug = this.debugLogger.extend(this.removeDefinitionsTasks.name);
 
+        this.logger.log(`Updating <${projectName}> project <${name}> release definition(s)`);
+
         const tasks: TaskDefinition[] = await this.taskAgentHelper.findTasks(task.name);
 
         if (tasks.length < 0) {
@@ -143,13 +145,13 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
         const debug = this.debugLogger.extend(this.updateDefinitionsTasks.name);
 
-        this.logger.log(`Configuring <${projectName}> project <${name}> release definition(s) (mock: ${mock})`);
+        this.logger.log(`Scanning <${projectName}> project <${name}> release definition(s)`);
 
         const tasks: TaskDefinition[] = await this.taskAgentHelper.findTasks(task.name);
 
         if (tasks.length <= 0) {
 
-            this.logger.log(`No tasks mathing <${task.name}> filter found`);
+            debug(`No tasks mathing <${task.name}> filter found`);
 
             return;
 
@@ -161,17 +163,17 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
         if (filteredDefinitions.length <= 0) {
 
-            this.logger.log(`No definitions mathing <${name}> filter found`);
+            debug(`No definitions mathing <${name}> filter found`);
 
             return;
 
         }
 
-        debug(`Found <${filteredDefinitions.length}> release definition(s) with matching tasks`);
+        debug(`Found <${filteredDefinitions.length}> release definition(s) with matching task(s)`);
 
         await Promise.all(filteredDefinitions.map(async (definition) => {
 
-            this.logger.log(`Configuring <${definition.name}> (${definition.id}) definition task(s)`);
+            debug(`Updating <${definition.name}> (${definition.id}) definition task(s)`);
 
             const updatedDefinition: ReleaseDefinition = await this.releaseHelper.updateDefinitionTasks(definition, tasks, task.parameters!, task.filter);
 
@@ -180,7 +182,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
                 if (mock) {
 
-                    this.logger.log(`Definition <${updatedDefinition.name}> (${definition.id}) will not be updated (MOCK)`);
+                    this.logger.log(`Definition <${updatedDefinition.name}> (${definition.id}) update required (MOCK)`);
 
                 } else {
 
@@ -192,7 +194,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
             } else {
 
-                this.logger.log(`Definition <${updatedDefinition.name}> update not required`);
+                debug(`Definition <${updatedDefinition.name}> (${definition.id}) update not required`);
 
             }
 
@@ -202,7 +204,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
                 for (const release of filteredReleases) {
 
-                    this.logger.log(`Configuring <${release.name}> (${release.id}) release task(s)`);
+                    debug(`Updating <${release.name}> (${release.id}) release task(s)`);
 
                     const updatedRelease: Release = await this.releaseHelper.updateReleaseTasks(release, tasks, task.parameters!, task.filter);
 
@@ -211,7 +213,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
                         if (mock) {
 
-                            this.logger.log(`Release <${updatedRelease.name}> (${updatedRelease.id}) will not be updated (MOCK)`);
+                            this.logger.log(`Release <${updatedRelease.name}> (${updatedRelease.id}) update required (MOCK)`);
 
                         } else {
 
@@ -223,7 +225,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
                     } else {
 
-                        this.logger.log(`Release <${updatedRelease.name}> update not required`);
+                        debug(`Release <${updatedRelease.name}> (${updatedRelease.id}) update not required`);
 
                     }
 

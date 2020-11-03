@@ -30,7 +30,7 @@ export function Retryable(options: IRetryOptions = { attempts: 10, timeout: 5000
 
             } catch (e) {
 
-                e.message = `Failed retrying <${name}> for <${options.attempts}> times. ${e.message}`;
+                e.message = `Failed retrying <${propertyKey}> for <${options.attempts}> times. ${e.message}`;
 
                 throw e;
 
