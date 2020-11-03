@@ -11,3 +11,4 @@
 **/*.log
 **/*.xml
 **/*.tgz
+**/pm-sync.ts
