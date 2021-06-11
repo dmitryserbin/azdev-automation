@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.9
+
+- Add origin directory group support
+
 ## 1.0.8
 
 - Improve outputs & error handling
