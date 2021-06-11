@@ -229,7 +229,23 @@ export class SecurityHelper implements ISecurityHelper {
 
             } case "Group": {
 
-                member = await this.azdevClient.post<GraphMember>(`_apis/Graph/Groups?groupDescriptors=${group.descriptor}`, "5.2-preview.1", body, AzDevApiType.Graph);
+                switch (identity.originDirectory) {
+
+                    case "vsd": {
+
+                        member = await this.azdevClient.put<GraphMember>(`_apis/Graph/Memberships/${identity.subjectDescriptor}/${group.descriptor}`, "5.2-preview.1", undefined, AzDevApiType.Graph);
+
+                        break;
+
+                    } default: {
+
+                        member = await this.azdevClient.post<GraphMember>(`_apis/Graph/Groups?groupDescriptors=${group.descriptor}`, "5.2-preview.1", body, AzDevApiType.Graph);
+
+                        break;
+
+                    }
+
+                }
 
                 break;
 
@@ -237,17 +253,19 @@ export class SecurityHelper implements ISecurityHelper {
 
         }
 
-        if (member!) {
+        const updatedMembership = await this.azdevClient.get<any>(`_apis/Graph/Memberships/${identity.subjectDescriptor}`, AzDevApiType.Graph);
 
-            const result = await this.azdevClient.get<any>(`_apis/Graph/Memberships/${member!.descriptor}`, AzDevApiType.Graph);
+        membership = updatedMembership.value[0];
 
-            membership = result.value[0];
+        debug(membership);
+
+        if (!membership) {
+
+            throw new Error(`Group membership <${identity.subjectDescriptor}> cannot be retrieved`);
 
         }
 
-        debug(membership!);
-
-        return membership!;
+        return membership;
 
     }
 
