@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.11
+
+- Add AAD group membership support
+
 ## 1.0.9
 
 - Add origin directory group support
