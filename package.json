@@ -35,8 +35,8 @@
   "keywords": [
     "Azure",
     "Azure DevOps",
-    "RBAC",
-    "Automation"
+    "Automation",
+    "RBAC"
   ],
   "author": "Dmitry Serbin",
   "license": "MIT",
