@@ -2,7 +2,7 @@
   "name": "azdevautomation",
   "version": "1.0.0",
   "description": "Azure DevOps automation task",
-  "main": "index.js",
+  "main": "task.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dmitryserbin/azdev-automation"
