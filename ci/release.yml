@@ -8,8 +8,8 @@ trigger:
 
 pr: none
 
-queue:
-  name: Hosted VS2017
+pool:
+  vmImage: windows-latest
 
 steps:
 - task: Npm@1
