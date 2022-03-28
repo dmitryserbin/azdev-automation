@@ -27,6 +27,12 @@ steps:
     command: custom
     customCommand: run test
 
+- task: Npm@1
+  displayName: Run package tests
+  inputs:
+    command: custom
+    customCommand: publish --dry-run
+
 - task: PublishTestResults@2
   displayName: Publish test results
   inputs:
