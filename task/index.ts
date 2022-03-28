@@ -20,11 +20,11 @@ async function run() {
         // Execute automation
         await automation.run();
 
-    } catch (err) {
+    } catch (e: any) {
 
-        tl.setResult(tl.TaskResult.Failed, err.message);
+        tl.setResult(tl.TaskResult.Failed, e.message);
 
-        console.log(err);
+        console.log(e);
 
     }
 

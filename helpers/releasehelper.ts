@@ -326,7 +326,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
             const value: string = parameters[parameter];
 
-            if (task.inputs!.hasOwnProperty(parameter)) {
+            if (Object.prototype.hasOwnProperty.call(task.inputs!, parameter)) {
 
                 debug(`Updating existing <${parameter}:${value}> parameter`);
 

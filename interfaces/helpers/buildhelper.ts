@@ -1,6 +1,3 @@
-// tslint:disable-next-line:no-empty-interface
-export interface IBuildHelper {
+/* eslint-disable @typescript-eslint/no-empty-interface */
 
-    // To be implemented
-
-}
+export interface IBuildHelper {}

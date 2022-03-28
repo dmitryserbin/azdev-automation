@@ -1,6 +1,6 @@
 {
   "name": "azdev-automation",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Azure DevOps automation framework enables access control automation of projects, pipelines and repositories configuration in Azure DevOps Services",
   "main": "./automation.js",
   "types": "./automation.d.ts",
@@ -24,6 +24,7 @@
   ],
   "scripts": {
     "build": "tsc --build --clean && tsc",
+    "lint": "eslint . --ext .ts",
     "test": "mocha -r ts-node/register tests/**/*.test.ts --no-timeouts --reporter mocha-multi-reporters --reporter-options configFile=mocha.json",
     "patch": "npm version patch --no-git-tag-version",
     "clean": "npm prune --production"
@@ -35,32 +36,34 @@
   "keywords": [
     "Azure",
     "Azure DevOps",
-    "RBAC",
-    "Automation"
+    "Automation",
+    "RBAC"
   ],
   "author": "Dmitry Serbin",
   "license": "MIT",
   "dependencies": {
-    "@types/debug": "^4.1.5",
-    "ajv": "^6.12.2",
-    "azure-devops-node-api": "^10.1.1",
-    "debug": "^4.1.1",
-    "meow": "^6.1.0"
+    "@types/debug": "^4.1.7",
+    "ajv": "^8.11.0",
+    "azure-devops-node-api": "^11.1.1",
+    "debug": "^4.3.4",
+    "meow": "^9.0.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.11",
-    "@types/meow": "^5.0.0",
-    "@types/mocha": "^7.0.2",
-    "@types/node": "^13.13.4",
-    "@types/sinon-chai": "^3.2.4",
-    "chai": "^4.2.0",
-    "mocha": "^7.1.2",
-    "mocha-junit-reporter": "^1.23.3",
-    "mocha-multi-reporters": "^1.1.7",
-    "sinon": "^9.0.2",
-    "sinon-chai": "^3.5.0",
-    "ts-node": "^8.9.1",
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "^17.0.23",
+    "@types/sinon-chai": "^3.2.8",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
+    "chai": "^4.3.6",
+    "eslint": "^8.12.0",
+    "mocha": "^9.2.2",
+    "mocha-junit-reporter": "^2.0.2",
+    "mocha-multi-reporters": "^1.5.1",
+    "sinon": "^13.0.1",
+    "sinon-chai": "^3.7.0",
+    "ts-node": "^10.7.0",
     "typemoq": "^2.1.0",
-    "typescript": "^3.8.3"
+    "typescript": "^4.6.3"
   }
 }

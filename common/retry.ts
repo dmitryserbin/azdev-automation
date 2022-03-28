@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/ban-types */
+
 import Debug from "debug";
 
 const logger = Debug("azdev-automation:Retry");
@@ -28,7 +31,7 @@ export function Retryable(options: IRetryOptions = { attempts: 10, timeout: 5000
 
                 return await retryAsync.apply(this, [originalMethod, args, options.attempts, options.timeout]);
 
-            } catch (e) {
+            } catch (e: any) {
 
                 e.message = `Failed retrying <${propertyKey}> for <${options.attempts}> times. ${e.message}`;
 
@@ -53,7 +56,7 @@ async function retryAsync(target: Function, args: any[], attempts: number, timeo
         // @ts-ignore
         return await target.apply(this, args);
 
-    } catch (e) {
+    } catch (e: any) {
 
         if (--attempts < 0) {
 

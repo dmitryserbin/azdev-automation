@@ -1,13 +1,19 @@
 trigger: none
 
-queue:
-  name: Hosted VS2017
+pool:
+  vmImage: windows-latest
 
 steps:
 - task: Npm@1
   displayName: Restore packages
   inputs:
     command: install
+
+- task: Npm@1
+  displayName: Run lint
+  inputs:
+    command: custom
+    customCommand: run lint
 
 - task: Npm@1
   displayName: Run build
