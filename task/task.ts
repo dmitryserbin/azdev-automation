@@ -8,16 +8,10 @@ async function run() {
 
     try {
 
-        // Get endpoint
         const endpoint: IEndpoint = await getEndpoint();
-
-        // Get parameters
         const parameters: IParameters = await getParameters();
-
-        // Initialize automation
         const automation: IAutomation = new Automation(endpoint, parameters);
 
-        // Execute automation
         await automation.run();
 
     } catch (e: any) {
