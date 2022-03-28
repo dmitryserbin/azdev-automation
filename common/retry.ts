@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/ban-types */
+
 import Debug from "debug";
 
 const logger = Debug("azdev-automation:Retry");
