@@ -225,6 +225,15 @@ export class SecurityHelper implements ISecurityHelper {
 
                 member = await this.azdevClient.post<GraphMember>(`_apis/Graph/Users?groupDescriptors=${group.descriptor}`, "5.2-preview.1", body, AzDevApiType.Graph);
 
+                const updatedMembership = await this.azdevClient.get<any>(`_apis/Graph/Memberships/${identity.subjectDescriptor}`, AzDevApiType.Graph);
+
+                if (!updatedMembership || updatedMembership.value.length === 0)
+                {
+                    throw new Error(`Group membership <${identity.subjectDescriptor}> cannot be retrieved`);
+                }
+
+                membership = updatedMembership.value[0];
+
                 break;
 
             } case "Group": {
@@ -235,35 +244,44 @@ export class SecurityHelper implements ISecurityHelper {
 
                         member = await this.azdevClient.put<GraphMember>(`_apis/Graph/Memberships/${identity.subjectDescriptor}/${group.descriptor}`, "5.2-preview.1", undefined, AzDevApiType.Graph);
 
+                        const updatedMembership = await this.azdevClient.get<any>(`_apis/Graph/Memberships/${identity.subjectDescriptor}`, AzDevApiType.Graph);
+
+                        if (!updatedMembership || updatedMembership.value.length === 0)
+                        {
+                            throw new Error(`Group membership <${identity.subjectDescriptor}> cannot be retrieved`);
+                        }
+
+                        membership = updatedMembership.value[0];
+
+                        break;
+
+                    } case "aad": {
+
+                        member = await this.azdevClient.post<GraphMember>(`_apis/Graph/Groups?groupDescriptors=${group.descriptor}`, "5.2-preview.1", body, AzDevApiType.Graph);
+
+                        membership = await this.azdevClient.put<GraphMembership>(`_apis/Graph/Memberships/${member.descriptor}/${group.descriptor}`, "5.2-preview.1", undefined, AzDevApiType.Graph);
+
                         break;
 
                     } default: {
 
-                        member = await this.azdevClient.post<GraphMember>(`_apis/Graph/Groups?groupDescriptors=${group.descriptor}`, "5.2-preview.1", body, AzDevApiType.Graph);
-
-                        break;
-
+                        throw new Error(`Identity origin directory <${identity.entityType}> not supported`)
+        
                     }
 
                 }
 
                 break;
 
+            } default: {
+
+                throw new Error(`Identity entity type <${identity.entityType}> not supported`)
+
             }
 
         }
 
-        const updatedMembership = await this.azdevClient.get<any>(`_apis/Graph/Memberships/${identity.subjectDescriptor}`, AzDevApiType.Graph);
-
-        membership = updatedMembership.value[0];
-
         debug(membership);
-
-        if (!membership) {
-
-            throw new Error(`Group membership <${identity.subjectDescriptor}> cannot be retrieved`);
-
-        }
 
         return membership;
 
@@ -322,8 +340,6 @@ export class SecurityHelper implements ISecurityHelper {
                 debug(`Identity <${name}> already <${group.principalName}> group member`);
 
                 validMemberships.push(existingMembership);
-
-                return;
 
             }
 
