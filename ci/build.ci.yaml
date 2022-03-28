@@ -10,6 +10,12 @@ steps:
     command: install
 
 - task: Npm@1
+  displayName: Run lint
+  inputs:
+    command: custom
+    customCommand: run lint
+
+- task: Npm@1
   displayName: Run build
   inputs:
     command: custom
