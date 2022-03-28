@@ -42,11 +42,10 @@
   "license": "MIT",
   "dependencies": {
     "@types/debug": "^4.1.7",
-    "@types/meow": "^5.0.0",
     "ajv": "^8.11.0",
     "azure-devops-node-api": "^11.1.1",
     "debug": "^4.3.4",
-    "meow": "^6.1.0"
+    "meow": "^9.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.3.0",
