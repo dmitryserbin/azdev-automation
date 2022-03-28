@@ -1,5 +1,5 @@
 import Debug from "debug";
-import meow from "meow";
+import meow, { AnyFlags, Result } from "meow";
 
 import { IDebugLogger } from "../interfaces/common/debuglogger";
 import { IConsoleParameters, IParameterReader } from "../interfaces/readers/parameterreader";
@@ -24,7 +24,7 @@ export class ParameterReader implements IParameterReader {
 
         };
 
-        const parameters: meow.Result<meow.AnyFlags> = meow(usage, options);
+        const parameters: Result<AnyFlags> = meow(usage, options);
 
         debug(parameters.flags);
 
