@@ -1,6 +1,6 @@
 {
   "name": "azdev-automation",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Azure DevOps automation framework enables access control automation of projects, pipelines and repositories configuration in Azure DevOps Services",
   "main": "./automation.js",
   "types": "./automation.d.ts",
