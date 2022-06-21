@@ -41,4 +41,3 @@ jobs:
       restore: true
       lint: true
       build: true
-      test: true
