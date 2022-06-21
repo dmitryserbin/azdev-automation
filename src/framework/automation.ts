@@ -131,14 +131,14 @@ export class Automation implements IAutomation {
             // Update branch policies
             if (this.parameters.branchPolicies) {
 
-                throw new Error(`Feature not implemented`);
+                throw new Error("Feature not implemented");
 
             }
 
             // Create service connections
             if (this.parameters.serviceConnections) {
 
-                throw new Error(`Feature not implemented`);
+                throw new Error("Feature not implemented");
 
             }
 

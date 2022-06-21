@@ -6,7 +6,7 @@ import * as TypeMoq from "typemoq";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IGroupPermission, PermissionType, IWorkPermission } from "../../interfaces/readers/configurationreader";
+import { IGroupPermission, IWorkPermission, PermissionType } from "../../interfaces/readers/configurationreader";
 import { IConsoleLogger } from "../../interfaces/common/consolelogger";
 import { IDebugLogger } from "../../interfaces/common/debuglogger";
 import { IHelper } from "../../interfaces/common/helper";
@@ -65,7 +65,7 @@ const groupPermission: IGroupPermission = {
 
 };
 
-const namespaceName: string = "CSS";
+const namespaceName = "CSS";
 
 describe("WorkUpdater", () => {
 
@@ -97,7 +97,7 @@ describe("WorkUpdater", () => {
 
         };
 
-        const nodeIdentifier: string = "1";
+        const nodeIdentifier = "1";
 
         // Arrange
         securityHelperMock.setup((x) => x.getNamespace(TypeMoq.It.isAnyString())).returns(() => Promise.resolve(workNamespace));

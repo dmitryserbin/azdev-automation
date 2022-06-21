@@ -28,7 +28,7 @@ describe("AzDevClient", () => {
     it("Should make GET request", async () => {
 
         // Arrange
-        restClient.setup((x) => x.get(TypeMoq.It.isAnyString())).returns(() => Promise.resolve( { result: "OK", statusCode: 200 } as any ));
+        restClient.setup((x) => x.get(TypeMoq.It.isAnyString())).returns(() => Promise.resolve({ result: "OK", statusCode: 200 } as any));
 
         // Act
         const result = await azdevClient.get<any>("_apis/get");
@@ -41,7 +41,7 @@ describe("AzDevClient", () => {
     it("Should make POST request", async () => {
 
         // Arrange
-        restClient.setup((x) => x.create(TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve( { result: "OK", statusCode: 200 } as any ));
+        restClient.setup((x) => x.create(TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve({ result: "OK", statusCode: 200 } as any));
 
         // Act
         const result = await azdevClient.post<any>("_apis/post", TypeMoq.It.isAnyString());
@@ -54,7 +54,7 @@ describe("AzDevClient", () => {
     it("Should make PATCH request", async () => {
 
         // Arrange
-        restClient.setup((x) => x.update(TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve( { result: "OK", statusCode: 200 } as any ));
+        restClient.setup((x) => x.update(TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve({ result: "OK", statusCode: 200 } as any));
 
         // Act
         const result = await azdevClient.patch<any>("_apis/patch", TypeMoq.It.isAnyString());
@@ -67,7 +67,7 @@ describe("AzDevClient", () => {
     it("Should make PUT request", async () => {
 
         // Arrange
-        restClient.setup((x) => x.replace(TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve( { result: "OK", statusCode: 200 } as any ));
+        restClient.setup((x) => x.replace(TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve({ result: "OK", statusCode: 200 } as any));
 
         // Act
         const result = await azdevClient.put<any>("_apis/put", TypeMoq.It.isAnyString());
@@ -80,7 +80,7 @@ describe("AzDevClient", () => {
     it("Should make DELETE request", async () => {
 
         // Arrange
-        restClient.setup((x) => x.del(TypeMoq.It.isAnyString(), TypeMoq.It.isAny())).returns(() => Promise.resolve( { result: "OK", statusCode: 200 } as any ));
+        restClient.setup((x) => x.del(TypeMoq.It.isAnyString(), TypeMoq.It.isAny())).returns(() => Promise.resolve({ result: "OK", statusCode: 200 } as any));
 
         // Act
         const result = await azdevClient.delete<any>("_apis/delete", TypeMoq.It.isAnyString());

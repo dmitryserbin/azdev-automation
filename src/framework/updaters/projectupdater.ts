@@ -56,7 +56,7 @@ export class ProjectUpdater implements IProjectUpdater {
 
         this.logger.log(`Creating new <${project.name}> team project`);
 
-        const sourceControlType: string = "Git";
+        const sourceControlType = "Git";
         const projectVisibility: ProjectVisibility = ProjectVisibility.Private;
         const processTemplate: Process = await this.projectHelper.getDefaultTemplate();
 
@@ -97,7 +97,7 @@ export class ProjectUpdater implements IProjectUpdater {
 
         await Promise.all(policy.definition.map(async (group) => {
 
-            const groupName: string = `[${project.name}]\\${group.name}`;
+            const groupName = `[${project.name}]\\${group.name}`;
 
             debug(`Updating <${groupName}> group configuration`);
 
@@ -112,7 +112,7 @@ export class ProjectUpdater implements IProjectUpdater {
 
                 this.logger.log(`Creating new <${groupName}> group`);
 
-                targetGroup = await this.projectHelper.createProjectGroup(group.name, `Members of this group have custom access to the project.`, project.id!);
+                targetGroup = await this.projectHelper.createProjectGroup(group.name, "Members of this group have custom access to the project.", project.id!);
 
                 // It may take up to a few seconds before
                 // New group identity becomes available

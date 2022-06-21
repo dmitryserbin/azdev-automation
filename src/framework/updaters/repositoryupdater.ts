@@ -38,13 +38,13 @@ export class RepositoryUpdater implements IRepositoryUpdater {
 
         const namespace: INamespace = await this.securityHelper.getNamespace("Git Repositories");
         const permissionSetId: string = namespace.namespaceId;
-        const permissionSetToken: string = `repoV2/${project.id!}/`;
+        const permissionSetToken = `repoV2/${project.id!}/`;
 
         const existingIdentities: ISecurityIdentity[] = await this.securityHelper.getExplicitIdentities(project.id!, permissionSetId, permissionSetToken);
 
         await Promise.all(policy.definition.map(async (group) => {
 
-            const groupName: string = `[${project.name}]\\${group.name}`;
+            const groupName = `[${project.name}]\\${group.name}`;
 
             this.logger.log(`Assigninig <${groupName}> group permissions`);
 

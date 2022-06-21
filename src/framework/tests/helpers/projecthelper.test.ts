@@ -14,16 +14,16 @@ import { IAzDevClient } from "../../interfaces/common/azdevclient";
 import { IDebugLogger } from "../../interfaces/common/debuglogger";
 import { IProjectHelper } from "../../interfaces/helpers/projecthelper";
 
-const projectOne: string = "MyProjectOne";
-const projectOneDescription: string = "This is Project One";
-const projectOneId: string = "1";
+const projectOne = "MyProjectOne";
+const projectOneDescription = "This is Project One";
+const projectOneId = "1";
 
-const projectTwo: string = "MyProjectTwo";
-const projectTwoDescription: string = "This is Project Two";
-const projectTwoId: string = "2";
+const projectTwo = "MyProjectTwo";
+const projectTwoDescription = "This is Project Two";
+const projectTwoId = "2";
 
-const groupOne: string = "MyGroupOne";
-const groupOneDescription: string = "This is Group One";
+const groupOne = "MyGroupOne";
+const groupOneDescription = "This is Group One";
 
 const coreApiMock = TypeMoq.Mock.ofType<ICoreApi>();
 const azdevClientMock = TypeMoq.Mock.ofType<IAzDevClient>();

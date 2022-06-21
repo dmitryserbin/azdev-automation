@@ -40,7 +40,9 @@
     "lint": "eslint . --ext .ts",
     "test": "mocha -r ts-node/register tests/**/*.test.ts --no-timeouts --reporter mocha-multi-reporters --reporter-options configFile=mocha.json",
     "patch": "npm version patch --no-git-tag-version",
-    "clean": "npm prune --production"
+    "clean": "npm prune --production",
+    "pack": "npm pack",
+    "all": "npm install && npm run build && npm run lint && npm run test && npm run clean && npm run pack"
   },
   "repository": {
     "type": "git",

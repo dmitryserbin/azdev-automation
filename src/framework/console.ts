@@ -28,7 +28,7 @@ function newEndpoint(account: string, token: string): IEndpoint {
 
 function readParameters(): IConsoleParameters {
 
-    const usage: string = `
+    const usage = `
         Usage:
             $ ./console.js <parameters>
 
@@ -102,7 +102,7 @@ function readParameters(): IConsoleParameters {
 
         },
 
-    }
+    };
 
     const parameters: IConsoleParameters = parameterReader.newParameters(usage, flags);
 

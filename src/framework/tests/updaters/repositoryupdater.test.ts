@@ -6,7 +6,7 @@ import * as TypeMoq from "typemoq";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IGroupPermission, PermissionType, IRepositoryPermission } from "../../interfaces/readers/configurationreader";
+import { IGroupPermission, IRepositoryPermission, PermissionType } from "../../interfaces/readers/configurationreader";
 import { IConsoleLogger } from "../../interfaces/common/consolelogger";
 import { IDebugLogger } from "../../interfaces/common/debuglogger";
 import { IHelper } from "../../interfaces/common/helper";
@@ -65,7 +65,7 @@ const groupPermission: IGroupPermission = {
 
 };
 
-const namespaceName: string = "Git Repositories";
+const namespaceName = "Git Repositories";
 
 describe("RepositoryUpdater", () => {
 

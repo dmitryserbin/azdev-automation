@@ -8,7 +8,7 @@ import { OperationReference } from "azure-devops-node-api/interfaces/common/Oper
 import { Process, TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
-import { IBuildPermission, IGroupMembership, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IPermission, PermissionType, IWorkPermission } from "../../interfaces/readers/configurationreader";
+import { IBuildPermission, IGroupMembership, IPermission, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IWorkPermission, PermissionType } from "../../interfaces/readers/configurationreader";
 import { IConsoleLogger } from "../../interfaces/common/consolelogger";
 import { IDebugLogger } from "../../interfaces/common/debuglogger";
 import { IHelper } from "../../interfaces/common/helper";
@@ -17,8 +17,8 @@ import { IProjectUpdater } from "../../interfaces/updaters/projectupdater";
 import { ISecurityHelper } from "../../interfaces/helpers/securityhelper";
 import { ProjectUpdater } from "../../updaters/projectupdater";
 
-const memberOne: string = "GroupOne";
-const memberTwo: string = "GroupTwo";
+const memberOne = "GroupOne";
+const memberTwo = "GroupTwo";
 
 const groupPermission: IPermission = {
 
@@ -35,8 +35,8 @@ const group: IGroupMembership = {
         memberTwo,
     ],
     permissions: [
-        groupPermission
-    ]
+        groupPermission,
+    ],
 
 };
 
@@ -146,7 +146,7 @@ describe("ProjectUpdater", () => {
 
         // Arrange
         projectHelperMock.setup((x) => x.getProjectGroup(TypeMoq.It.isAnyString(), TypeMoq.It.isAnyString())).returns(() => Promise.resolve(mockGraphGroup.target));
-        securityHelperMock.setup((x) => x.updateGroupPermissions(TypeMoq.It.isAnyString(),TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve());
+        securityHelperMock.setup((x) => x.updateGroupPermissions(TypeMoq.It.isAnyString(), TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve());
         securityHelperMock.setup((x) => x.updateGroupMembers(TypeMoq.It.isAny(), TypeMoq.It.isAny())).returns(() => Promise.resolve());
 
         // Act & Assert

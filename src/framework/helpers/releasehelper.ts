@@ -2,7 +2,7 @@ import Debug from "debug";
 
 import * as ra from "azure-devops-node-api/ReleaseApi";
 
-import { Artifact, ReleaseDefinition, WorkflowTask, Release, ReleaseDefinitionEnvironment, DeployPhase, ReleaseEnvironment } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
+import { Artifact, DeployPhase, Release, ReleaseDefinition, ReleaseDefinitionEnvironment, ReleaseEnvironment, WorkflowTask } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
 import { IDebugLogger } from "../interfaces/common/debuglogger";
@@ -71,7 +71,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
             if (taskExists) {
 
-                debug(`Task(s) mathing ID found`);
+                debug("Task(s) mathing ID found");
 
                 result.push(targetDefinition);
 
@@ -104,7 +104,7 @@ export class ReleaseHelper implements IReleaseHelper {
 
             if (exists) {
 
-                debug(`Target task(s) found`);
+                debug("Target task(s) found");
 
                 result.push(targetRelease);
 
@@ -350,11 +350,11 @@ export class ReleaseHelper implements IReleaseHelper {
 
         const taskIDs: string[] = tasks.map((t) => t.id!);
 
-        let taskMatch: boolean = false;
+        let taskMatch = false;
 
         if (Object.keys(filter).length > 0) {
 
-            let totalMatches: number = 0;
+            let totalMatches = 0;
 
             // Apply task parameter maching filter
             // When at least one parameter value maches
@@ -363,7 +363,7 @@ export class ReleaseHelper implements IReleaseHelper {
                 const taskValue: string = task.inputs![parameter];
                 const filterValue: string = filter[parameter];
 
-                const matchExpression: RegExp = new RegExp(`^${filterValue}$`);
+                const matchExpression = new RegExp(`^${filterValue}$`);
                 const parameterMatch: boolean = matchExpression.test(taskValue);
 
                 if (parameterMatch) {

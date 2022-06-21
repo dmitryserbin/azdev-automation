@@ -1,4 +1,4 @@
-import { ReleaseDefinition, Release } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
+import { Release, ReleaseDefinition } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
 export interface IReleaseHelper {

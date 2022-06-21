@@ -12,15 +12,12 @@ export interface IRetryOptions {
 
 }
 
-// tslint:disable-next-line:ban-types
 export function Retryable(options: IRetryOptions = { attempts: 10, timeout: 5000 }): Function {
 
     const verbose = logger.extend("retryable");
 
-    // tslint:disable-next-line:only-arrow-functions ban-types
     return function(target: Object, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) {
 
-        // tslint:disable-next-line:ban-types
         const originalMethod: Function = descriptor.value;
 
         descriptor.value = async function(...args: any[]) {
@@ -29,7 +26,7 @@ export function Retryable(options: IRetryOptions = { attempts: 10, timeout: 5000
 
                 verbose(`Executing <${propertyKey}> with <${options.attempts}> retries`);
 
-                return await retryAsync.apply(this, [originalMethod, args, options.attempts, options.timeout]);
+                return await retryAsync.apply(this, [ originalMethod, args, options.attempts, options.timeout ]);
 
             } catch (e: any) {
 
@@ -38,6 +35,7 @@ export function Retryable(options: IRetryOptions = { attempts: 10, timeout: 5000
                 throw e;
 
             }
+
         };
 
         return descriptor;
@@ -46,7 +44,6 @@ export function Retryable(options: IRetryOptions = { attempts: 10, timeout: 5000
 
 }
 
-// tslint:disable-next-line:ban-types
 async function retryAsync(target: Function, args: any[], attempts: number, timeout: number): Promise<any> {
 
     const verbose = logger.extend("retryAsync");
@@ -69,7 +66,7 @@ async function retryAsync(target: Function, args: any[], attempts: number, timeo
         await new Promise((resolve) => setTimeout(resolve, timeout));
 
         // @ts-ignore
-        return retryAsync.apply(this, [target, args, attempts, timeout]);
+        return retryAsync.apply(this, [ target, args, attempts, timeout ]);
 
     }
 

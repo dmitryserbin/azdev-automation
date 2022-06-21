@@ -135,9 +135,9 @@ export class AzDevClient implements IAzDevClient {
         const debug = this.debugLogger.extend(this.newUrl.name);
 
         const prefix: string = type.toString();
-        const base: string = `https://${prefix}.azure.com`;
-        const suffix: string = `${this.accountName}/${path}`;
-        const url: string = `${base}${suffix}`;
+        const base = `https://${prefix}.azure.com`;
+        const suffix = `${this.accountName}/${path}`;
+        const url = `${base}${suffix}`;
 
         return url;
 

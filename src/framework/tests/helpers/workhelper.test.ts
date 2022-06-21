@@ -36,7 +36,7 @@ describe("WorkHelper", () => {
             structureType: "area",
             identifier: 1,
 
-        }
+        };
 
         // Arrange
         azdevClientMock.setup((x) => x.get(TypeMoq.It.isAnyString(), TypeMoq.It.isAny())).returns(() => Promise.resolve({ value: [ areaNode ] }));

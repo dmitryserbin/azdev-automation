@@ -1,11 +1,11 @@
 import Debug from "debug";
 
-import { GraphGroup, GraphMembership, GraphMember } from "azure-devops-node-api/interfaces/GraphInterfaces";
+import { GraphGroup, GraphMember, GraphMembership } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { AzDevApiType, IAzDevClient } from "../interfaces/common/azdevclient";
-import { PermissionType, IPermission } from "../interfaces/readers/configurationreader";
+import { IPermission, PermissionType } from "../interfaces/readers/configurationreader";
 import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission, IGroupProvider, ISubjectPermission, IGraphIdentity } from "../interfaces/helpers/securityhelper";
+import { IGraphIdentity, IGroupProvider, IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission, ISubjectPermission } from "../interfaces/helpers/securityhelper";
 import { ISecurityMapper } from "../interfaces/mappers/securitymapper";
 import { IHelper } from "../interfaces/common/helper";
 
@@ -70,7 +70,7 @@ export class SecurityHelper implements ISecurityHelper {
 
         }
 
-        const result = await this.azdevClient.post<any>(`_apis/IdentityPicker/Identities`, "5.2-preview.1", searchRequest);
+        const result = await this.azdevClient.post<any>("_apis/IdentityPicker/Identities", "5.2-preview.1", searchRequest);
 
         if (result.results.length > 0) {
 
@@ -83,7 +83,7 @@ export class SecurityHelper implements ISecurityHelper {
             // Get target identity matching name filter
             // Use displayName for users OR samAccountName for groups
             targetIdentity = result.results[0].identities.filter((i: IGraphIdentity) =>
-                new RegExp([ i.displayName!, i.samAccountName].join("|"), "i").test(name))[0];
+                new RegExp([ i.displayName!, i.samAccountName ].join("|"), "i").test(name))[0];
 
             debug(targetIdentity!);
 
@@ -97,7 +97,7 @@ export class SecurityHelper implements ISecurityHelper {
 
         const debug = this.debugLogger.extend(this.getNamespace.name);
 
-        const response: any = await this.azdevClient.get<any>(`_apis/securitynamespaces`, AzDevApiType.Core);
+        const response: any = await this.azdevClient.get<any>("_apis/securitynamespaces", AzDevApiType.Core);
         const allNamespaces: any[] = response.value;
 
         if (!allNamespaces) {
@@ -139,7 +139,7 @@ export class SecurityHelper implements ISecurityHelper {
 
         const debug = this.debugLogger.extend(this.getGroupProvider.name);
 
-        const apiVersion: string = "5.1-preview.1";
+        const apiVersion = "5.1-preview.1";
 
         const body: any = {
 
@@ -159,7 +159,7 @@ export class SecurityHelper implements ISecurityHelper {
 
         };
 
-        const response: any = await this.azdevClient.post<any>(`_apis/Contribution/HierarchyQuery`, apiVersion, body, AzDevApiType.Core);
+        const response: any = await this.azdevClient.post<any>("_apis/Contribution/HierarchyQuery", apiVersion, body, AzDevApiType.Core);
         const provider: any = response.dataProviders[id];
 
         if (!provider) {
@@ -197,6 +197,7 @@ export class SecurityHelper implements ISecurityHelper {
         }
 
         return membership!;
+
     }
 
     public async addIdentityMembership(group: GraphGroup, identity: IGraphIdentity): Promise<GraphMembership> {
@@ -227,9 +228,10 @@ export class SecurityHelper implements ISecurityHelper {
 
                 const updatedMembership = await this.azdevClient.get<any>(`_apis/Graph/Memberships/${identity.subjectDescriptor}`, AzDevApiType.Graph);
 
-                if (!updatedMembership || updatedMembership.value.length === 0)
-                {
+                if (!updatedMembership || updatedMembership.value.length === 0) {
+
                     throw new Error(`Group membership <${identity.subjectDescriptor}> cannot be retrieved`);
+
                 }
 
                 membership = updatedMembership.value[0];
@@ -246,9 +248,10 @@ export class SecurityHelper implements ISecurityHelper {
 
                         const updatedMembership = await this.azdevClient.get<any>(`_apis/Graph/Memberships/${identity.subjectDescriptor}`, AzDevApiType.Graph);
 
-                        if (!updatedMembership || updatedMembership.value.length === 0)
-                        {
+                        if (!updatedMembership || updatedMembership.value.length === 0) {
+
                             throw new Error(`Group membership <${identity.subjectDescriptor}> cannot be retrieved`);
+
                         }
 
                         membership = updatedMembership.value[0];
@@ -265,8 +268,8 @@ export class SecurityHelper implements ISecurityHelper {
 
                     } default: {
 
-                        throw new Error(`Identity origin directory <${identity.entityType}> not supported`)
-        
+                        throw new Error(`Identity origin directory <${identity.entityType}> not supported`);
+
                     }
 
                 }
@@ -275,7 +278,7 @@ export class SecurityHelper implements ISecurityHelper {
 
             } default: {
 
-                throw new Error(`Identity entity type <${identity.entityType}> not supported`)
+                throw new Error(`Identity entity type <${identity.entityType}> not supported`);
 
             }
 
@@ -426,7 +429,7 @@ export class SecurityHelper implements ISecurityHelper {
 
         const debug = this.debugLogger.extend(this.getExplicitIdentities.name);
 
-        const apiVersion: string = "5";
+        const apiVersion = "5";
 
         const result: ISecurityIdentity[] = [];
 
@@ -444,13 +447,14 @@ export class SecurityHelper implements ISecurityHelper {
         debug(`Found <${result.length}> explicit identities`);
 
         return result;
+
     }
 
     public async addIdentityToPermission(projectId: string, identity: IGraphIdentity): Promise<ISecurityIdentity> {
 
         const debug = this.debugLogger.extend(this.addIdentityToPermission.name);
 
-        const apiVersion: string = "5";
+        const apiVersion = "5";
 
         const existingUsersJson: string[] = [ identity.localId! ];
         const newUsersJson: string[] = [];
@@ -471,13 +475,14 @@ export class SecurityHelper implements ISecurityHelper {
         debug(result);
 
         return result;
+
     }
 
     public async getIdentityPermission(projectId: string, identity: ISecurityIdentity, permissionSetId: string, permissionSetToken: string): Promise<IIdentityPermission> {
 
         const debug = this.debugLogger.extend(this.getIdentityPermission.name);
 
-        const apiVersion: string = "5";
+        const apiVersion = "5";
 
         const response: any = await this.azdevClient.get<any>(`${projectId}/_api/_security/DisplayPermissions?__v=${apiVersion}&tfid=${identity.teamFoundationId}&permissionSetId=${permissionSetId}&permissionSetToken=${permissionSetToken}`, AzDevApiType.Core);
 
@@ -497,8 +502,8 @@ export class SecurityHelper implements ISecurityHelper {
 
         const debug = this.debugLogger.extend(this.setGroupAccessControl.name);
 
-        const permissionsApiVersion: string = "5.0";
-        const accessControlApiVersion: string = "5.1-preview.1";
+        const permissionsApiVersion = "5.0";
+        const accessControlApiVersion = "5.1-preview.1";
 
         let result: any = {};
 
@@ -576,8 +581,8 @@ export class SecurityHelper implements ISecurityHelper {
 
         const debug = this.debugLogger.extend(this.setIdentityAccessControl.name);
 
-        const permissionsApiVersion: string = "5.0";
-        const accessControlApiVersion: string = "5.1-preview.1";
+        const permissionsApiVersion = "5.0";
+        const accessControlApiVersion = "5.1-preview.1";
 
         let result: any = {};
 

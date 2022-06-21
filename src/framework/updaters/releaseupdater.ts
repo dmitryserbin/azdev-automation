@@ -1,7 +1,7 @@
 import Debug from "debug";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
-import { ReleaseDefinition, Release } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
+import { Release, ReleaseDefinition } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
 import { IReleasePermission, ITask } from "../interfaces/readers/configurationreader";
@@ -61,7 +61,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
             for (const artifact of targetArtifacts) {
 
-                let version: string = "latest";
+                let version = "latest";
 
                 if (artifact.definitionReference!.defaultVersionType.id === "specificVersionType") {
 
@@ -251,7 +251,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
         await Promise.all(policy.definition.map(async (group) => {
 
-            const groupName: string = `[${project.name}]\\${group.name}`;
+            const groupName = `[${project.name}]\\${group.name}`;
 
             this.logger.log(`Assigninig <${groupName}> group permissions`);
 

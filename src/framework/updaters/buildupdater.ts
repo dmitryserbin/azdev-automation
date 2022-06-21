@@ -44,7 +44,7 @@ export class BuildUpdater implements IBuildUpdater {
 
         await Promise.all(policy.definition.map(async (group) => {
 
-            const groupName: string = `[${project.name}]\\${group.name}`;
+            const groupName = `[${project.name}]\\${group.name}`;
 
             this.logger.log(`Assigninig <${groupName}> group permissions`);
 

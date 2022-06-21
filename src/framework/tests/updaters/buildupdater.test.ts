@@ -65,7 +65,7 @@ const groupPermission: IGroupPermission = {
 
 };
 
-const namespaceName: string = "Build";
+const namespaceName = "Build";
 
 describe("BuildUpdater", () => {
 

@@ -45,7 +45,7 @@ export class ApiFactory implements IApiFactory {
 
         const coreApi: ca.CoreApi = await this.webApi.getCoreApi();
 
-        debug(`Azure DevOps Core API initialized`);
+        debug("Azure DevOps Core API initialized");
 
         return coreApi;
 
@@ -57,7 +57,7 @@ export class ApiFactory implements IApiFactory {
 
         const releaseApi: ra.ReleaseApi = await this.webApi.getReleaseApi();
 
-        debug(`Azure DevOps Release API initialized`);
+        debug("Azure DevOps Release API initialized");
 
         return releaseApi;
 
@@ -69,7 +69,7 @@ export class ApiFactory implements IApiFactory {
 
         const buildApi: ba.BuildApi = await this.webApi.getBuildApi();
 
-        debug(`Azure DevOps Build API initialized`);
+        debug("Azure DevOps Build API initialized");
 
         return buildApi;
 
@@ -81,7 +81,7 @@ export class ApiFactory implements IApiFactory {
 
         const getApi: ga.GitApi = await this.webApi.getGitApi();
 
-        debug(`Azure DevOps Git API initialized`);
+        debug("Azure DevOps Git API initialized");
 
         return getApi;
 
@@ -93,7 +93,7 @@ export class ApiFactory implements IApiFactory {
 
         const taskAgentApi: ta.ITaskAgentApi = await this.webApi.getTaskAgentApi();
 
-        debug(`Azure DevOps Task Agent API initialized`);
+        debug("Azure DevOps Task Agent API initialized");
 
         return taskAgentApi;
 
@@ -105,16 +105,17 @@ export class ApiFactory implements IApiFactory {
 
         const securityRolesApi: sa.ISecurityRolesApi = await this.webApi.getSecurityRolesApi();
 
-        debug(`Azure DevOps Security Roles API initialized`);
+        debug("Azure DevOps Security Roles API initialized");
 
         return securityRolesApi;
+
     }
 
     public async createVsoClient(): Promise<vc.VsoClient> {
 
         const debug = this.debugLogger.extend(this.createVsoClient.name);
 
-        debug(`Azure DevOps API client initialized`);
+        debug("Azure DevOps API client initialized");
         debug(this.webApi.options);
 
         return this.webApi.vsoClient;

@@ -1,4 +1,4 @@
-import { IIdentityPermission, INamespace, ISecurityIdentity, IGroupProvider } from "../helpers/securityhelper";
+import { IGroupProvider, IIdentityPermission, INamespace, ISecurityIdentity } from "../helpers/securityhelper";
 
 export interface ISecurityMapper {
 

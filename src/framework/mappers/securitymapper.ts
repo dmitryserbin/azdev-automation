@@ -1,7 +1,7 @@
 import Debug from "debug";
 
 import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IIdentityPermission, INamespace, INamespaceAction, ISecurityIdentity, ISecurityPermission, IGroupProvider, ISubjectPermission } from "../interfaces/helpers/securityhelper";
+import { IGroupProvider, IIdentityPermission, INamespace, INamespaceAction, ISecurityIdentity, ISecurityPermission, ISubjectPermission } from "../interfaces/helpers/securityhelper";
 import { ISecurityMapper } from "../interfaces/mappers/securitymapper";
 
 export class SecurityMapper implements ISecurityMapper {
@@ -96,11 +96,13 @@ export class SecurityMapper implements ISecurityMapper {
                     isPermissionInherited: permission.isPermissionInherited,
 
                 } as ISubjectPermission);
+
             }
 
         }
 
         return result;
+
     }
 
     public mapNamespace(input: any): INamespace {
@@ -132,6 +134,7 @@ export class SecurityMapper implements ISecurityMapper {
                     namespaceId: action.namespaceId,
 
                 } as INamespaceAction);
+
             }
 
         }

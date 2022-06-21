@@ -143,7 +143,7 @@ const releasePermissions: IReleasePermission = {
 
 };
 
-const namespaceName: string = "ReleaseManagement";
+const namespaceName = "ReleaseManagement";
 
 const releaseHelperMock = TypeMoq.Mock.ofType<IReleaseHelper>();
 const taskAgentHelperMock = TypeMoq.Mock.ofType<ITaskAgentHelper>();
@@ -203,7 +203,7 @@ describe("ReleaseUpdater", () => {
 
             id: 1,
             name: "My-Definition-One",
-            description: "My-Definition-Description"
+            description: "My-Definition-Description",
 
         };
 
