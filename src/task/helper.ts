@@ -48,4 +48,5 @@ export async function getParameters(): Promise<IParameters> {
     };
 
     return parameters;
+
 }

@@ -8,7 +8,10 @@
     "url": "git+https://github.com/dmitryserbin/azdev-automation"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc --build --clean && tsc",
+    "lint": "eslint . --ext .ts",
+    "clean": "npm prune --production",
+    "all": "npm install && npm run build && npm run lint && npm run clean"
   },
   "author": "Dmitry Serbin",
   "license": "MIT",
@@ -20,6 +23,9 @@
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.29.0",
+    "@typescript-eslint/parser": "^5.29.0",
+    "eslint": "^8.18.0",
     "typescript": "^4.7.4"
   }
 }
