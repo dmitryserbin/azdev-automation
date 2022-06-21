@@ -15,11 +15,11 @@
   "dependencies": {
     "@types/q": "^1.5.5",
     "azdev-automation": "^1.0.11",
-    "azure-pipelines-task-lib": "^3.2.0",
+    "azure-pipelines-task-lib": "^3.3.1",
     "q": "^1.5.1"
   },
   "devDependencies": {
-    "@types/node": "^17.0.23",
-    "typescript": "^4.6.3"
+    "@types/node": "^18.0.0",
+    "typescript": "^4.7.4"
   }
 }
