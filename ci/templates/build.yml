@@ -1,0 +1,62 @@
+parameters:
+  path: ""
+  restore: false
+  lint: false
+  build: false
+  test: false
+  clean: false
+  package: false
+
+steps:
+- ${{ if eq(parameters.restore, true) }}:
+  - task: Npm@1
+    displayName: Restore packages
+    inputs:
+      workingDir: ${{ parameters.path }}
+
+- ${{ if eq(parameters.lint, true) }}:
+  - task: Npm@1
+    displayName: Run lint
+    inputs:
+      command: custom
+      workingDir: ${{ parameters.path }}
+      customCommand: run lint
+
+- ${{ if eq(parameters.build, true) }}:
+  - task: Npm@1
+    displayName: Run build
+    inputs:
+      command: custom
+      workingDir: ${{ parameters.path }}
+      customCommand: run build
+
+- ${{ if eq(parameters.test, true) }}:
+  - task: Npm@1
+    displayName: Run tests
+    inputs:
+      command: custom
+      workingDir: ${{ parameters.path }}
+      customCommand: run test
+
+- ${{ if eq(parameters.clean, true) }}:
+  - task: Npm@1
+    displayName: Run clean
+    inputs:
+      command: custom
+      workingDir: ${{ parameters.path }}
+      customCommand: run clean
+
+- ${{ if eq(parameters.package, true) }}:
+  - task: Npm@1
+    displayName: Create package
+    inputs:
+      command: custom
+      workingDir: ${{ parameters.path }}
+      customCommand: pack
+
+- ${{ if eq(parameters.test, true) }}:
+  - task: PublishTestResults@2
+    displayName: Publish test results
+    inputs:
+      testResultsFiles: "**/results.xml"
+    condition: always()

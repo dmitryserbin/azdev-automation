@@ -1,40 +1,44 @@
 trigger: none
 
+pr:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - src/*
+  autoCancel: true
+
 pool:
-  vmImage: windows-latest
+  name: Default
 
-steps:
-- task: Npm@1
-  displayName: Restore packages
-  inputs:
-    command: install
+variables:
+- template: templates/variables.yml
 
-- task: Npm@1
-  displayName: Run lint
-  inputs:
-    command: custom
-    customCommand: run lint
+jobs:
+- job: Framework
+  workspace:
+    clean: all
+  steps:
+  - template: templates/build.yml
+    parameters:
+      path: ${{ variables.frameworkPath }}
+      restore: true
+      lint: true
+      build: true
+      test: true
+      package: true
 
-- task: Npm@1
-  displayName: Run build
-  inputs:
-    command: custom
-    customCommand: run build
-
-- task: Npm@1
-  displayName: Run tests
-  inputs:
-    command: custom
-    customCommand: run test
-
-- task: Npm@1
-  displayName: Run package tests
-  inputs:
-    command: custom
-    customCommand: publish --dry-run
-
-- task: PublishTestResults@2
-  displayName: Publish test results
-  inputs:
-    testResultsFiles: test-*.xml
-  condition: always()
+- job: Task
+  workspace:
+    clean: all
+  dependsOn:
+  - Framework
+  steps:
+  - template: templates/build.yml
+    parameters:
+      path: ${{ variables.taskPath }}
+      restore: true
+      lint: true
+      build: true
+      test: true
