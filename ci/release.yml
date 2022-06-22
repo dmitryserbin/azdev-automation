@@ -11,11 +11,21 @@ pr: none
 pool:
   name: Default
 
-jobs:
-- template: templates/build-framework.yml
-  parameters:
-    artifact: true
+stages:
+- stage: Build
+  jobs:
+  - template: templates/build-framework.yml
+    parameters:
+      artifact: true
+  - template: templates/build-task.yml
+    parameters:
+      artifact: true
 
-- template: templates/build-task.yml
-  parameters:
-    artifact: true
+- stage: Release
+  dependsOn:
+  - Build
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  jobs:
+  - template: templates/release-framework.yml
+    parameters:
+      mock: true

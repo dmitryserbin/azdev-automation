@@ -1,0 +1,14 @@
+parameters:
+  mock: true
+
+jobs:
+- job: Framework
+  workspace:
+    clean: all
+  variables:
+  - template: ../variables.yml
+  steps:
+  - template: steps/download.yml
+    parameters:
+      name: ${{ variables.frameworkArtifactName }}
+      path: ${{ variables.frameworkArtifactPath }}
