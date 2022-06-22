@@ -10,7 +10,7 @@ jobs:
   dependsOn:
   - Framework
   steps:
-  - template: steps/download.yml
+  - template: steps/artifact-download.yml
     parameters:
       name: ${{ variables.frameworkArtifactName }}
       path: ${{ variables.frameworkPath }}
@@ -20,7 +20,7 @@ jobs:
       lint: true
       outputPath: ${{ variables.taskArtifactPath }}
   - ${{ if eq(parameters.artifact, true) }}:
-    - template: steps/publish.yml
+    - template: steps/artifact-publish.yml
       parameters:
         name: ${{ variables.taskArtifactName }}
         path: ${{ variables.taskArtifactPath }}

@@ -8,7 +8,7 @@ jobs:
   variables:
   - template: ../variables.yml
   steps:
-  - template: steps/download.yml
+  - template: steps/artifact-download.yml
     parameters:
       name: ${{ variables.frameworkArtifactName }}
       path: ${{ variables.frameworkArtifactPath }}
@@ -16,7 +16,7 @@ jobs:
     parameters:
       path: ${{ variables.frameworkArtifactPath }}/*.tgz
       outputPath: ${{ variables.frameworkArtifactPath }}
-  - template: steps/publish-package.yml
+  - template: steps/publish.yml
     parameters:
       endpointName: ${{ variables.npmjsEdpointName }}
       path: ${{ variables.frameworkArtifactPath }}/package
