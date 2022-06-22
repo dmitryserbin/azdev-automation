@@ -5,3 +5,4 @@ variables:
   taskPath: src/task
   taskArtifactName: Task
   taskArtifactPath: $(Build.ArtifactStagingDirectory)/Task
+  npmjsEdpointName: dmitryserbin-npmjs
