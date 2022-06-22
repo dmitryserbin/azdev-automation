@@ -1,8 +1,8 @@
 parameters:
   path: ""
   contents: ""
-  version: ""
   artifactName: ""
+  version: ""
   publish: false
 
 steps:

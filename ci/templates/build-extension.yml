@@ -18,6 +18,6 @@ jobs:
         LICENSE
         *.md
         *.json
-      version: ${{ variables.extensionVersion }}
       artifactName: ${{ variables.taskArtifactName }}
+      version: ${{ variables.extensionVersion }}
       publish: ${{ parameters.artifact }}
