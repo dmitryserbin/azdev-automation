@@ -16,10 +16,10 @@ steps:
     targetFolder: ${{ parameters.path }}
 
 - task: DownloadPipelineArtifact@2
-  displayName: Copy task
+  displayName: Copy task artifact
   inputs:
     artifact: ${{ parameters.artifactName }}
-    path: ${{ parameters.path }}/tasks
+    path: ${{ parameters.path }}/tasks/${{ parameters.artifactName }}
 
 - ${{ if ne(parameters.version, '') }}:
   - task: PowerShell@2

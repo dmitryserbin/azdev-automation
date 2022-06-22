@@ -1,10 +1,10 @@
 variables:
-  frameworkPath: src/framework
+  frameworkPath: src/Framework
   frameworkArtifactName: Framework
   frameworkArtifactPath: $(Build.ArtifactStagingDirectory)/Framework
-  taskPath: src/task
-  taskArtifactName: Task
-  taskArtifactPath: $(Build.ArtifactStagingDirectory)/Task
+  taskPath: src/TaskV1
+  taskArtifactName: TaskV1
+  taskArtifactPath: $(Build.ArtifactStagingDirectory)/TaskV1
   extensionArtifactPath: $(Build.ArtifactStagingDirectory)/Extension
   extensionVersion: $(Build.BuildId)
   npmjsEdpointName: dmitryserbin-npmjs
