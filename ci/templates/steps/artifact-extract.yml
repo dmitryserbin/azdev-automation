@@ -1,5 +1,5 @@
 parameters:
-  path: 
+  path: ""
   outputPath: ""
 
 steps:
