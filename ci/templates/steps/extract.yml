@@ -8,3 +8,4 @@ steps:
   inputs:
     archiveFilePatterns: ${{ parameters.path }}
     destinationFolder: ${{ parameters.outputPath }}
+    cleanDestinationFolder: false
