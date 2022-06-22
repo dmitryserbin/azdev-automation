@@ -27,4 +27,4 @@ stages:
   jobs:
   - template: templates/release-framework.yml
     parameters:
-      dryRun: ne(variables['Build.SourceBranch'], 'refs/heads/master')
+      dryRun: ${{ ne(variables['Build.SourceBranch'], 'refs/heads/master') }}
