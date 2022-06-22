@@ -1,59 +1,56 @@
 parameters:
   path: ""
-  restore: false
   lint: false
-  build: false
   test: false
   clean: false
   pack: false
   outputPath: ""
 
 steps:
-- ${{ if eq(parameters.restore, true) }}:
-  - task: Npm@1
-    displayName: Restore packages
-    inputs:
-      workingDir: ${{ parameters.path }}
+- task: Npm@1
+  displayName: Install packages
+  inputs:
+    command: install
+    workingDir: ${{ parameters.path }}
+
+- task: Npm@1
+  displayName: Run build
+  inputs:
+    command: custom
+    customCommand: run build
+    workingDir: ${{ parameters.path }
 
 - ${{ if eq(parameters.lint, true) }}:
   - task: Npm@1
     displayName: Run lint
     inputs:
       command: custom
-      workingDir: ${{ parameters.path }}
       customCommand: run lint
-
-- ${{ if eq(parameters.build, true) }}:
-  - task: Npm@1
-    displayName: Run build
-    inputs:
-      command: custom
-      workingDir: ${{ parameters.path }}
-      customCommand: run build
+      workingDir: ${{ parameters.path }}}
 
 - ${{ if eq(parameters.test, true) }}:
   - task: Npm@1
     displayName: Run tests
     inputs:
       command: custom
-      workingDir: ${{ parameters.path }}
       customCommand: run test
+      workingDir: ${{ parameters.path }}
 
 - ${{ if eq(parameters.clean, true) }}:
   - task: Npm@1
     displayName: Run clean
     inputs:
       command: custom
-      workingDir: ${{ parameters.path }}
       customCommand: run clean
+      workingDir: ${{ parameters.path }}
 
 - ${{ if eq(parameters.pack, true) }}:
   - task: Npm@1
     displayName: Create package
     inputs:
       command: custom
-      workingDir: ${{ parameters.path }}
       customCommand: pack
+      workingDir: ${{ parameters.path }}
 
 - ${{ if ne(parameters.outputPath, '') }}:
   - task: CopyFiles@2

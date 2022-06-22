@@ -18,6 +18,4 @@ jobs:
     - template: steps/build.yml
       parameters:
         path: ${{ variables.taskPath }}
-        restore: true
         lint: true
-        build: true

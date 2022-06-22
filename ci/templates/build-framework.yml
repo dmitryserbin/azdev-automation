@@ -11,9 +11,7 @@ jobs:
   - template: steps/build.yml
     parameters:
       path: ${{ variables.frameworkPath }}
-      restore: true
       lint: true
-      build: true
       test: true
       pack: true
       outputPath: ${{ variables.frameworkArtifactPath }}
