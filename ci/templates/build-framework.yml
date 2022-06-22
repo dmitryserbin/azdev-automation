@@ -8,7 +8,7 @@ jobs:
   variables:
   - template: ../variables.yml
   steps:
-  - template: steps/build.yml
+  - template: steps/build-node.yml
     parameters:
       path: ${{ variables.frameworkPath }}
       lint: true
@@ -17,7 +17,7 @@ jobs:
       outputPath: ${{ variables.frameworkArtifactPath }}
       outputFilter: "*.tgz"
   - ${{ if eq(parameters.artifact, true) }}:
-    - template: steps/artifact-publish.yml
+    - template: steps/artifact-publish-node.yml
       parameters:
         name: ${{ variables.frameworkArtifactName }}
         path: ${{ variables.frameworkArtifactPath }}

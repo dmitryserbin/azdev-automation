@@ -16,7 +16,7 @@ jobs:
     parameters:
       path: ${{ variables.frameworkArtifactPath }}/*.tgz
       outputPath: ${{ variables.frameworkArtifactPath }}
-  - template: steps/publish.yml
+  - template: steps/publish-node.yml
     parameters:
       endpointName: ${{ variables.npmjsEdpointName }}
       path: ${{ variables.frameworkArtifactPath }}/package
