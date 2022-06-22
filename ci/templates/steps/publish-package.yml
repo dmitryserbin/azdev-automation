@@ -11,10 +11,10 @@ steps:
       command: custom
       customCommand: publish --dry-run
       workingDir: ${{ parameters.path }}
-${{ else }}:
-  - task: Npm@1
-    displayName: Publish package
-    inputs:
-      publishEndpoint: ${{ parameters.endpointName }}
-      command: publish
-      workingDir: ${{ parameters.path }}
+  ${{ else }}:
+    - task: Npm@1
+      displayName: Publish package
+      inputs:
+        publishEndpoint: ${{ parameters.endpointName }}
+        command: publish
+        workingDir: ${{ parameters.path }}
