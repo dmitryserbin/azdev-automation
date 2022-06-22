@@ -12,3 +12,8 @@ jobs:
     parameters:
       name: ${{ variables.frameworkArtifactName }}
       path: ${{ variables.frameworkArtifactPath }}
+  - template: steps/publish-package.yml
+    parameters:
+      endpointName: ${{ variables.npmjsEdpointName }}
+      path: ${{ variables.frameworkArtifactPath }}
+      dryRun: true
