@@ -26,7 +26,7 @@ steps:
     inputs:
       command: custom
       customCommand: run lint
-      workingDir: ${{ parameters.path }}}
+      workingDir: ${{ parameters.path }}
 
 - ${{ if eq(parameters.test, true) }}:
   - task: Npm@1
