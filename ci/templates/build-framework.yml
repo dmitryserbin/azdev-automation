@@ -1,0 +1,24 @@
+parameters:
+  artifact: false
+
+jobs:
+- job: Framework
+  workspace:
+    clean: all
+  variables:
+  - template: ../variables.yml
+  steps:
+  - template: steps/build.yml
+    parameters:
+      path: ${{ variables.frameworkPath }}
+      restore: true
+      lint: true
+      build: true
+      test: true
+      pack: true
+      outputPath: ${{ variables.frameworkArtifactPath }}
+  - ${{ if eq(parameters.artifact, true) }}:
+    - template: steps/publish.yml
+      parameters:
+        name: ${{ variables.frameworkArtifactName }}
+        path: ${{ variables.frameworkArtifactPath }}
