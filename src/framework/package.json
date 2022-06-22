@@ -38,7 +38,7 @@
   "scripts": {
     "build": "tsc --build --clean && tsc",
     "lint": "eslint . --ext .ts",
-    "test": "mocha -r ts-node/register tests/**/*.test.ts --no-timeouts --reporter mocha-multi-reporters --reporter-options configFile=mocha.json",
+    "test": "mocha -r ts-node/register tests/**/*.test.ts --no-timeouts --reporter mocha-multi-reporters --reporter-options configFile=tests/config.json",
     "patch": "npm version patch --no-git-tag-version",
     "clean": "npm prune --production",
     "pack": "npm pack",
