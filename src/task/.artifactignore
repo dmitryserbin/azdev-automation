@@ -1,0 +1,4 @@
+**/*.ts
+**/.eslintrc
+**/.artifactignore
+**/tsconfig.json
