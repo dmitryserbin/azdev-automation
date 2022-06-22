@@ -15,6 +15,7 @@ jobs:
       test: true
       pack: true
       outputPath: ${{ variables.frameworkArtifactPath }}
+      outputFilter: "*.tgz"
   - ${{ if eq(parameters.artifact, true) }}:
     - template: steps/publish.yml
       parameters:
