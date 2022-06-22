@@ -15,9 +15,9 @@ jobs:
   - template: steps/extract.yml
     parameters:
       path: ${{ variables.frameworkArtifactPath }}/*.tgz
-      outputPath: ${{ variables.frameworkArtifactPath }}/output
+      outputPath: ${{ variables.frameworkArtifactPath }}
   - template: steps/publish-package.yml
     parameters:
       endpointName: ${{ variables.npmjsEdpointName }}
-      path: ${{ variables.frameworkArtifactPath }}/output
+      path: ${{ variables.frameworkArtifactPath }}/package
       dryRun: ${{ parameters.dryRun }}
