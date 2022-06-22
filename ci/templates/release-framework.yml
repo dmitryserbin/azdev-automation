@@ -1,5 +1,5 @@
 parameters:
-  mock: true
+  dryRun: false
 
 jobs:
 - job: Framework
@@ -12,8 +12,12 @@ jobs:
     parameters:
       name: ${{ variables.frameworkArtifactName }}
       path: ${{ variables.frameworkArtifactPath }}
+  - template: steps/extract.yml
+    parameters:
+      path: ${{ variables.frameworkArtifactPath }}/*.tgz
+      outputPath: ${{ variables.frameworkArtifactPath }}/output
   - template: steps/publish-package.yml
     parameters:
       endpointName: ${{ variables.npmjsEdpointName }}
-      path: ${{ variables.frameworkArtifactPath }}
-      dryRun: true
+      path: ${{ variables.frameworkArtifactPath }}/output
+      dryRun: ${{ parameters.dryRun }}

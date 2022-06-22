@@ -28,4 +28,4 @@ stages:
   jobs:
   - template: templates/release-framework.yml
     parameters:
-      mock: true
+      dryRun: true
