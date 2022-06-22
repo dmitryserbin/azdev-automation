@@ -3,3 +3,5 @@ variables:
   frameworkArtifactName: Framework
   frameworkArtifactPath: $(Build.ArtifactStagingDirectory)/Framework
   taskPath: src/task
+  taskArtifactName: Task
+  taskArtifactPath: $(Build.ArtifactStagingDirectory)/Task
