@@ -28,6 +28,10 @@ jobs:
       build: true
       test: true
       package: true
+  - template: templates/publish.yml
+    parameters:
+      name: ${{ variables.frameworkArtifactName }}
+      path: ${{ variables.frameworkArtifactPath }}
 
 - job: Task
   workspace:
