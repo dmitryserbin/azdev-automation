@@ -2,6 +2,7 @@ parameters:
   path: ""
   contents: ""
   version: ""
+  artifactName: ""
   publish: false
 
 steps:
@@ -15,9 +16,9 @@ steps:
     targetFolder: ${{ parameters.path }}
 
 - task: DownloadPipelineArtifact@2
-  displayName: Copy tasks
+  displayName: Copy task
   inputs:
-    source: current
+    artifact: ${{ parameters.artifactName }}
     path: ${{ parameters.path }}/tasks
 
 - ${{ if ne(parameters.version, '') }}:
