@@ -14,11 +14,11 @@ export class ArtifactFactory implements IArtifactFactory {
     constructor(config: string, policies: string, schemas: string) {
 
         this.configuration = { path: config, schema: join(schemas, "configuration.json") };
-        this.projectPermissions = { path: join(policies, "projectPermissions.json"), schema: join(schemas, "projectPermissions.json") };
-        this.buildPermissions = { path: join(policies, "buildPermissions.json"), schema: join(schemas, "buildPermissions.json") };
-        this.releasePermissions = { path: join(policies, "releasePermissions.json"), schema: join(schemas, "releasePermissions.json") };
-        this.repositoryPermissions = { path: join(policies, "repositoryPermissions.json"), schema: join(schemas, "repositoryPermissions.json") };
-        this.workPermissions = { path: join(policies, "workPermissions.json"), schema: join(schemas, "workPermissions.json") };
+        this.projectPermissions = { path: join(policies, "projectPermissions.json"), schema: join(schemas, "permission-project.json") };
+        this.buildPermissions = { path: join(policies, "buildPermissions.json"), schema: join(schemas, "permission-build.json") };
+        this.releasePermissions = { path: join(policies, "releasePermissions.json"), schema: join(schemas, "permission-release.json") };
+        this.repositoryPermissions = { path: join(policies, "repositoryPermissions.json"), schema: join(schemas, "permission-repository.json") };
+        this.workPermissions = { path: join(policies, "workPermissions.json"), schema: join(schemas, "permission-work.json") };
 
     }
 
