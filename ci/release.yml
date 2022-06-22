@@ -27,5 +27,4 @@ stages:
   jobs:
   - template: templates/release-framework.yml
     parameters:
-      dryRun: true
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+      dryRun: ne(variables['Build.SourceBranch'], 'refs/heads/master')

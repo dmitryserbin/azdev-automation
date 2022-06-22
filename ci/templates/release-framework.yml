@@ -2,7 +2,8 @@ parameters:
   dryRun: false
 
 jobs:
-- job: Framework
+- deployment: Framework
+  environment: NpmJs
   workspace:
     clean: all
   variables:
