@@ -3,7 +3,7 @@ parameters:
   path: ""
 
 steps:
-- task: DownloadPipelineArtifact@1
+- task: DownloadPipelineArtifact@2
   displayName: Download artifact
   inputs:
     artifact: ${{ parameters.name }}
