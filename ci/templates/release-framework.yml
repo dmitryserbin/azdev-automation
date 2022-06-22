@@ -12,7 +12,7 @@ jobs:
     parameters:
       name: ${{ variables.frameworkArtifactName }}
       path: ${{ variables.frameworkArtifactPath }}
-  - template: steps/extract.yml
+  - template: steps/artifact-extract.yml
     parameters:
       path: ${{ variables.frameworkArtifactPath }}/*.tgz
       outputPath: ${{ variables.frameworkArtifactPath }}
