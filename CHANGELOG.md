@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.12
+
+- Minor code quality improvements
+- Rename permission policy schema files
+
 ## 1.0.11
 
 - Add AAD group membership support

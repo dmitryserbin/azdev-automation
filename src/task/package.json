@@ -1,0 +1,31 @@
+{
+  "name": "azdevautomation",
+  "version": "1.0.0",
+  "description": "Azure DevOps automation task",
+  "main": "task.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmitryserbin/azdev-automation"
+  },
+  "scripts": {
+    "build": "tsc --build --clean && tsc",
+    "lint": "eslint . --ext .ts",
+    "clean": "npm prune --production",
+    "all": "npm install && npm run build && npm run lint && npm run clean"
+  },
+  "author": "Dmitry Serbin",
+  "license": "MIT",
+  "dependencies": {
+    "@types/q": "^1.5.5",
+    "azdev-automation": "file:../framework/azdev-automation-1.0.12.tgz",
+    "azure-pipelines-task-lib": "^3.3.1",
+    "q": "^1.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.29.0",
+    "@typescript-eslint/parser": "^5.29.0",
+    "eslint": "^8.18.0",
+    "typescript": "^4.7.4"
+  }
+}

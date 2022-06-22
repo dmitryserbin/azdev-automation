@@ -1,0 +1,26 @@
+parameters:
+  artifact: false
+
+jobs:
+- job: Task
+  workspace:
+    clean: all
+  variables:
+  - template: ../variables.yml
+  dependsOn:
+  - Framework
+  steps:
+  - template: steps/artifact-download.yml
+    parameters:
+      name: ${{ variables.frameworkArtifactName }}
+      path: ${{ variables.frameworkPath }}
+  - template: steps/build-node.yml
+    parameters:
+      path: ${{ variables.taskPath }}
+      lint: true
+      outputPath: ${{ variables.taskArtifactPath }}
+  - ${{ if eq(parameters.artifact, true) }}:
+    - template: steps/artifact-publish.yml
+      parameters:
+        name: ${{ variables.taskArtifactName }}
+        path: ${{ variables.taskArtifactPath }}

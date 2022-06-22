@@ -1,0 +1,23 @@
+parameters:
+  dryRun: false
+
+jobs:
+- job: Framework
+  workspace:
+    clean: all
+  variables:
+  - template: ../variables.yml
+  steps:
+  - template: steps/artifact-download.yml
+    parameters:
+      name: ${{ variables.frameworkArtifactName }}
+      path: ${{ variables.frameworkArtifactPath }}
+  - template: steps/artifact-extract.yml
+    parameters:
+      path: ${{ variables.frameworkArtifactPath }}/*.tgz
+      outputPath: ${{ variables.frameworkArtifactPath }}
+  - template: steps/publish-node.yml
+    parameters:
+      endpointName: ${{ variables.npmjsEdpointName }}
+      path: ${{ variables.frameworkArtifactPath }}/package
+      dryRun: ${{ parameters.dryRun }}

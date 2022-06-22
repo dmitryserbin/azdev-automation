@@ -1,0 +1,8 @@
+variables:
+  frameworkPath: src/framework
+  frameworkArtifactName: Framework
+  frameworkArtifactPath: $(Build.ArtifactStagingDirectory)/Framework
+  taskPath: src/task
+  taskArtifactName: Task
+  taskArtifactPath: $(Build.ArtifactStagingDirectory)/Task
+  npmjsEdpointName: dmitryserbin-npmjs

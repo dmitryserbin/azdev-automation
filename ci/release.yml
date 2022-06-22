@@ -4,52 +4,28 @@ trigger:
     - master
   paths:
     exclude:
-    - task
+    - src/task
 
 pr: none
 
 pool:
-  vmImage: windows-latest
+  name: Default
 
-steps:
-- task: Npm@1
-  displayName: Restore packages
-  inputs:
-    command: install
+stages:
+- stage: Build
+  jobs:
+  - template: templates/build-framework.yml
+    parameters:
+      artifact: true
+  - template: templates/build-task.yml
+    parameters:
+      artifact: true
 
-- task: Npm@1
-  displayName: Run lint
-  inputs:
-    command: custom
-    customCommand: run lint
-
-- task: Npm@1
-  displayName: Run build
-  inputs:
-    command: custom
-    customCommand: run build
-
-- task: Npm@1
-  displayName: Run tests
-  inputs:
-    command: custom
-    customCommand: run test
-
-- task: Npm@1
-  displayName: Run clean
-  inputs:
-    command: custom
-    customCommand: run clean
-
-- task: Npm@1
-  displayName: Publish package
-  inputs:
-    command: publish
-    workingDir: $(Build.SourcesDirectory)
-    publishEndpoint: dmitryserbin-npmjs
-
-- task: PublishTestResults@2
-  displayName: Publish test results
-  inputs:
-    testResultsFiles: test-*.xml
-  condition: always()
+- stage: Release
+  dependsOn:
+  - Build
+  jobs:
+  - template: templates/release-framework.yml
+    parameters:
+      dryRun: true
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))

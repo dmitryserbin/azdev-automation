@@ -1,0 +1,11 @@
+parameters:
+  path: ""
+  outputPath: ""
+
+steps:
+- task: ExtractFiles@1
+  displayName: Extract package
+  inputs:
+    archiveFilePatterns: ${{ parameters.path }}
+    destinationFolder: ${{ parameters.outputPath }}
+    cleanDestinationFolder: false

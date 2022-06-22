@@ -1,0 +1,23 @@
+parameters:
+  artifact: false
+
+jobs:
+- job: Framework
+  workspace:
+    clean: all
+  variables:
+  - template: ../variables.yml
+  steps:
+  - template: steps/build-node.yml
+    parameters:
+      path: ${{ variables.frameworkPath }}
+      lint: true
+      test: true
+      pack: true
+      outputPath: ${{ variables.frameworkArtifactPath }}
+      outputFilter: "*.tgz"
+  - ${{ if eq(parameters.artifact, true) }}:
+    - template: steps/artifact-publish.yml
+      parameters:
+        name: ${{ variables.frameworkArtifactName }}
+        path: ${{ variables.frameworkArtifactPath }}

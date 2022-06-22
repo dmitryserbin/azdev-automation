@@ -1,40 +1,21 @@
 trigger: none
 
+pr:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - src/*
+  autoCancel: true
+
 pool:
-  vmImage: windows-latest
+  name: Default
 
-steps:
-- task: Npm@1
-  displayName: Restore packages
-  inputs:
-    command: install
-
-- task: Npm@1
-  displayName: Run lint
-  inputs:
-    command: custom
-    customCommand: run lint
-
-- task: Npm@1
-  displayName: Run build
-  inputs:
-    command: custom
-    customCommand: run build
-
-- task: Npm@1
-  displayName: Run tests
-  inputs:
-    command: custom
-    customCommand: run test
-
-- task: Npm@1
-  displayName: Run package tests
-  inputs:
-    command: custom
-    customCommand: publish --dry-run
-
-- task: PublishTestResults@2
-  displayName: Publish test results
-  inputs:
-    testResultsFiles: test-*.xml
-  condition: always()
+jobs:
+- template: templates/build-framework.yml
+  parameters:
+    artifact: true
+- template: templates/build-task.yml
+  parameters:
+    artifact: true

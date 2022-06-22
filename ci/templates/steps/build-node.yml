@@ -1,0 +1,71 @@
+parameters:
+  path: ""
+  lint: false
+  test: false
+  clean: false
+  pack: false
+  outputPath: ""
+  outputFilter: ""
+
+steps:
+- task: Npm@1
+  displayName: Install packages
+  inputs:
+    command: install
+    workingDir: ${{ parameters.path }}
+
+- task: Npm@1
+  displayName: Run build
+  inputs:
+    command: custom
+    customCommand: run build
+    workingDir: ${{ parameters.path }}
+
+- ${{ if eq(parameters.lint, true) }}:
+  - task: Npm@1
+    displayName: Run lint
+    inputs:
+      command: custom
+      customCommand: run lint
+      workingDir: ${{ parameters.path }}
+
+- ${{ if eq(parameters.test, true) }}:
+  - task: Npm@1
+    displayName: Run tests
+    inputs:
+      command: custom
+      customCommand: run test
+      workingDir: ${{ parameters.path }}
+
+- ${{ if eq(parameters.clean, true) }}:
+  - task: Npm@1
+    displayName: Run clean
+    inputs:
+      command: custom
+      customCommand: run clean
+      workingDir: ${{ parameters.path }}
+
+- ${{ if eq(parameters.pack, true) }}:
+  - task: Npm@1
+    displayName: Create package
+    inputs:
+      command: custom
+      customCommand: pack
+      workingDir: ${{ parameters.path }}
+
+- ${{ if ne(parameters.outputPath, '') }}:
+  - task: CopyFiles@2
+    displayName: Copy package
+    inputs:
+      sourceFolder: ${{ parameters.path }}
+      ${{ if ne(parameters.outputFilter, '') }}:
+        contents: |
+          ${{ parameters.outputFilter }}
+      targetFolder: ${{ parameters.outputPath }}
+
+- ${{ if eq(parameters.test, true) }}:
+  - task: PublishTestResults@2
+    displayName: Publish test results
+    inputs:
+      testResultsFiles: "**/results.xml"
+    condition: always()
