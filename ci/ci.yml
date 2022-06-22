@@ -27,7 +27,8 @@ jobs:
       lint: true
       build: true
       test: true
-      package: true
+      pack: true
+      outputPath: ${{ variables.frameworkArtifactPath }}
   - template: templates/publish.yml
     parameters:
       name: ${{ variables.frameworkArtifactName }}
@@ -39,6 +40,10 @@ jobs:
   dependsOn:
   - Framework
   steps:
+  - template: templates/download.yml
+    parameters:
+      name: ${{ variables.frameworkArtifactName }}
+      path: ${{ variables.frameworkPath }}
   - template: templates/build.yml
     parameters:
       path: ${{ variables.taskPath }}

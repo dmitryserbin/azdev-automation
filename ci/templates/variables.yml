@@ -1,5 +1,5 @@
 variables:
   frameworkPath: src/framework
-  frameworkArtifactName: framework
-  frameworkArtifactPath: src/framework/*.tgz
+  frameworkArtifactName: Framework
+  frameworkArtifactPath: $(Build.ArtifactStagingDirectory)/Framework
   taskPath: src/task

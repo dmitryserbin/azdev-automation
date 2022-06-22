@@ -5,7 +5,8 @@ parameters:
   build: false
   test: false
   clean: false
-  package: false
+  pack: false
+  outputPath: ""
 
 steps:
 - ${{ if eq(parameters.restore, true) }}:
@@ -46,13 +47,22 @@ steps:
       workingDir: ${{ parameters.path }}
       customCommand: run clean
 
-- ${{ if eq(parameters.package, true) }}:
+- ${{ if eq(parameters.pack, true) }}:
   - task: Npm@1
     displayName: Create package
     inputs:
       command: custom
       workingDir: ${{ parameters.path }}
       customCommand: pack
+
+- ${{ if ne(parameters.outputPath, '') }}:
+  - task: CopyFiles@2
+    displayName: Copy package
+    inputs:
+      sourceFolder: ${{ parameters.path }}
+      contents: |
+        *.tgz
+      targetFolder: ${{ parameters.outputPath }}
 
 - ${{ if eq(parameters.test, true) }}:
   - task: PublishTestResults@2
