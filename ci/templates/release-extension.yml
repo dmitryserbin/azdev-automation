@@ -16,7 +16,7 @@ jobs:
         - template: steps/artifact-download.yml
           parameters:
             name: ${{ variables.extensionArtifactName }}
-            path: ${{ variables.extensionArtifactPath }}
+            path: ${{ variables.extensionArtifactPath }}/*.vsix
         - template: steps/publish-extension.yml
           parameters:
             path: ${{ variables.extensionArtifactPath }}

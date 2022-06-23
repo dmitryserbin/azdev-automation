@@ -19,7 +19,7 @@ jobs:
             path: ${{ variables.extensionArtifactPath }}
         - template: steps/publish-extension.yml
           parameters:
-            path: ${{ variables.extensionArtifactPath }}
+            path: ${{ variables.extensionArtifactPath }}/*.vsix
             endpointName: ${{ variables.marketplaceEndpoint }}
             visibility: ${{ variables.extensionPreviewVisibility }}
             shareWith: ${{ variables.extensionPreviewShareWith }}
