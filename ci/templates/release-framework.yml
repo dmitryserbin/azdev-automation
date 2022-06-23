@@ -1,9 +1,10 @@
 parameters:
+  environmentName: ""
   dryRun: false
 
 jobs:
 - deployment: Framework
-  environment: NpmJs
+  environment: ${{ parameters.environmentName }}
   workspace:
     clean: all
   variables:
@@ -22,6 +23,6 @@ jobs:
             outputPath: ${{ variables.frameworkArtifactPath }}
         - template: steps/publish-node.yml
           parameters:
-            endpointName: ${{ variables.npmjsEdpointName }}
+            endpointName: ${{ variables.npmjsEdpoint }}
             path: ${{ variables.frameworkArtifactPath }}/package
             dryRun: ${{ parameters.dryRun }}

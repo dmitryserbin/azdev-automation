@@ -20,6 +20,17 @@ stages:
   - template: templates/build-task.yml
     parameters:
       artifact: true
+  - template: templates/build-extension.yml
+    parameters:
+      artifact: true
+
+- stage: Preview
+  dependsOn:
+  - Build
+  jobs:
+  - template: templates/preview.yml
+    parameters:
+      environmentName: Marketplace
 
 - stage: Release
   dependsOn:
@@ -27,4 +38,5 @@ stages:
   jobs:
   - template: templates/release-framework.yml
     parameters:
+      environmentName: NpmJs
       dryRun: ${{ ne(variables['Build.SourceBranch'], 'refs/heads/master') }}
