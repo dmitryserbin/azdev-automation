@@ -12,6 +12,7 @@ jobs:
     runOnce:
       deploy:
         steps:
+        - download: none
         - template: steps/artifact-download.yml
           parameters:
             name: ${{ variables.extensionArtifactName }}
