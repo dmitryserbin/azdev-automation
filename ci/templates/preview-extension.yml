@@ -15,7 +15,7 @@ jobs:
         - template: steps/artifact-download.yml
           parameters:
             name: ${{ variables.extensionArtifactName }}
-            path: ${{ variables.extensionArtifactPath }}
+            path: $(Build.ArtifactStagingDirectory)
         - template: steps/publish-extension.yml
           parameters:
             path: ${{ variables.extensionArtifactPath }}
