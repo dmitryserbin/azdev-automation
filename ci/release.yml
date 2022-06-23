@@ -28,9 +28,10 @@ stages:
   dependsOn:
   - Build
   jobs:
-  - template: templates/preview-extension.yml
+  - template: templates/release-extension.yml
     parameters:
       environmentName: Marketplace
+      preview: true
 
 - stage: Release
   dependsOn:
