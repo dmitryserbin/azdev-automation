@@ -35,6 +35,7 @@ stages:
 - stage: Release
   dependsOn:
   - Build
+  - Preview
   jobs:
   - template: templates/release-framework.yml
     parameters:
