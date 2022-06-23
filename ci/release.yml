@@ -37,6 +37,9 @@ stages:
   - Build
   - Preview
   jobs:
+  - template: templates/release-extension.yml
+    parameters:
+      environmentName: Marketplace
   - template: templates/release-framework.yml
     parameters:
       environmentName: NpmJs
