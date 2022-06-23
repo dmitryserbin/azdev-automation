@@ -5,6 +5,7 @@ variables:
   taskPath: src/TaskV1
   taskArtifactName: TaskV1
   taskArtifactPath: $(Build.ArtifactStagingDirectory)/TaskV1
+  extensionArtifactName: Extension
   extensionArtifactPath: $(Build.ArtifactStagingDirectory)/Extension
   extensionPreviewVisibility: privatepreview
   extensionPreviewShareWith: dmitryserbin,iag

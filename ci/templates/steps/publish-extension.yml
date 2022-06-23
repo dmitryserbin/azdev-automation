@@ -6,9 +6,6 @@ parameters:
   tag: ""
 
 steps:
-- download: current
-  displayName: Download artifacts
-
 - task: TfxInstaller@3
   displayName: Install Node CLI
 

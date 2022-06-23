@@ -12,6 +12,10 @@ jobs:
     runOnce:
       deploy:
         steps:
+        - template: steps/artifact-download.yml
+          parameters:
+            name: ${{ variables.extensionArtifactName }}
+            path: ${{ variables.extensionArtifactPath }}
         - template: steps/publish-extension.yml
           parameters:
             path: ${{ variables.extensionArtifactPath }}
