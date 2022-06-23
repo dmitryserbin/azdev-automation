@@ -18,6 +18,10 @@ jobs:
         LICENSE
         *.md
         *.json
-      artifactName: ${{ variables.taskArtifactName }}
+      taskName: ${{ variables.taskArtifactName }}
       version: ${{ variables.extensionVersion }}
-      publish: ${{ parameters.artifact }}
+  - ${{ if eq(parameters.artifact, true) }}:
+    - template: steps/artifact-publish.yml
+      parameters:
+        name: ${{ variables.extensionArtifactName }}
+        path: $(extensionPath)

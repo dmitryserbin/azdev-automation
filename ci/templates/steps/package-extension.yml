@@ -1,9 +1,8 @@
 parameters:
   path: ""
   contents: ""
-  artifactName: ""
+  taskName: ""
   version: ""
-  publish: false
 
 steps:
 - task: TfxInstaller@3
@@ -18,8 +17,8 @@ steps:
 - task: DownloadPipelineArtifact@2
   displayName: Copy task artifact
   inputs:
-    artifact: ${{ parameters.artifactName }}
-    path: ${{ parameters.path }}/tasks/${{ parameters.artifactName }}
+    artifact: ${{ parameters.taskName }}
+    path: ${{ parameters.path }}/tasks/${{ parameters.taskName }}
 
 - ${{ if ne(parameters.version, '') }}:
   - task: PowerShell@2
@@ -38,8 +37,3 @@ steps:
   inputs:
     rootFolder: ${{ parameters.path }}
     outputVariable: extensionPath
-
-- ${{ if eq(parameters.publish, true) }}:
-  - publish: $(extensionPath)
-    displayName: Publish artifact
-    artifact: Extension
