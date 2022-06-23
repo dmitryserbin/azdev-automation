@@ -9,5 +9,5 @@ variables:
   extensionPreviewVisibility: privatepreview
   extensionPreviewShareWith: dmitryserbin,iag
   extensionVersion: $(Build.BuildId)
-  npmjsEdpoint: dmitryserbin-npmjs
+  npmjsEdpoint: dmitryserbin.npmjs
   marketplaceEndpoint: dmitryserbin.marketplace
