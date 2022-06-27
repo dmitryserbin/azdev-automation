@@ -1,5 +1,8 @@
 trigger: none
 
+pool:
+  name: Default
+
 stages:
 - stage: Test
   dependsOn: []
