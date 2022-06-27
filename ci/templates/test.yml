@@ -1,11 +1,23 @@
 jobs:
-- job: Test
+- job: Projects
   workspace:
     clean: all
   variables:
   - template: ../variables.yml
   steps:
-  - template: steps/test.yml
+  - template: steps/test-projects.yml
+    parameters:
+      endpointName: ${{ variables.testEndpoint }}
+      configPath: ${{ variables.testConfigPath }}
+      policiesPath: ${{ variables.testPoliciesPath }}
+
+- job: Permissions
+  workspace:
+    clean: all
+  variables:
+  - template: ../variables.yml
+  steps:
+  - template: steps/test-permissions.yml
     parameters:
       endpointName: ${{ variables.testEndpoint }}
       configPath: ${{ variables.testConfigPath }}
