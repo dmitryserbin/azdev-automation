@@ -7,10 +7,8 @@ steps:
 - task: azdev-automation@1
   displayName: Configure permissions
   inputs:
-    ConnectedService: ${{ parameters.endpointName }}
-    Config: ${{ parameters.configPath }}
-    Policies: ${{ parameters.policiesPath }}
-    ProjectSetup: false
-    AccessPermissions: true
-    BranchPolicies: false
-    ServiceConnections: false
+    endpointName: ${{ parameters.endpointName }}
+    configPath: ${{ parameters.configPath }}
+    policiesPath: ${{ parameters.policiesPath }}
+    projectSetup: false
+    accessPermissions: true
