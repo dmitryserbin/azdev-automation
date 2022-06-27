@@ -4,7 +4,7 @@ parameters:
   policiesPath: ""
 
 steps:
-- task: azdevautomation@1
+- task: azdev-automation@1
   displayName: Create project
   inputs:
     ConnectedService: ${{ parameters.endpointName }}
@@ -15,7 +15,7 @@ steps:
     BranchPolicies: false
     ServiceConnections: false
 
-- task: azdevautomation@1
+- task: azdev-automation@1
   displayName: Configure permissions
   inputs:
     ConnectedService: ${{ parameters.endpointName }}
