@@ -1,9 +1,9 @@
 ﻿{
   "id": "a9f89c71-329c-4b2e-851f-c25dae3da139",
-  "name": "azdevautomation",
+  "name": "azdev-automation",
   "friendlyName": "Azure DevOps Automation",
   "instanceNameFormat": "Run Azure DevOps automation",
-  "description": "Task to execute Azure DevOps automation framework",
+  "description": "Azure DevOps Service configuration and access controls automation framwork",
   "helpMarkDown": "For aditional information and support please refer to <https://github.com/dmitryserbin/azdev-automation> project repository.",
   "category": "Release",
   "author": "Dmitry Serbin",

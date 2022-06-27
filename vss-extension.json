@@ -1,0 +1,78 @@
+{
+  "manifestVersion": 1,
+  "id": "azdev-automation",
+  "name": "Azure DevOps Automation",
+  "version": "1.0.0",
+  "publisher": "dmitryserbin",
+  "public": true,
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "description": "Azure DevOps Service configuration and access controls automation framwork",
+  "categories": [
+    "Azure Pipelines"
+  ],
+  "tags": [
+    "Automation",
+    "Confuguration",
+    "RBAC"
+  ],
+  "icons": {
+    "default": "images/icon.png"
+  },
+  "content": {
+    "details": {
+      "path": "README.md"
+    },
+    "changelog": {
+      "path": "CHANGELOG.md"
+    },
+    "privacy": {
+      "path": "PRIVACY.md"
+    },
+    "license": {
+      "path": "LICENSE"
+    }
+  },
+  "links": {
+    "getstarted": {
+      "uri": "https://github.com/dmitryserbin/azdev-automation"
+    },
+    "support": {
+      "uri": "https://github.com/dmitryserbin/azdev-automation/issues"
+    },
+    "license": {
+      "uri": "https://github.com/dmitryserbin/azdev-automation/blob/master/LICENSE"
+    },
+    "privacypolicy": {
+      "uri": "https://github.com/dmitryserbin/azdev-automation/blob/master/PRIVACY.md"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/dmitryserbin/azdev-automation"
+  },
+  "files": [
+    {
+      "path": "tasks"
+    },
+    {
+      "path": "images",
+      "addressable": true
+    }
+  ],
+  "contributions": [
+    {
+      "id": "azdev-automation-v1",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "tasks"
+      }
+    }
+  ]
+}

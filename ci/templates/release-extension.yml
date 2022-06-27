@@ -1,0 +1,28 @@
+parameters:
+  environmentName: ""
+  preview: false
+
+jobs:
+- deployment: Extension
+  environment: ${{ parameters.environmentName }}
+  workspace:
+    clean: all
+  variables:
+  - template: ../variables.yml
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - download: none
+        - template: steps/artifact-download.yml
+          parameters:
+            name: ${{ variables.extensionArtifactName }}
+            path: ${{ variables.extensionArtifactPath }}
+        - template: steps/publish-extension.yml
+          parameters:
+            path: ${{ variables.extensionArtifactPath }}/*.vsix
+            endpointName: ${{ variables.marketplaceEndpoint }}
+            ${{ if eq(parameters.preview, true) }}:
+              visibility: ${{ variables.extensionPreviewVisibility }}
+              shareWith: ${{ variables.extensionPreviewShareWith }}
+              tag: preview

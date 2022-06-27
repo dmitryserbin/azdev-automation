@@ -1,0 +1,27 @@
+parameters:
+  artifact: false
+
+jobs:
+- job: Extension
+  workspace:
+    clean: all
+  variables:
+  - template: ../variables.yml
+  dependsOn:
+  - Task
+  steps:
+  - template: steps/package-extension.yml
+    parameters:
+      path: ${{ variables.extensionArtifactPath }}
+      contents: |
+        images/**
+        LICENSE
+        *.md
+        *.json
+      taskName: ${{ variables.taskArtifactName }}
+      version: ${{ variables.extensionVersion }}
+  - ${{ if eq(parameters.artifact, true) }}:
+    - template: steps/artifact-publish.yml
+      parameters:
+        name: ${{ variables.extensionArtifactName }}
+        path: $(extensionPath)

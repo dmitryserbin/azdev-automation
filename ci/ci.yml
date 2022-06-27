@@ -19,3 +19,6 @@ jobs:
 - template: templates/build-task.yml
   parameters:
     artifact: true
+- template: templates/build-extension.yml
+  parameters:
+    artifact: true
