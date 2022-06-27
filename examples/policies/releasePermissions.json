@@ -1,0 +1,219 @@
+[
+  {
+    "name": "Standard",
+    "definition": [
+      {
+        "name": "Contributors",
+        "permissions": [
+          {
+            "name": "Administer release permissions",
+            "type": "NotSet"
+          },
+          {
+            "name": "Create releases",
+            "type": "Allow"
+          },
+          {
+            "name": "Delete release pipeline",
+            "type": "Allow"
+          },
+          {
+            "name": "Delete release stage",
+            "type": "Allow"
+          },
+          {
+            "name": "Delete releases",
+            "type": "Allow"
+          },
+          {
+            "name": "Edit release pipeline",
+            "type": "Allow"
+          },
+          {
+            "name": "Edit release stage",
+            "type": "Allow"
+          },
+          {
+            "name": "Manage deployments",
+            "type": "Allow"
+          },
+          {
+            "name": "Manage release approvers",
+            "type": "NotSet"
+          },
+          {
+            "name": "Manage releases",
+            "type": "Allow"
+          },
+          {
+            "name": "View release pipeline",
+            "type": "Allow"
+          },
+          {
+            "name": "View releases",
+            "type": "Allow"
+          }
+        ]
+      },
+      {
+        "name": "Project Administrators",
+        "permissions": [
+          {
+            "name": "Administer release permissions",
+            "type": "Allow"
+          },
+          {
+            "name": "Create releases",
+            "type": "Allow"
+          },
+          {
+            "name": "Delete release pipeline",
+            "type": "Allow"
+          },
+          {
+            "name": "Delete release stage",
+            "type": "Allow"
+          },
+          {
+            "name": "Delete releases",
+            "type": "Allow"
+          },
+          {
+            "name": "Edit release pipeline",
+            "type": "Allow"
+          },
+          {
+            "name": "Edit release stage",
+            "type": "Allow"
+          },
+          {
+            "name": "Manage deployments",
+            "type": "Allow"
+          },
+          {
+            "name": "Manage release approvers",
+            "type": "Allow"
+          },
+          {
+            "name": "Manage releases",
+            "type": "Allow"
+          },
+          {
+            "name": "View release pipeline",
+            "type": "Allow"
+          },
+          {
+            "name": "View releases",
+            "type": "Allow"
+          }
+        ]
+      },
+      {
+        "name": "Managers",
+        "permissions": [
+          {
+            "name": "Administer release permissions",
+            "type": "NotSet"
+          },
+          {
+            "name": "Create releases",
+            "type": "Allow"
+          },
+          {
+            "name": "Delete release pipeline",
+            "type": "NotSet"
+          },
+          {
+            "name": "Delete release stage",
+            "type": "NotSet"
+          },
+          {
+            "name": "Delete releases",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit release pipeline",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit release stage",
+            "type": "NotSet"
+          },
+          {
+            "name": "Manage deployments",
+            "type": "Allow"
+          },
+          {
+            "name": "Manage release approvers",
+            "type": "NotSet"
+          },
+          {
+            "name": "Manage releases",
+            "type": "Allow"
+          },
+          {
+            "name": "View release pipeline",
+            "type": "Allow"
+          },
+          {
+            "name": "View releases",
+            "type": "Allow"
+          }
+        ]
+      },
+      {
+        "name": "Readers",
+        "permissions": [
+          {
+            "name": "Administer release permissions",
+            "type": "NotSet"
+          },
+          {
+            "name": "Create releases",
+            "type": "NotSet"
+          },
+          {
+            "name": "Delete release pipeline",
+            "type": "NotSet"
+          },
+          {
+            "name": "Delete release stage",
+            "type": "NotSet"
+          },
+          {
+            "name": "Delete releases",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit release pipeline",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit release stage",
+            "type": "NotSet"
+          },
+          {
+            "name": "Manage deployments",
+            "type": "NotSet"
+          },
+          {
+            "name": "Manage release approvers",
+            "type": "NotSet"
+          },
+          {
+            "name": "Manage releases",
+            "type": "NotSet"
+          },
+          {
+            "name": "View release pipeline",
+            "type": "Allow"
+          },
+          {
+            "name": "View releases",
+            "type": "Allow"
+          }
+        ]
+      }
+    ]
+  }
+]

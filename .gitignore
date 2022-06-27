@@ -1,6 +1,4 @@
 **/node_modules
-**/configs
-**/policies
 **/.DS_Store
 **/.taskkey
 **/.npmrc
@@ -11,4 +9,3 @@
 **/*.log
 **/*.xml
 **/*.tgz
-**/pm-sync.ts

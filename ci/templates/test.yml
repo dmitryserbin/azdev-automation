@@ -1,0 +1,12 @@
+jobs:
+- job: Test
+  workspace:
+    clean: all
+  variables:
+  - template: ../variables.yml
+  steps:
+  - template: steps/test.yml
+    parameters:
+      endpointName: ${{ variables.testEndpoint }}
+      configPath: ${{ variables.testConfigPath }}
+      policiesPath: ${{ variables.testPoliciesPath }}

@@ -12,3 +12,6 @@ variables:
   extensionVersion: $(Build.BuildId)
   npmjsEdpoint: dmitryserbin.npmjs
   marketplaceEndpoint: dmitryserbin.marketplace
+  testEndpoint: azdev-automation
+  testConfigPath: examples/projects.json
+  testPoliciesPath: examples/policies

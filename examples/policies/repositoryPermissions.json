@@ -1,0 +1,267 @@
+[
+  {
+    "name": "Standard",
+    "definition": [
+      {
+        "name": "Contributors",
+        "permissions": [
+          {
+            "name": "Bypass policies when completing pull requests",
+            "type": "NotSet"
+          },
+          {
+            "name": "Bypass policies when pushing",
+            "type": "NotSet"
+          },
+          {
+            "name": "Contribute",
+            "type": "Allow"
+          },
+          {
+            "name": "Contribute to pull requests",
+            "type": "Allow"
+          },
+          {
+            "name": "Create branch",
+            "type": "Allow"
+          },
+          {
+            "name": "Create repository",
+            "type": "NotSet"
+          },
+          {
+            "name": "Create tag",
+            "type": "Allow"
+          },
+          {
+            "name": "Delete repository",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit policies",
+            "type": "NotSet"
+          },
+          {
+            "name": "Force push (rewrite history, delete branches and tags)",
+            "type": "Allow"
+          },
+          {
+            "name": "Manage notes",
+            "type": "Allow"
+          },
+          {
+            "name": "Manage permissions",
+            "type": "NotSet"
+          },
+          {
+            "name": "Read",
+            "type": "Allow"
+          },
+          {
+            "name": "Remove others' locks",
+            "type": "NotSet"
+          },
+          {
+            "name": "Rename repository",
+            "type": "NotSet"
+          }
+        ]
+      },
+      {
+        "name": "Project Administrators",
+        "permissions": [
+          {
+            "name": "Bypass policies when completing pull requests",
+            "type": "NotSet"
+          },
+          {
+            "name": "Bypass policies when pushing",
+            "type": "NotSet"
+          },
+          {
+            "name": "Contribute",
+            "type": "Allow"
+          },
+          {
+            "name": "Contribute to pull requests",
+            "type": "Allow"
+          },
+          {
+            "name": "Create branch",
+            "type": "Allow"
+          },
+          {
+            "name": "Create repository",
+            "type": "Allow"
+          },
+          {
+            "name": "Create tag",
+            "type": "Allow"
+          },
+          {
+            "name": "Delete repository",
+            "type": "Allow"
+          },
+          {
+            "name": "Edit policies",
+            "type": "Allow"
+          },
+          {
+            "name": "Force push (rewrite history, delete branches and tags)",
+            "type": "Allow"
+          },
+          {
+            "name": "Manage notes",
+            "type": "Allow"
+          },
+          {
+            "name": "Manage permissions",
+            "type": "Allow"
+          },
+          {
+            "name": "Read",
+            "type": "Allow"
+          },
+          {
+            "name": "Remove others' locks",
+            "type": "Allow"
+          },
+          {
+            "name": "Rename repository",
+            "type": "Allow"
+          }
+        ]
+      },
+      {
+        "name": "Managers",
+        "permissions": [
+          {
+            "name": "Bypass policies when completing pull requests",
+            "type": "NotSet"
+          },
+          {
+            "name": "Bypass policies when pushing",
+            "type": "NotSet"
+          },
+          {
+            "name": "Contribute",
+            "type": "NotSet"
+          },
+          {
+            "name": "Contribute to pull requests",
+            "type": "Allow"
+          },
+          {
+            "name": "Create branch",
+            "type": "NotSet"
+          },
+          {
+            "name": "Create repository",
+            "type": "NotSet"
+          },
+          {
+            "name": "Create tag",
+            "type": "NotSet"
+          },
+          {
+            "name": "Delete repository",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit policies",
+            "type": "NotSet"
+          },
+          {
+            "name": "Force push (rewrite history, delete branches and tags)",
+            "type": "NotSet"
+          },
+          {
+            "name": "Manage notes",
+            "type": "NotSet"
+          },
+          {
+            "name": "Manage permissions",
+            "type": "NotSet"
+          },
+          {
+            "name": "Read",
+            "type": "Allow"
+          },
+          {
+            "name": "Remove others' locks",
+            "type": "NotSet"
+          },
+          {
+            "name": "Rename repository",
+            "type": "NotSet"
+          }
+        ]
+      },
+      {
+        "name": "Readers",
+        "permissions": [
+          {
+            "name": "Bypass policies when completing pull requests",
+            "type": "NotSet"
+          },
+          {
+            "name": "Bypass policies when pushing",
+            "type": "NotSet"
+          },
+          {
+            "name": "Contribute",
+            "type": "NotSet"
+          },
+          {
+            "name": "Contribute to pull requests",
+            "type": "Allow"
+          },
+          {
+            "name": "Create branch",
+            "type": "NotSet"
+          },
+          {
+            "name": "Create repository",
+            "type": "NotSet"
+          },
+          {
+            "name": "Create tag",
+            "type": "NotSet"
+          },
+          {
+            "name": "Delete repository",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit policies",
+            "type": "NotSet"
+          },
+          {
+            "name": "Force push (rewrite history, delete branches and tags)",
+            "type": "NotSet"
+          },
+          {
+            "name": "Manage notes",
+            "type": "NotSet"
+          },
+          {
+            "name": "Manage permissions",
+            "type": "NotSet"
+          },
+          {
+            "name": "Read",
+            "type": "Allow"
+          },
+          {
+            "name": "Remove others' locks",
+            "type": "NotSet"
+          },
+          {
+            "name": "Rename repository",
+            "type": "NotSet"
+          }
+        ]
+      }
+    ]
+  }
+]

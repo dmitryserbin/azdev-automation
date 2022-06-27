@@ -1,0 +1,251 @@
+[
+  {
+    "name": "Standard",
+    "definition": [
+      {
+        "name": "Contributors",
+        "permissions": [
+          {
+            "name": "Administer build permissions",
+            "type": "NotSet"
+          },
+          {
+            "name": "Delete build pipeline",
+            "type": "Allow"
+          },
+          {
+            "name": "Delete builds",
+            "type": "Allow"
+          },
+          {
+            "name": "Destroy builds",
+            "type": "Allow"
+          },
+          {
+            "name": "Edit build pipeline",
+            "type": "Allow"
+          },
+          {
+            "name": "Edit build quality",
+            "type": "Allow"
+          },
+          {
+            "name": "Manage build qualities",
+            "type": "NotSet"
+          },
+          {
+            "name": "Override check-in validation by build",
+            "type": "NotSet"
+          },
+          {
+            "name": "Queue builds",
+            "type": "Allow"
+          },
+          {
+            "name": "Retain indefinitely",
+            "type": "Allow"
+          },
+          {
+            "name": "Stop builds",
+            "type": "Allow"
+          },
+          {
+            "name": "Update build information",
+            "type": "NotSet"
+          },
+          {
+            "name": "View build pipeline",
+            "type": "Allow"
+          },
+          {
+            "name": "View builds",
+            "type": "Allow"
+          }
+        ]
+      },
+      {
+        "name": "Project Administrators",
+        "permissions": [
+          {
+            "name": "Administer build permissions",
+            "type": "Allow"
+          },
+          {
+            "name": "Delete build pipeline",
+            "type": "Allow"
+          },
+          {
+            "name": "Delete builds",
+            "type": "Allow"
+          },
+          {
+            "name": "Destroy builds",
+            "type": "Allow"
+          },
+          {
+            "name": "Edit build pipeline",
+            "type": "Allow"
+          },
+          {
+            "name": "Edit build quality",
+            "type": "Allow"
+          },
+          {
+            "name": "Manage build qualities",
+            "type": "Allow"
+          },
+          {
+            "name": "Override check-in validation by build",
+            "type": "NotSet"
+          },
+          {
+            "name": "Queue builds",
+            "type": "Allow"
+          },
+          {
+            "name": "Retain indefinitely",
+            "type": "Allow"
+          },
+          {
+            "name": "Stop builds",
+            "type": "Allow"
+          },
+          {
+            "name": "Update build information",
+            "type": "NotSet"
+          },
+          {
+            "name": "View build pipeline",
+            "type": "Allow"
+          },
+          {
+            "name": "View builds",
+            "type": "Allow"
+          }
+        ]
+      },
+      {
+        "name": "Managers",
+        "permissions": [
+          {
+            "name": "Administer build permissions",
+            "type": "NotSet"
+          },
+          {
+            "name": "Delete build pipeline",
+            "type": "NotSet"
+          },
+          {
+            "name": "Delete builds",
+            "type": "NotSet"
+          },
+          {
+            "name": "Destroy builds",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit build pipeline",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit build quality",
+            "type": "NotSet"
+          },
+          {
+            "name": "Manage build qualities",
+            "type": "NotSet"
+          },
+          {
+            "name": "Override check-in validation by build",
+            "type": "NotSet"
+          },
+          {
+            "name": "Queue builds",
+            "type": "Allow"
+          },
+          {
+            "name": "Retain indefinitely",
+            "type": "Allow"
+          },
+          {
+            "name": "Stop builds",
+            "type": "Allow"
+          },
+          {
+            "name": "Update build information",
+            "type": "NotSet"
+          },
+          {
+            "name": "View build pipeline",
+            "type": "Allow"
+          },
+          {
+            "name": "View builds",
+            "type": "Allow"
+          }
+        ]
+      },
+      {
+        "name": "Readers",
+        "permissions": [
+          {
+            "name": "Administer build permissions",
+            "type": "NotSet"
+          },
+          {
+            "name": "Delete build pipeline",
+            "type": "NotSet"
+          },
+          {
+            "name": "Delete builds",
+            "type": "NotSet"
+          },
+          {
+            "name": "Destroy builds",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit build pipeline",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit build quality",
+            "type": "NotSet"
+          },
+          {
+            "name": "Manage build qualities",
+            "type": "NotSet"
+          },
+          {
+            "name": "Override check-in validation by build",
+            "type": "NotSet"
+          },
+          {
+            "name": "Queue builds",
+            "type": "NotSet"
+          },
+          {
+            "name": "Retain indefinitely",
+            "type": "NotSet"
+          },
+          {
+            "name": "Stop builds",
+            "type": "NotSet"
+          },
+          {
+            "name": "Update build information",
+            "type": "NotSet"
+          },
+          {
+            "name": "View build pipeline",
+            "type": "Allow"
+          },
+          {
+            "name": "View builds",
+            "type": "Allow"
+          }
+        ]
+      }
+    ]
+  }
+]

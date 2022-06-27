@@ -1,0 +1,7 @@
+trigger: none
+
+stages:
+- stage: Test
+  dependsOn: []
+  jobs:
+  - template: templates/test.yml
