@@ -1,0 +1,16 @@
+parameters:
+  endpointName: ""
+  configPath: ""
+  policiesPath: ""
+
+steps:
+- task: azdev-automation@1
+  displayName: Create project
+  inputs:
+    ConnectedService: ${{ parameters.endpointName }}
+    Config: ${{ parameters.configPath }}
+    Policies: ${{ parameters.policiesPath }}
+    ProjectSetup: true
+    AccessPermissions: false
+    BranchPolicies: false
+    ServiceConnections: false

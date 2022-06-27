@@ -63,6 +63,8 @@ Projects configuration contains target projects definition and policy mappings.
 }
 ```
 
+> Please refer to [examples](https://github.com/dmitryserbin/azdev-automation/tree/master/src/examples) for reference.
+
 ## Policies
 
 Permission policies contain set of rule for different project fetures. 
@@ -74,7 +76,7 @@ Permission policies contain set of rule for different project fetures.
 - `Work Items Permissions` - permissions policies defining level of access to work items
 - `Service Connections` - service connections definitions _(to be implemented)_
 
-> See [policy schemas](https://github.com/dmitryserbin/azdev-automation/tree/master/src/Framework/schemas) for reference.
+> Please refer to [examples](https://github.com/dmitryserbin/azdev-automation/tree/master/src/examples) and [policy schemas](https://github.com/dmitryserbin/azdev-automation/tree/master/src/Framework/schemas) for reference.
 
 ## Support
 

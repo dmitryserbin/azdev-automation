@@ -1,0 +1,13 @@
+[
+  {
+    "name": "Test",
+    "description": "Azure DevOps Automation test project",
+    "permissions": {
+      "project": "Standard",
+      "build": "Standard",
+      "release": "Standard",
+      "repository": "Standard",
+      "work": "Standard"
+    }
+  }
+]

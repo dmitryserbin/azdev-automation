@@ -28,7 +28,7 @@ export async function getParameters(): Promise<IParameters> {
 
     const configPath: any = tl.getInput("Config", true);
     const policiesPath: any = tl.getInput("Policies", true);
-    const schemasPath: string = path.join(__dirname, "node_modules\\azdev-automation\\schemas");
+    const schemasPath: string = path.join(__dirname, "node_modules", "azdev-automation", "schemas");
 
     const projectSetup: boolean = tl.getBoolInput("ProjectSetup");
     const accessPermissions: boolean = tl.getBoolInput("AccessPermissions");

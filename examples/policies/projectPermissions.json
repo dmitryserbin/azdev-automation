@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Standard",
+    "definition": [
+      {
+        "name": "Contributors",
+        "members": []
+      },
+      {
+        "name": "Project Valid Users",
+        "permissions": [
+          {
+            "name": "Delete team project",
+            "type": "Deny"
+          },
+          {
+            "name": "Edit project-level information",
+            "type": "Deny"
+          },
+          {
+            "name": "Rename team project",
+            "type": "Deny"
+          },
+          {
+            "name": "Update project visibility",
+            "type": "Deny"
+          }
+        ]
+      },
+      {
+        "name": "Project Administrators",
+        "members": []
+      },
+      {
+        "name": "Managers",
+        "members": [],
+        "permissions": [
+          {
+            "name": "View project-level information",
+            "type": "Allow"
+          },
+          {
+            "name": "Create tag definition",
+            "type": "Allow"
+          },
+          {
+            "name": "Delete and restore work items",
+            "type": "Allow"
+          }
+        ]
+      },
+      {
+        "name": "Endpoint Administrators",
+        "members": []
+      },
+      {
+        "name": "Endpoint Creators",
+        "members": []
+      },
+      {
+        "name": "Build Administrators",
+        "members": []
+      },
+      {
+        "name": "Release Administrators",
+        "members": []
+      },
+      {
+        "name": "Readers",
+        "members": []
+      }
+    ]
+  }
+]

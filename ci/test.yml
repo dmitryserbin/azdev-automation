@@ -1,0 +1,10 @@
+trigger: none
+
+pool:
+  name: Default
+
+stages:
+- stage: Test
+  dependsOn: []
+  jobs:
+  - template: templates/test.yml

@@ -1,0 +1,118 @@
+[
+  {
+    "name": "Standard",
+    "definition": [
+      {
+        "name": "Contributors",
+        "permissions": [
+          {
+            "name": "Create child nodes",
+            "type": "NotSet"
+          },
+          {
+            "name": "Delete this node",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit this node",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit work items in this node",
+            "type": "Allow"
+          },
+          {
+            "name": "Manage test plans",
+            "type": "Allow"
+          },
+          {
+            "name": "Manage test suites",
+            "type": "Allow"
+          },
+          {
+            "name": "View permissions for this node",
+            "type": "Allow"
+          },
+          {
+            "name": "View work items in this node",
+            "type": "Allow"
+          }
+        ]
+      },
+      {
+        "name": "Managers",
+        "permissions": [
+          {
+            "name": "Create child nodes",
+            "type": "NotSet"
+          },
+          {
+            "name": "Delete this node",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit this node",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit work items in this node",
+            "type": "Allow"
+          },
+          {
+            "name": "Manage test plans",
+            "type": "Allow"
+          },
+          {
+            "name": "Manage test suites",
+            "type": "Allow"
+          },
+          {
+            "name": "View permissions for this node",
+            "type": "Allow"
+          },
+          {
+            "name": "View work items in this node",
+            "type": "Allow"
+          }
+        ]
+      },
+      {
+        "name": "Readers",
+        "permissions": [
+          {
+            "name": "Create child nodes",
+            "type": "NotSet"
+          },
+          {
+            "name": "Delete this node",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit this node",
+            "type": "NotSet"
+          },
+          {
+            "name": "Edit work items in this node",
+            "type": "NotSet"
+          },
+          {
+            "name": "Manage test plans",
+            "type": "NotSet"
+          },
+          {
+            "name": "Manage test suites",
+            "type": "NotSet"
+          },
+          {
+            "name": "View permissions for this node",
+            "type": "Allow"
+          },
+          {
+            "name": "View work items in this node",
+            "type": "Allow"
+          }
+        ]
+      }
+    ]
+  }
+]
