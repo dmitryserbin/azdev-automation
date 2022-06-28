@@ -1,5 +1,7 @@
 trigger: none
 
+pr: none
+
 pool:
   name: Default
 

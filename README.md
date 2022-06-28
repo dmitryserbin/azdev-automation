@@ -36,13 +36,11 @@ Extension | Package | Build   | Code
 - task: azdevautomation@1
   displayName: Run Azure DevOps Automation
   inputs:
-    ConnectedService: My-Endpoint # Required
-    Config: path/to/projects.json # Required
-    Policies: path/to/policies    # Required
-    ProjectSetup: true
-    AccessPermissions: true
-    BranchPolicies: true
-    ServiceConnections: true
+    endpointName: My-Endpoint # Required
+    configPath: path/to/projects.json # Required
+    policiesPath: path/to/policies    # Required
+    projectSetup: true
+    accessPermissions: true
 ```
 
 ## Configuration

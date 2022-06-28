@@ -27,28 +27,28 @@
   ],
   "inputs": [
     {
-      "name": "ConnectedService",
+      "name": "endpointName",
       "type": "connectedService:ExternalTfs",
       "label": "Azure DevOps service endpoint",
-      "helpMarkDown": "Select service endpoint for Azure DevOps account",
+      "helpMarkDown": "Service endpoint for Azure DevOps connection",
       "required": true
     },
     {
-      "name": "Config",
+      "name": "configPath",
       "type": "filePath",
       "label": "Path to configuration file",
-      "helpMarkDown": "Specify path to configuration file for Azure DevOps automation",
+      "helpMarkDown": "Path to Azure DevOps Automation configuration file",
       "required": true
     },
     {
-      "name": "Policies",
+      "name": "policiesPath",
       "type": "filePath",
       "label": "Path to policies directory",
-      "helpMarkDown": "Specify path to directory containing Azure DevOps automation policies",
+      "helpMarkDown": "Path to directory containing Azure DevOps Automation policies",
       "required": true
     },
     {
-      "name": "ProjectSetup",
+      "name": "projectSetup",
       "type": "boolean",
       "label": "Project setup",
       "helpMarkDown": "Create or update projects",
@@ -57,28 +57,10 @@
       "required": false
     },
     {
-      "name": "AccessPermissions",
+      "name": "accessPermissions",
       "type": "boolean",
       "label": "Access permissions",
       "helpMarkDown": "Update project access permissions",
-      "defaultValue": true,
-      "groupName": "features",
-      "required": false
-    },
-    {
-      "name": "BranchPolicies",
-      "type": "boolean",
-      "label": "Branch policies",
-      "helpMarkDown": "Update project branches policies",
-      "defaultValue": true,
-      "groupName": "features",
-      "required": false
-    },
-    {
-      "name": "ServiceConnections",
-      "type": "boolean",
-      "label": "Service connections",
-      "helpMarkDown": "Update project service connections",
       "defaultValue": true,
       "groupName": "features",
       "required": false

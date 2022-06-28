@@ -7,10 +7,8 @@ steps:
 - task: azdev-automation@1
   displayName: Create project
   inputs:
-    ConnectedService: ${{ parameters.endpointName }}
-    Config: ${{ parameters.configPath }}
-    Policies: ${{ parameters.policiesPath }}
-    ProjectSetup: true
-    AccessPermissions: false
-    BranchPolicies: false
-    ServiceConnections: false
+    endpointName: ${{ parameters.endpointName }}
+    configPath: ${{ parameters.configPath }}
+    policiesPath: ${{ parameters.policiesPath }}
+    projectSetup: true
+    accessPermissions: false

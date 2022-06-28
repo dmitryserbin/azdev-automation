@@ -7,7 +7,7 @@ import { IEndpoint, IParameters } from "azdev-automation/interfaces/automation";
 
 export async function getEndpoint(): Promise<IEndpoint> {
 
-    const endpointName: any = tl.getInput("ConnectedService", true);
+    const endpointName: any = tl.getInput("endpointName", true);
     const endpointUrl: any = tl.getEndpointUrl(endpointName, true);
     const accountName: any = url.parse(endpointUrl).pathname!.replace("/", "");
     const accountToken: any = tl.getEndpointAuthorizationParameter(endpointName, "ApiToken", false);
@@ -26,14 +26,12 @@ export async function getEndpoint(): Promise<IEndpoint> {
 
 export async function getParameters(): Promise<IParameters> {
 
-    const configPath: any = tl.getInput("Config", true);
-    const policiesPath: any = tl.getInput("Policies", true);
+    const configPath: any = tl.getInput("configPath", true);
+    const policiesPath: any = tl.getInput("policiesPath", true);
     const schemasPath: string = path.join(__dirname, "node_modules", "azdev-automation", "schemas");
 
-    const projectSetup: boolean = tl.getBoolInput("ProjectSetup");
-    const accessPermissions: boolean = tl.getBoolInput("AccessPermissions");
-    const branchPolicies: boolean = tl.getBoolInput("BranchPolicies");
-    const serviceConnections: boolean = tl.getBoolInput("ServiceConnections");
+    const projectSetup: boolean = tl.getBoolInput("projectSetup");
+    const accessPermissions: boolean = tl.getBoolInput("accessPermissions");
 
     const parameters: IParameters = {
 
@@ -42,8 +40,8 @@ export async function getParameters(): Promise<IParameters> {
         schemas: schemasPath,
         projectSetup,
         accessPermissions,
-        branchPolicies,
-        serviceConnections,
+        branchPolicies: false,
+        serviceConnections: false,
 
     };
 
