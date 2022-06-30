@@ -1,4 +1,5 @@
 import { IBuildUpdater } from "../updaters/buildupdater";
+import { IEndpointUpdater } from "../updaters/endpointupdater";
 import { IProjectUpdater } from "../updaters/projectupdater";
 import { IReleaseUpdater } from "../updaters/releaseupdater";
 import { IRepositoryUpdater } from "../updaters/repositoryupdater";
@@ -10,5 +11,6 @@ export interface IAutomationFactory {
     createReleaseUpdater(): Promise<IReleaseUpdater>;
     createRepositoryUpdater(): Promise<IRepositoryUpdater>;
     createWorkUpdater(): Promise<IRepositoryUpdater>;
+    createEndpointUpdater(): Promise<IEndpointUpdater>;
 
 }

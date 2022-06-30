@@ -18,6 +18,7 @@ import { IReleaseUpdater } from "./interfaces/updaters/releaseupdater";
 import { IRepositoryUpdater } from "./interfaces/updaters/repositoryupdater";
 import { ConfigurationReader } from "./readers/configurationreader";
 import { IWorkUpdater } from "./interfaces/updaters/workupdater";
+import { IEndpointUpdater } from "./interfaces/updaters/endpointupdater";
 
 export class Automation implements IAutomation {
 
@@ -53,6 +54,7 @@ export class Automation implements IAutomation {
         const releaseUpdater: IReleaseUpdater = await this.automationFactory.createReleaseUpdater();
         const repositoryUpdater: IRepositoryUpdater = await this.automationFactory.createRepositoryUpdater();
         const workUpdater: IWorkUpdater = await this.automationFactory.createWorkUpdater();
+        const endpointUpdater: IEndpointUpdater = await this.automationFactory.createEndpointUpdater();
 
         const configuration: IProject[] = await this.configurationReader.read();
 
