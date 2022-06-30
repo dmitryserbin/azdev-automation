@@ -48,17 +48,15 @@ export class Automation implements IAutomation {
 
     public async run(): Promise<void> {
 
-        // Read configuration
-        const projects: IProject[] = await this.configurationReader.read();
-
-        // Initialize updaters
         const projectUpdater: IProjectUpdater = await this.automationFactory.createProjectUpdater();
         const buildUpdater: IBuildUpdater = await this.automationFactory.createBuildUpdater();
         const releaseUpdater: IReleaseUpdater = await this.automationFactory.createReleaseUpdater();
         const repositoryUpdater: IRepositoryUpdater = await this.automationFactory.createRepositoryUpdater();
         const workUpdater: IWorkUpdater = await this.automationFactory.createWorkUpdater();
 
-        for (const project of projects) {
+        const configuration: IProject[] = await this.configurationReader.read();
+
+        for (const project of configuration) {
 
             this.consoleLogger.log(`Configuring <${project.name}> project automation`);
 
@@ -66,7 +64,6 @@ export class Automation implements IAutomation {
 
             if (targetProject) {
 
-                // Update project
                 if (this.parameters.projectSetup) {
 
                     targetProject = await projectUpdater.updateProject(project);
@@ -75,7 +72,6 @@ export class Automation implements IAutomation {
 
             } else {
 
-                // Create project
                 if (this.parameters.projectSetup) {
 
                     targetProject = await projectUpdater.createProject(project);
@@ -88,38 +84,32 @@ export class Automation implements IAutomation {
 
             }
 
-            // Update access permissions
             if (this.parameters.accessPermissions) {
 
-                // Project
                 if (project.permissions.project) {
 
                     await projectUpdater.updatePermissions(targetProject, project.permissions.project);
 
                 }
 
-                // Build
                 if (project.permissions.build) {
 
                     await buildUpdater.updatePermissions(targetProject, project.permissions.build);
 
                 }
 
-                // Release
                 if (project.permissions.release) {
 
                     await releaseUpdater.updatePermissions(targetProject, project.permissions.release);
 
                 }
 
-                // Repository
                 if (project.permissions.repository) {
 
                     await repositoryUpdater.updatePermissions(targetProject, project.permissions.repository);
 
                 }
 
-                // Work items
                 if (project.permissions.work) {
 
                     await workUpdater.updatePermissions(targetProject, project.permissions.work);
@@ -128,14 +118,12 @@ export class Automation implements IAutomation {
 
             }
 
-            // Update branch policies
             if (this.parameters.branchPolicies) {
 
                 throw new Error("Feature not implemented");
 
             }
 
-            // Create service connections
             if (this.parameters.serviceConnections) {
 
                 throw new Error("Feature not implemented");
