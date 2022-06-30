@@ -35,6 +35,12 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
     }
 
+    public async initialize(projectName: string): Promise<void> {
+
+        const result = this.releaseHelper.getDefinitions(projectName);
+
+    }
+
     public async removeDefinitionsArtifact(projectName: string, artifactName: string, artifactType: string, mock?: boolean): Promise<void> {
 
         const debug = this.debugLogger.extend(this.removeDefinitionsArtifact.name);

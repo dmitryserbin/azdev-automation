@@ -3,6 +3,7 @@ import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterf
 
 export interface IReleaseHelper {
 
+    getDefinitions(projectName: string): Promise<ReleaseDefinition[]>;
     findDefinitionsWithArtifact(projectName: string, artifactName: string, artifactType: string): Promise<ReleaseDefinition[]>;
     findDefinitionsWithTasks(name: string, projectName: string, tasks: TaskDefinition[]): Promise<ReleaseDefinition[]>;
     findDefinitionReleasesWithTasks(definitionId: number, projectName: string, tasks: TaskDefinition[]): Promise<Release[]>;

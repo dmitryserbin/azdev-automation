@@ -62,6 +62,8 @@ export class ProjectUpdater implements IProjectUpdater {
 
         const result: OperationReference = await this.projectHelper.createProject(project.name, project.description, processTemplate, sourceControlType, projectVisibility);
 
+        await this.helper.wait(5000, 5000);
+
         const targetProject: TeamProject = await this.projectHelper.findProject(project.name);
 
         return targetProject;

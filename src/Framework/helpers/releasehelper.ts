@@ -21,6 +21,18 @@ export class ReleaseHelper implements IReleaseHelper {
 
     }
 
+    public async getDefinitions(projectName: string): Promise<ReleaseDefinition[]> {
+
+        const debug = this.debugLogger.extend(this.getDefinitions.name);
+
+        const result = await this.releaseApi.getReleaseDefinitions(projectName);
+
+        debug(`Found <${projectName}> project <${result.length}> definition(s)`);
+
+        return result;
+
+    }
+
     public async findDefinitionsWithArtifact(projectName: string, artifactName: string, artifactType: string): Promise<ReleaseDefinition[]> {
 
         const debug = this.debugLogger.extend(this.findDefinitionsWithArtifact.name);
