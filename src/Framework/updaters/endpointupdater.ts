@@ -1,4 +1,4 @@
-import { IHelper } from "../common/ihelper";
+import { ICommonHelper } from "../helpers/icommonhelper";
 import { IEndpointHelper } from "../helpers/iendpointhelper";
 import { IDebug } from "../loggers/idebug";
 import { ILogger } from "../loggers/ilogger";
@@ -10,15 +10,15 @@ export class EndpointUpdater implements IEndpointUpdater {
     private debugLogger: IDebug;
 
     private endpointHelper: IEndpointHelper;
-    private helper: IHelper;
+    private commonHelper: ICommonHelper;
 
-    constructor(endpointHelper: IEndpointHelper, helper: IHelper, logger: ILogger) {
+    constructor(endpointHelper: IEndpointHelper, commonHelper: ICommonHelper, logger: ILogger) {
 
         this.logger = logger;
         this.debugLogger = logger.extend(this.constructor.name);
 
         this.endpointHelper = endpointHelper;
-        this.helper = helper;
+        this.commonHelper = commonHelper;
 
     }
 

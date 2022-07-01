@@ -8,7 +8,7 @@ import { Process, TeamProject } from "azure-devops-node-api/interfaces/CoreInter
 import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { IBuildPermission, IGroupMembership, IPermission, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IWorkPermission, PermissionType } from "../../readers/iconfigurationreader";
-import { IHelper } from "../../common/ihelper";
+import { ICommonHelper } from "../../helpers/icommonhelper";
 import { IProjectHelper } from "../../helpers/iprojecthelper";
 import { IProjectUpdater } from "../../updaters/iprojectupdater";
 import { ISecurityHelper } from "../../helpers/isecurityhelper";
@@ -96,8 +96,8 @@ const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
 
 const loggerMock = TypeMoq.Mock.ofType<ILogger>();
 
-const helperMock = TypeMoq.Mock.ofType<IHelper>();
-helperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber())).returns(() => Promise.resolve());
+const commonHelperMock = TypeMoq.Mock.ofType<ICommonHelper>();
+commonHelperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber())).returns(() => Promise.resolve());
 
 const mockProject: TypeMoq.IMock<TeamProject> = TypeMoq.Mock.ofType<TeamProject>();
 mockProject.setup((x) => x.name).returns(() => project.name);
@@ -105,7 +105,7 @@ mockProject.setup((x) => x.id).returns(() => "1");
 
 describe("ProjectUpdater", () => {
 
-    const projectUpdater: IProjectUpdater = new ProjectUpdater(projectHelperMock.target, securityHelperMock.target, helperMock.target, loggerMock.target);
+    const projectUpdater: IProjectUpdater = new ProjectUpdater(projectHelperMock.target, securityHelperMock.target, commonHelperMock.target, loggerMock.target);
 
     it("Should create new project", async () => {
 

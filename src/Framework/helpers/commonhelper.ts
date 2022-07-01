@@ -1,8 +1,8 @@
 import { IDebug } from "../loggers/idebug";
 import { ILogger } from "../loggers/ilogger";
-import { IHelper } from "./ihelper";
+import { ICommonHelper } from "./icommonhelper";
 
-export class Helper implements IHelper {
+export class CommonHelper implements ICommonHelper {
 
     private debugLogger: IDebug;
 

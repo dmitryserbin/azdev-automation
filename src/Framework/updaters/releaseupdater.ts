@@ -3,7 +3,7 @@ import { Release, ReleaseDefinition } from "azure-devops-node-api/interfaces/Rel
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
 import { IReleasePermission, ITask } from "../readers/iconfigurationreader";
-import { IHelper } from "../common/ihelper";
+import { ICommonHelper } from "../helpers/icommonhelper";
 import { IReleaseHelper } from "../helpers/ireleasehelper";
 import { IReleaseUpdater } from "./ireleaseupdater";
 import { INamespace, ISecurityHelper, ISecurityIdentity } from "../helpers/isecurityhelper";
@@ -19,9 +19,9 @@ export class ReleaseUpdater implements IReleaseUpdater {
     public releaseHelper: IReleaseHelper;
     public taskAgentHelper: ITaskAgentHelper;
     public securityHelper: ISecurityHelper;
-    private helper: IHelper;
+    private commonHelper: ICommonHelper;
 
-    constructor(releaseHelper: IReleaseHelper, taskAgentHelper: ITaskAgentHelper, securityHelper: ISecurityHelper, helper: IHelper, logger: ILogger) {
+    constructor(releaseHelper: IReleaseHelper, taskAgentHelper: ITaskAgentHelper, securityHelper: ISecurityHelper, commonHelper: ICommonHelper, logger: ILogger) {
 
         this.logger = logger;
         this.debugLogger = logger.extend(this.constructor.name);
@@ -29,7 +29,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
         this.releaseHelper = releaseHelper;
         this.taskAgentHelper = taskAgentHelper;
         this.securityHelper = securityHelper;
-        this.helper = helper;
+        this.commonHelper = commonHelper;
 
     }
 
@@ -263,7 +263,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
             // Slow down parallel calls to address
             // Intermittent API connectivity issues
-            await this.helper.wait(500, 3000);
+            await this.commonHelper.wait(500, 3000);
 
             const targetIdentity: ISecurityIdentity = await this.securityHelper.getExistingIdentity(groupName, project.id!, existingIdentities);
 

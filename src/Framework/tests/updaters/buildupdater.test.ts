@@ -9,7 +9,7 @@ import { IBuildHelper } from "../../helpers/ibuildhelper";
 import { IBuildUpdater } from "../../updaters/ibuildupdater";
 import { IBuildPermission, IGroupPermission, PermissionType } from "../../readers/iconfigurationreader";
 
-import { IHelper } from "../../common/ihelper";
+import { ICommonHelper } from "../../helpers/icommonhelper";
 import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../helpers/isecurityhelper";
 import { BuildUpdater } from "../../updaters/buildupdater";
 import { ILogger } from "../../loggers/ilogger";
@@ -17,8 +17,8 @@ import { ILogger } from "../../loggers/ilogger";
 const buildHelperMock = TypeMoq.Mock.ofType<IBuildHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
 
-const helperMock = TypeMoq.Mock.ofType<IHelper>();
-helperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber())).returns(() => Promise.resolve());
+const commonHelperMock = TypeMoq.Mock.ofType<ICommonHelper>();
+commonHelperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber())).returns(() => Promise.resolve());
 
 const loggerMock = TypeMoq.Mock.ofType<ILogger>();
 
@@ -62,7 +62,7 @@ const namespaceName = "Build";
 
 describe("BuildUpdater", () => {
 
-    const buildUpdater: IBuildUpdater = new BuildUpdater(buildHelperMock.target, securityHelperMock.target, helperMock.target, loggerMock.target);
+    const buildUpdater: IBuildUpdater = new BuildUpdater(buildHelperMock.target, securityHelperMock.target, commonHelperMock.target, loggerMock.target);
 
     it("Should update permissions", async () => {
 

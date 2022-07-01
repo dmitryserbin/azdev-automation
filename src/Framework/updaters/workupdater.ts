@@ -1,7 +1,7 @@
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
 import { IWorkPermission } from "../readers/iconfigurationreader";
-import { IHelper } from "../common/ihelper";
+import { ICommonHelper } from "../helpers/icommonhelper";
 import { IWorkHelper } from "../helpers/iworkhelper";
 import { IWorkUpdater } from "./iworkupdater";
 import { INamespace, ISecurityHelper, ISecurityIdentity } from "../helpers/isecurityhelper";
@@ -15,16 +15,16 @@ export class WorkUpdater implements IWorkUpdater {
 
     public workHelper: IWorkHelper;
     public securityHelper: ISecurityHelper;
-    private helper: IHelper;
+    private commonHelper: ICommonHelper;
 
-    constructor(workHelper: IWorkHelper, securityHelper: ISecurityHelper, helper: IHelper, logger: ILogger) {
+    constructor(workHelper: IWorkHelper, securityHelper: ISecurityHelper, commonHelper: ICommonHelper, logger: ILogger) {
 
         this.logger = logger;
         this.debugLogger = logger.extend(this.constructor.name);
 
         this.workHelper = workHelper;
         this.securityHelper = securityHelper;
-        this.helper = helper;
+        this.commonHelper = commonHelper;
 
     }
 
@@ -49,7 +49,7 @@ export class WorkUpdater implements IWorkUpdater {
 
             // Slow down parallel calls to address
             // Intermittent API connectivity issues
-            await this.helper.wait(500, 3000);
+            await this.commonHelper.wait(500, 3000);
 
             const targetIdentity: ISecurityIdentity = await this.securityHelper.getExistingIdentity(groupName, project.id!, existingIdentities);
 

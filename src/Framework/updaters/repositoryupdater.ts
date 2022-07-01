@@ -1,7 +1,7 @@
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
 import { IBuildPermission } from "../readers/iconfigurationreader";
-import { IHelper } from "../common/ihelper";
+import { ICommonHelper } from "../helpers/icommonhelper";
 import { IRepositoryHelper } from "../helpers/irepositoryhelper";
 import { IRepositoryUpdater } from "./irepositoryupdater";
 import { INamespace, ISecurityHelper, ISecurityIdentity } from "../helpers/isecurityhelper";
@@ -15,16 +15,16 @@ export class RepositoryUpdater implements IRepositoryUpdater {
 
     public repositoryHelper: IRepositoryHelper;
     public securityHelper: ISecurityHelper;
-    private helper: IHelper;
+    private commonHelper: ICommonHelper;
 
-    constructor(repositoryHelper: IRepositoryHelper, securityHelper: ISecurityHelper, helper: IHelper, logger: ILogger) {
+    constructor(repositoryHelper: IRepositoryHelper, securityHelper: ISecurityHelper, commonHelper: ICommonHelper, logger: ILogger) {
 
         this.logger = logger;
         this.debugLogger = logger.extend(this.constructor.name);
 
         this.repositoryHelper = repositoryHelper;
         this.securityHelper = securityHelper;
-        this.helper = helper;
+        this.commonHelper = commonHelper;
 
     }
 
@@ -48,7 +48,7 @@ export class RepositoryUpdater implements IRepositoryUpdater {
 
             // Slow down parallel calls to address
             // Intermittent API connectivity issues
-            await this.helper.wait(500, 3000);
+            await this.commonHelper.wait(500, 3000);
 
             const targetIdentity: ISecurityIdentity = await this.securityHelper.getExistingIdentity(groupName, project.id!, existingIdentities);
 

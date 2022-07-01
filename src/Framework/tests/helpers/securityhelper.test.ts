@@ -12,7 +12,7 @@ import { PermissionType } from "../../readers/iconfigurationreader";
 import { IGraphIdentity, IGroupProvider, IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../../helpers/isecurityhelper";
 import { ISecurityMapper } from "../../mappers/isecuritymapper";
 import { SecurityMapper } from "../../mappers/securitymapper";
-import { IHelper } from "../../common/ihelper";
+import { ICommonHelper } from "../../helpers/icommonhelper";
 import { ILogger } from "../../loggers/ilogger";
 
 const projectOne: TeamProject = {
@@ -152,14 +152,14 @@ const permissionSetId = "1";
 const permissionSetToken = "1";
 
 const azdevClientMock = TypeMoq.Mock.ofType<IAzDevClient>();
-const helperMock = TypeMoq.Mock.ofType<IHelper>();
+const commonHelperMock = TypeMoq.Mock.ofType<ICommonHelper>();
 
 const loggerMock = TypeMoq.Mock.ofType<ILogger>();
 
 describe("SecurityHelper", () => {
 
     const securityMapper: ISecurityMapper = new SecurityMapper(loggerMock.target);
-    const securityHelper: ISecurityHelper = new SecurityHelper(azdevClientMock.target, helperMock.target, securityMapper, loggerMock.target);
+    const securityHelper: ISecurityHelper = new SecurityHelper(azdevClientMock.target, commonHelperMock.target, securityMapper, loggerMock.target);
 
     it("Should find user identity", async () => {
 

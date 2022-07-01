@@ -3,7 +3,7 @@ import { Process, ProjectVisibility, TeamProject } from "azure-devops-node-api/i
 import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { IProject, IProjectPermission } from "../readers/iconfigurationreader";
-import { IHelper } from "../common/ihelper";
+import { ICommonHelper } from "../helpers/icommonhelper";
 import { IProjectHelper } from "../helpers/iprojecthelper";
 import { IProjectUpdater } from "./iprojectupdater";
 import { ISecurityHelper } from "../helpers/isecurityhelper";
@@ -17,16 +17,16 @@ export class ProjectUpdater implements IProjectUpdater {
 
     public projectHelper: IProjectHelper;
     public securityHelper: ISecurityHelper;
-    private helper: IHelper;
+    private commonHelper: ICommonHelper;
 
-    constructor(projectHelper: IProjectHelper, securityHelper: ISecurityHelper, helper: IHelper, logger: ILogger) {
+    constructor(projectHelper: IProjectHelper, securityHelper: ISecurityHelper, commonHelper: ICommonHelper, logger: ILogger) {
 
         this.logger = logger;
         this.debugLogger = logger.extend(this.constructor.name);
 
         this.projectHelper = projectHelper;
         this.securityHelper = securityHelper;
-        this.helper = helper;
+        this.commonHelper = commonHelper;
 
     }
 
@@ -60,7 +60,7 @@ export class ProjectUpdater implements IProjectUpdater {
 
         const result: OperationReference = await this.projectHelper.createProject(project.name, project.description, processTemplate, sourceControlType, projectVisibility);
 
-        await this.helper.wait(5000, 5000);
+        await this.commonHelper.wait(5000, 5000);
 
         const targetProject: TeamProject = await this.projectHelper.findProject(project.name);
 
@@ -103,7 +103,7 @@ export class ProjectUpdater implements IProjectUpdater {
 
             // Slow down parallel calls to address
             // Intermittent API connectivity issues
-            await this.helper.wait(500, 3000);
+            await this.commonHelper.wait(500, 3000);
 
             let targetGroup: GraphGroup = await this.projectHelper.getProjectGroup(groupName, project.id!);
 
@@ -116,7 +116,7 @@ export class ProjectUpdater implements IProjectUpdater {
 
                 // It may take up to a few seconds before
                 // New group identity becomes available
-                await this.helper.wait(5000, 5000);
+                await this.commonHelper.wait(5000, 5000);
 
             }
 

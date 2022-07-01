@@ -4,7 +4,7 @@ import { AzDevApiType, IAzDevClient } from "../common/iazdevclient";
 import { IPermission, PermissionType } from "../readers/iconfigurationreader";
 import { IGraphIdentity, IGroupProvider, IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission, ISubjectPermission } from "./isecurityhelper";
 import { ISecurityMapper } from "../mappers/isecuritymapper";
-import { IHelper } from "../common/ihelper";
+import { ICommonHelper } from "./icommonhelper";
 import { IDebug } from "../loggers/idebug";
 import { ILogger } from "../loggers/ilogger";
 
@@ -13,15 +13,15 @@ export class SecurityHelper implements ISecurityHelper {
     private debugLogger: IDebug;
 
     private azdevClient: IAzDevClient;
-    private helper: IHelper;
+    private commonHelper: ICommonHelper;
     private mapper: ISecurityMapper;
 
-    constructor(azdevClient: IAzDevClient, helper: IHelper, mapper: ISecurityMapper, logger: ILogger) {
+    constructor(azdevClient: IAzDevClient, commonHelper: ICommonHelper, mapper: ISecurityMapper, logger: ILogger) {
 
         this.debugLogger = logger.extend(this.constructor.name);
 
         this.azdevClient = azdevClient;
-        this.helper = helper;
+        this.commonHelper = commonHelper;
         this.mapper = mapper;
 
     }
@@ -326,7 +326,7 @@ export class SecurityHelper implements ISecurityHelper {
 
             // Slow down parallel calls to address
             // Intermittent API connectivity issues
-            await this.helper.wait(500, 3000);
+            await this.commonHelper.wait(500, 3000);
 
             const targetIdentity: IGraphIdentity = await this.findIdentity(name);
 
@@ -366,7 +366,7 @@ export class SecurityHelper implements ISecurityHelper {
 
         // Slow down parallel calls to address
         // Intermittent API connectivity issues
-        await this.helper.wait(500, 3000);
+        await this.commonHelper.wait(500, 3000);
 
         await Promise.all(memberships.map(async (membership) => {
 

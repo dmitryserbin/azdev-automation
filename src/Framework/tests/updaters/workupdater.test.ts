@@ -6,7 +6,7 @@ import * as TypeMoq from "typemoq";
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
 import { IGroupPermission, IWorkPermission, PermissionType } from "../../readers/iconfigurationreader";
-import { IHelper } from "../../common/ihelper";
+import { ICommonHelper } from "../../helpers/icommonhelper";
 import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../helpers/isecurityhelper";
 import { IWorkUpdater } from "../../updaters/iworkupdater";
 import { WorkUpdater } from "../../updaters/workupdater";
@@ -16,8 +16,8 @@ import { ILogger } from "../../loggers/ilogger";
 const workHelperMock = TypeMoq.Mock.ofType<IWorkHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
 
-const helperMock = TypeMoq.Mock.ofType<IHelper>();
-helperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber())).returns(() => Promise.resolve());
+const commonHelperMock = TypeMoq.Mock.ofType<ICommonHelper>();
+commonHelperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber())).returns(() => Promise.resolve());
 
 const loggerMock = TypeMoq.Mock.ofType<ILogger>();
 
@@ -61,7 +61,7 @@ const namespaceName = "CSS";
 
 describe("WorkUpdater", () => {
 
-    const workUpdater: IWorkUpdater = new WorkUpdater(workHelperMock.target, securityHelperMock.target, helperMock.target, loggerMock.target);
+    const workUpdater: IWorkUpdater = new WorkUpdater(workHelperMock.target, securityHelperMock.target, commonHelperMock.target, loggerMock.target);
 
     it("Should update permissions", async () => {
 
