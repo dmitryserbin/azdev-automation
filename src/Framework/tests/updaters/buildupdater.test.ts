@@ -10,7 +10,7 @@ import { IBuildHelper } from "../../helpers/ibuildhelper";
 import { IBuildUpdater } from "../../updaters/ibuildupdater";
 import { IBuildPermission, IGroupPermission, PermissionType } from "../../readers/iconfigurationreader";
 import { IConsoleLogger } from "../../common/iconsolelogger";
-import { IDebugLogger } from "../../common/idebuglogger";
+import { IDebugLogger } from "../../loggers/idebuglogger";
 import { IHelper } from "../../common/ihelper";
 import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../helpers/isecurityhelper";
 import { BuildUpdater } from "../../updaters/buildupdater";

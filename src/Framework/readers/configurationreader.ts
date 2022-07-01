@@ -4,7 +4,7 @@ import { readFileSync } from "fs";
 
 import { IArtifactFactory, IConfigArtifact } from "../factories/iartifactfactory";
 import { IBuildPermission, IConfigurationReader, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IWorkPermission } from "./iconfigurationreader";
-import { IDebugLogger } from "../common/idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 
 export class ConfigurationReader implements IConfigurationReader {
 

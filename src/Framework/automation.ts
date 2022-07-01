@@ -1,7 +1,7 @@
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { ConsoleLogger } from "./common/consolelogger";
-import { DebugLogger } from "./common/debuglogger";
+import { ConsoleLogger } from "./loggers/consolelogger";
+import { DebugLogger } from "./loggers/debuglogger";
 import { ApiFactory } from "./factories/apifactory";
 import { ArtifactFactory } from "./factories/artifactfactory";
 import { AutomationFactory } from "./factories/automationfactory";
@@ -12,7 +12,7 @@ import { IAutomationFactory } from "./factories/iautomationfactory";
 import { IBuildUpdater } from "./updaters/ibuildupdater";
 import { IProject } from "./readers/iconfigurationreader";
 import { IConsoleLogger } from "./common/iconsolelogger";
-import { IDebugLogger } from "./common/idebuglogger";
+import { IDebugLogger } from "./loggers/idebuglogger";
 import { IProjectUpdater } from "./updaters/iprojectupdater";
 import { IReleaseUpdater } from "./updaters/ireleaseupdater";
 import { IRepositoryUpdater } from "./updaters/irepositoryupdater";

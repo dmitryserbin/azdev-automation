@@ -7,7 +7,7 @@ import * as TypeMoq from "typemoq";
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
 import { IAzDevClient } from "../../common/iazdevclient";
-import { IDebugLogger } from "../../common/idebuglogger";
+import { IDebugLogger } from "../../loggers/idebuglogger";
 import { IWorkHelper } from "../../helpers/iworkhelper";
 import { WorkHelper } from "../../helpers/workhelper";
 

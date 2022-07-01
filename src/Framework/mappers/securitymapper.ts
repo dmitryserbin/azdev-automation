@@ -1,6 +1,6 @@
 import Debug from "debug";
 
-import { IDebugLogger } from "../common/idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 import { IGroupProvider, IIdentityPermission, INamespace, INamespaceAction, ISecurityIdentity, ISecurityPermission, ISubjectPermission } from "../helpers/isecurityhelper";
 import { ISecurityMapper } from "./isecuritymapper";
 

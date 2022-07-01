@@ -1,7 +1,7 @@
 import Debug from "debug";
 
 import { IConsoleLogger } from "../common/iconsolelogger";
-import { IDebugLogger } from "../common/idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 import { IHelper } from "../common/ihelper";
 import { IEndpointHelper } from "../helpers/iendpointhelper";
 import { IEndpointUpdater } from "./iendpointupdater";

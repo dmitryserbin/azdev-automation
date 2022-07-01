@@ -4,7 +4,7 @@ import { GraphGroup, GraphMember, GraphMembership } from "azure-devops-node-api/
 
 import { AzDevApiType, IAzDevClient } from "../common/iazdevclient";
 import { IPermission, PermissionType } from "../readers/iconfigurationreader";
-import { IDebugLogger } from "../common/idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 import { IGraphIdentity, IGroupProvider, IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission, ISubjectPermission } from "./isecurityhelper";
 import { ISecurityMapper } from "../mappers/isecuritymapper";
 import { IHelper } from "../common/ihelper";

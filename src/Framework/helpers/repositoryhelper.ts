@@ -2,7 +2,7 @@ import Debug from "debug";
 
 import { IGitApi } from "azure-devops-node-api/GitApi";
 
-import { IDebugLogger } from "../common/idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 import { IRepositoryHelper } from "./irepositoryhelper";
 
 export class RepositoryHelper implements IRepositoryHelper {

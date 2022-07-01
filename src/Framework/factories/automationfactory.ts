@@ -20,7 +20,7 @@ import { AzDevApiType, IAzDevClient } from "../common/iazdevclient";
 import { IBuildHelper } from "../helpers/ibuildhelper";
 import { IBuildUpdater } from "../updaters/ibuildupdater";
 import { IConsoleLogger } from "../common/iconsolelogger";
-import { IDebugLogger } from "../common/idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 import { IHelper } from "../common/ihelper";
 import { IProjectHelper } from "../helpers/iprojecthelper";
 import { IProjectUpdater } from "../updaters/iprojectupdater";

@@ -1,7 +1,7 @@
 import Debug from "debug";
 
 import { IAzDevClient } from "../common/iazdevclient";
-import { IDebugLogger } from "../common/idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 import { IEndpointHelper } from "./iendpointhelper";
 
 export class EndpointHelper implements IEndpointHelper {

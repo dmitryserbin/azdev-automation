@@ -3,7 +3,7 @@ import Debug from "debug";
 import { IRequestOptions, IRestResponse, RestClient } from "typed-rest-client/RestClient";
 
 import { AzDevApiType, IAzDevClient } from "./iazdevclient";
-import { IDebugLogger } from "./idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 import { Retryable } from "./retry";
 
 export class AzDevClient implements IAzDevClient {

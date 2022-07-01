@@ -10,7 +10,7 @@ import { GraphGroup, GraphMember, GraphMembership } from "azure-devops-node-api/
 import { SecurityHelper } from "../../helpers/securityhelper";
 import { IAzDevClient } from "../../common/iazdevclient";
 import { PermissionType } from "../../readers/iconfigurationreader";
-import { IDebugLogger } from "../../common/idebuglogger";
+import { IDebugLogger } from "../../loggers/idebuglogger";
 import { IGraphIdentity, IGroupProvider, IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../../helpers/isecurityhelper";
 import { ISecurityMapper } from "../../mappers/isecuritymapper";
 import { SecurityMapper } from "../../mappers/securitymapper";

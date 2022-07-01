@@ -6,7 +6,7 @@ import { Process, ProjectVisibility, TeamProject, TeamProjectReference } from "a
 import { GraphDescriptorResult, GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { AzDevApiType, IAzDevClient } from "../common/iazdevclient";
-import { IDebugLogger } from "../common/idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 import { IProjectHelper } from "./iprojecthelper";
 
 export class ProjectHelper implements IProjectHelper {

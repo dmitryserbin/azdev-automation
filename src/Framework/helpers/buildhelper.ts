@@ -3,7 +3,7 @@ import Debug from "debug";
 import { IBuildApi } from "azure-devops-node-api/BuildApi";
 
 import { IBuildHelper } from "./ibuildhelper";
-import { IDebugLogger } from "../common/idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 
 export class BuildHelper implements IBuildHelper {
 

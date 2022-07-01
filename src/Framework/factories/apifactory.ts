@@ -11,7 +11,7 @@ import { ISecurityRolesApi } from "azure-devops-node-api/SecurityRolesApi";
 import { VsoClient } from "azure-devops-node-api/VsoClient";
 
 import { IApiFactory } from "./iapifactory";
-import { IDebugLogger } from "../common/idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 
 export class ApiFactory implements IApiFactory {
 

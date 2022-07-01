@@ -1,6 +1,6 @@
 import Debug from "debug";
 
-import { IDebugLogger } from "./idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 import { IHelper } from "./ihelper";
 
 export class Helper implements IHelper {

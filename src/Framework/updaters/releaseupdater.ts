@@ -6,7 +6,7 @@ import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterf
 
 import { IReleasePermission, ITask } from "../readers/iconfigurationreader";
 import { IConsoleLogger } from "../common/iconsolelogger";
-import { IDebugLogger } from "../common/idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 import { IHelper } from "../common/ihelper";
 import { IReleaseHelper } from "../helpers/ireleasehelper";
 import { IReleaseUpdater } from "./ireleaseupdater";

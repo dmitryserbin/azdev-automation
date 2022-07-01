@@ -6,7 +6,7 @@ import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { IProject, IProjectPermission } from "../readers/iconfigurationreader";
 import { IConsoleLogger } from "../common/iconsolelogger";
-import { IDebugLogger } from "../common/idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 import { IHelper } from "../common/ihelper";
 import { IProjectHelper } from "../helpers/iprojecthelper";
 import { IProjectUpdater } from "./iprojectupdater";

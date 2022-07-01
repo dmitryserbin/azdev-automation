@@ -4,7 +4,7 @@ import "mocha";
 import * as chai from "chai";
 import * as TypeMoq from "typemoq";
 
-import { IDebugLogger } from "../../common/idebuglogger";
+import { IDebugLogger } from "../../loggers/idebuglogger";
 import { IIdentityPermission, ISecurityIdentity } from "../../helpers/isecurityhelper";
 import { ISecurityMapper } from "../../mappers/isecuritymapper";
 import { SecurityMapper } from "../../mappers/securitymapper";

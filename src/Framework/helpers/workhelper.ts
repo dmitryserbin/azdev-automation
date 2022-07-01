@@ -1,6 +1,6 @@
 import Debug from "debug";
 
-import { IDebugLogger } from "../common/idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 import { IWorkHelper } from "./iworkhelper";
 import { AzDevApiType, IAzDevClient } from "../common/iazdevclient";
 

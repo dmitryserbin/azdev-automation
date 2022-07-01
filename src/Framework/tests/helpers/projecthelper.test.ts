@@ -11,7 +11,7 @@ import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { ProjectHelper } from "../../helpers/projecthelper";
 import { IAzDevClient } from "../../common/iazdevclient";
-import { IDebugLogger } from "../../common/idebuglogger";
+import { IDebugLogger } from "../../loggers/idebuglogger";
 import { IProjectHelper } from "../../helpers/iprojecthelper";
 
 const projectOne = "MyProjectOne";

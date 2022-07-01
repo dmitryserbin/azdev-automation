@@ -1,7 +1,7 @@
 import { Automation } from "./automation";
-import { DebugLogger } from "./common/debuglogger";
+import { DebugLogger } from "./loggers/debuglogger";
 import { IAutomation, IEndpoint, IParameters } from "./iautomation";
-import { IDebugLogger } from "./common/idebuglogger";
+import { IDebugLogger } from "./loggers/idebuglogger";
 import { IConsoleParameters } from "./readers/iparameterreader";
 import { ParameterReader } from "./readers/parameterreader";
 

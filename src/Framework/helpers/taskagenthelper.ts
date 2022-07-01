@@ -3,7 +3,7 @@ import Debug from "debug";
 import { ITaskAgentApi } from "azure-devops-node-api/TaskAgentApi";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
-import { IDebugLogger } from "../common/idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 import { ITaskAgentHelper } from "./itaskagenthelper";
 
 export class TaskAgentHelper implements ITaskAgentHelper {

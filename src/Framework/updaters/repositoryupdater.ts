@@ -4,7 +4,7 @@ import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
 import { IBuildPermission } from "../readers/iconfigurationreader";
 import { IConsoleLogger } from "../common/iconsolelogger";
-import { IDebugLogger } from "../common/idebuglogger";
+import { IDebugLogger } from "../loggers/idebuglogger";
 import { IHelper } from "../common/ihelper";
 import { IRepositoryHelper } from "../helpers/irepositoryhelper";
 import { IRepositoryUpdater } from "./irepositoryupdater";
