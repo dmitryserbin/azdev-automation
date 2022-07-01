@@ -1,23 +1,18 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
 
 import { IDebug } from "../loggers/idebug";
 import { ILogger } from "../loggers/ilogger";
 import { Logger } from "../loggers/logger";
 
-const logger: ILogger = new Logger("azdev-automation");
+const logger: ILogger = new Logger("release-orchestrator");
 const debugLogger: IDebug = logger.extend("Retry");
 
-export interface IRetryOptions {
+export function Retryable(attempts: number = 10, timeout: number = 10000, empty: boolean = false): Function {
 
-    attempts: number;
-    timeout: number;
-
-}
-
-export function Retryable(options: IRetryOptions = { attempts: 10, timeout: 5000 }): Function {
-
-    const verbose = logger.extend("retryable");
+    const debug = debugLogger.extend("retryable");
 
     return function(target: Object, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) {
 
@@ -27,13 +22,13 @@ export function Retryable(options: IRetryOptions = { attempts: 10, timeout: 5000
 
             try {
 
-                verbose(`Executing <${propertyKey}> with <${options.attempts}> retries`);
+                debug(`Executing <${propertyKey}> with <${attempts}> retries`);
 
-                return await retryAsync.apply(this, [ originalMethod, args, options.attempts, options.timeout ]);
+                return await retryAsync.apply(this, [ originalMethod, args, attempts, timeout, empty ]);
 
             } catch (e: any) {
 
-                e.message = `Failed retrying <${propertyKey}> for <${options.attempts}> times. ${e.message}`;
+                e.message = `Failed retrying <${propertyKey}> for <${attempts}> times. ${e.message}`;
 
                 throw e;
 
@@ -47,24 +42,45 @@ export function Retryable(options: IRetryOptions = { attempts: 10, timeout: 5000
 
 }
 
-async function retryAsync(target: Function, args: any[], attempts: number, timeout: number): Promise<any> {
+async function retryAsync(target: Function, args: any[], attempts: number, timeout: number, empty: boolean): Promise<any> {
 
-    const verbose = logger.extend("retryAsync");
+    const debug = debugLogger.extend("retryAsync");
 
     try {
 
         // @ts-ignore
-        return await target.apply(this, args);
+        let result: any = await target.apply(this, args);
+
+        if (!result && empty) {
+
+            if (--attempts <= 0) {
+
+                throw new Error("Empty result received");
+
+            }
+
+            debug(`Retrying <${target.name}> (empty) in <${timeout / 1000}> seconds`);
+
+            await new Promise((resolve) => setTimeout(resolve, timeout));
+
+            // @ts-ignore
+            result = retryAsync.apply(this, [ target, args, attempts, timeout, empty ]);
+
+        }
+
+        return result;
 
     } catch (e: any) {
 
-        if (--attempts < 0) {
+        if (--attempts <= 0) {
 
             throw new Error(e);
 
         }
 
-        verbose(`Retrying <${target.name}> in <${timeout / 1000}> seconds`);
+        debug(`Retrying <${target.name}> (exception) in <${timeout / 1000}> seconds`);
+
+        debug(e);
 
         await new Promise((resolve) => setTimeout(resolve, timeout));
 
