@@ -12,6 +12,8 @@ jobs:
       policiesPath: ${{ variables.testPoliciesPath }}
 
 - job: Permissions
+  dependsOn:
+  - Projects
   workspace:
     clean: all
   variables:
