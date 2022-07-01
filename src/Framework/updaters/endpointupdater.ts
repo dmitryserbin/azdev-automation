@@ -30,6 +30,8 @@ export class EndpointUpdater implements IEndpointUpdater {
 
         if (results.length === 0) {
 
+            // Simply trying and failing to create new endpoint
+            // Initializes required service endpoints capabilities
             const fakeEndpoint = await this.endpointHelper.fakeServiceEndpoint(projectName, projectId);
 
         }
