@@ -1,28 +1,26 @@
-import Debug from "debug";
-
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
 import { IWorkPermission } from "../readers/iconfigurationreader";
-import { IConsoleLogger } from "../common/iconsolelogger";
-import { IDebugLogger } from "../loggers/idebuglogger";
 import { IHelper } from "../common/ihelper";
 import { IWorkHelper } from "../helpers/iworkhelper";
 import { IWorkUpdater } from "./iworkupdater";
 import { INamespace, ISecurityHelper, ISecurityIdentity } from "../helpers/isecurityhelper";
+import { ILogger } from "../loggers/ilogger";
+import { IDebug } from "../loggers/idebug";
 
 export class WorkUpdater implements IWorkUpdater {
 
+    private logger: ILogger;
+    private debugLogger: IDebug;
+
     public workHelper: IWorkHelper;
     public securityHelper: ISecurityHelper;
-
-    private debugLogger: Debug.Debugger;
-    private logger: IConsoleLogger;
     private helper: IHelper;
 
-    constructor(workHelper: IWorkHelper, securityHelper: ISecurityHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
+    constructor(workHelper: IWorkHelper, securityHelper: ISecurityHelper, helper: IHelper, logger: ILogger) {
 
-        this.debugLogger = debugLogger.create(this.constructor.name);
-        this.logger = consoleLogger;
+        this.logger = logger;
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.workHelper = workHelper;
         this.securityHelper = securityHelper;

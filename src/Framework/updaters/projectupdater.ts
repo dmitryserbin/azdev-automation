@@ -1,30 +1,28 @@
-import Debug from "debug";
-
 import { OperationReference } from "azure-devops-node-api/interfaces/common/OperationsInterfaces";
 import { Process, ProjectVisibility, TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { IProject, IProjectPermission } from "../readers/iconfigurationreader";
-import { IConsoleLogger } from "../common/iconsolelogger";
-import { IDebugLogger } from "../loggers/idebuglogger";
 import { IHelper } from "../common/ihelper";
 import { IProjectHelper } from "../helpers/iprojecthelper";
 import { IProjectUpdater } from "./iprojectupdater";
 import { ISecurityHelper } from "../helpers/isecurityhelper";
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
 
 export class ProjectUpdater implements IProjectUpdater {
+
+    private logger: ILogger;
+    private debugLogger: IDebug;
 
     public projectHelper: IProjectHelper;
     public securityHelper: ISecurityHelper;
     private helper: IHelper;
 
-    private debugLogger: Debug.Debugger;
-    private logger: IConsoleLogger;
+    constructor(projectHelper: IProjectHelper, securityHelper: ISecurityHelper, helper: IHelper, logger: ILogger) {
 
-    constructor(projectHelper: IProjectHelper, securityHelper: ISecurityHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
-
-        this.debugLogger = debugLogger.create(this.constructor.name);
-        this.logger = consoleLogger;
+        this.logger = logger;
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.projectHelper = projectHelper;
         this.securityHelper = securityHelper;

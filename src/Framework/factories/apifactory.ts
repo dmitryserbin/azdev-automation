@@ -1,5 +1,3 @@
-import Debug from "debug";
-
 import { WebApi, getPersonalAccessTokenHandler } from "azure-devops-node-api";
 import { IRequestOptions } from "azure-devops-node-api/interfaces/common/VsoBaseInterfaces";
 import { CoreApi } from "azure-devops-node-api/CoreApi";
@@ -11,16 +9,18 @@ import { ISecurityRolesApi } from "azure-devops-node-api/SecurityRolesApi";
 import { VsoClient } from "azure-devops-node-api/VsoClient";
 
 import { IApiFactory } from "./iapifactory";
-import { IDebugLogger } from "../loggers/idebuglogger";
+import { ILogger } from "../loggers/ilogger";
+import { IDebug } from "../loggers/idebug";
 
 export class ApiFactory implements IApiFactory {
 
+    private debugLogger: IDebug;
+
     private webApi: WebApi;
-    private debugLogger: Debug.Debugger;
 
-    constructor(accountName: string, token: string, debugLogger: IDebugLogger) {
+    constructor(accountName: string, token: string, logger: ILogger) {
 
-        this.debugLogger = debugLogger.create(this.constructor.name);
+        this.debugLogger = logger.extend(this.constructor.name);
 
         const auth = getPersonalAccessTokenHandler(token);
 

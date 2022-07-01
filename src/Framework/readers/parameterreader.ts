@@ -1,16 +1,16 @@
-import Debug from "debug";
 import meow, { AnyFlags, Result } from "meow";
 
-import { IDebugLogger } from "../loggers/idebuglogger";
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
 import { IConsoleParameters, IParameterReader } from "./iparameterreader";
 
 export class ParameterReader implements IParameterReader {
 
-    private debugLogger: Debug.Debugger;
+    private debugLogger: IDebug;
 
-    constructor(debugLogger: IDebugLogger) {
+    constructor(logger: ILogger) {
 
-        this.debugLogger = debugLogger.create(this.constructor.name);
+        this.debugLogger = logger.extend(this.constructor.name);
 
     }
 

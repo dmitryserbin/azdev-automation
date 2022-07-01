@@ -1,24 +1,24 @@
-import Debug from "debug";
-
 import { GraphGroup, GraphMember, GraphMembership } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { AzDevApiType, IAzDevClient } from "../common/iazdevclient";
 import { IPermission, PermissionType } from "../readers/iconfigurationreader";
-import { IDebugLogger } from "../loggers/idebuglogger";
 import { IGraphIdentity, IGroupProvider, IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission, ISubjectPermission } from "./isecurityhelper";
 import { ISecurityMapper } from "../mappers/isecuritymapper";
 import { IHelper } from "../common/ihelper";
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
 
 export class SecurityHelper implements ISecurityHelper {
 
+    private debugLogger: IDebug;
+
     private azdevClient: IAzDevClient;
-    private debugLogger: Debug.Debugger;
     private helper: IHelper;
     private mapper: ISecurityMapper;
 
-    constructor(azdevClient: IAzDevClient, helper: IHelper, mapper: ISecurityMapper, debugLogger: IDebugLogger) {
+    constructor(azdevClient: IAzDevClient, helper: IHelper, mapper: ISecurityMapper, logger: ILogger) {
 
-        this.debugLogger = debugLogger.create(this.constructor.name);
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.azdevClient = azdevClient;
         this.helper = helper;

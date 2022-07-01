@@ -1,4 +1,3 @@
-import Debug from "debug";
 import "mocha";
 
 import * as chai from "chai";
@@ -10,11 +9,11 @@ import { GraphGroup, GraphMember, GraphMembership } from "azure-devops-node-api/
 import { SecurityHelper } from "../../helpers/securityhelper";
 import { IAzDevClient } from "../../common/iazdevclient";
 import { PermissionType } from "../../readers/iconfigurationreader";
-import { IDebugLogger } from "../../loggers/idebuglogger";
 import { IGraphIdentity, IGroupProvider, IIdentityPermission, INamespace, ISecurityHelper, ISecurityIdentity, ISecurityPermission } from "../../helpers/isecurityhelper";
 import { ISecurityMapper } from "../../mappers/isecuritymapper";
 import { SecurityMapper } from "../../mappers/securitymapper";
 import { IHelper } from "../../common/ihelper";
+import { ILogger } from "../../loggers/ilogger";
 
 const projectOne: TeamProject = {
 
@@ -155,15 +154,12 @@ const permissionSetToken = "1";
 const azdevClientMock = TypeMoq.Mock.ofType<IAzDevClient>();
 const helperMock = TypeMoq.Mock.ofType<IHelper>();
 
-const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
-const debugLoggerMock = TypeMoq.Mock.ofType<IDebugLogger>();
-debugLoggerMock.setup((x) => x.create(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
-debuggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
+const loggerMock = TypeMoq.Mock.ofType<ILogger>();
 
 describe("SecurityHelper", () => {
 
-    const securityMapper: ISecurityMapper = new SecurityMapper(debugLoggerMock.target);
-    const securityHelper: ISecurityHelper = new SecurityHelper(azdevClientMock.target, helperMock.target, securityMapper, debugLoggerMock.target);
+    const securityMapper: ISecurityMapper = new SecurityMapper(loggerMock.target);
+    const securityHelper: ISecurityHelper = new SecurityHelper(azdevClientMock.target, helperMock.target, securityMapper, loggerMock.target);
 
     it("Should find user identity", async () => {
 

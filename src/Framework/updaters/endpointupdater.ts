@@ -1,23 +1,21 @@
-import Debug from "debug";
-
-import { IConsoleLogger } from "../common/iconsolelogger";
-import { IDebugLogger } from "../loggers/idebuglogger";
 import { IHelper } from "../common/ihelper";
 import { IEndpointHelper } from "../helpers/iendpointhelper";
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
 import { IEndpointUpdater } from "./iendpointupdater";
 
 export class EndpointUpdater implements IEndpointUpdater {
 
+    private logger: ILogger;
+    private debugLogger: IDebug;
+
     private endpointHelper: IEndpointHelper;
     private helper: IHelper;
 
-    private debugLogger: Debug.Debugger;
-    private logger: IConsoleLogger;
+    constructor(endpointHelper: IEndpointHelper, helper: IHelper, logger: ILogger) {
 
-    constructor(endpointHelper: IEndpointHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
-
-        this.debugLogger = debugLogger.create(this.constructor.name);
-        this.logger = consoleLogger;
+        this.logger = logger;
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.endpointHelper = endpointHelper;
         this.helper = helper;

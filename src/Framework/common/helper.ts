@@ -1,15 +1,14 @@
-import Debug from "debug";
-
-import { IDebugLogger } from "../loggers/idebuglogger";
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
 import { IHelper } from "./ihelper";
 
 export class Helper implements IHelper {
 
-    private debugLogger: Debug.Debugger;
+    private debugLogger: IDebug;
 
-    constructor(debugLogger: IDebugLogger) {
+    constructor(logger: ILogger) {
 
-        this.debugLogger = debugLogger.create(this.constructor.name);
+        this.debugLogger = logger.extend(this.constructor.name);
 
     }
 

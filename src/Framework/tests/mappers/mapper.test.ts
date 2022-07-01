@@ -1,18 +1,14 @@
-import Debug from "debug";
 import "mocha";
 
 import * as chai from "chai";
 import * as TypeMoq from "typemoq";
 
-import { IDebugLogger } from "../../loggers/idebuglogger";
 import { IIdentityPermission, ISecurityIdentity } from "../../helpers/isecurityhelper";
 import { ISecurityMapper } from "../../mappers/isecuritymapper";
 import { SecurityMapper } from "../../mappers/securitymapper";
+import { ILogger } from "../../loggers/ilogger";
 
-const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
-const debugLoggerMock = TypeMoq.Mock.ofType<IDebugLogger>();
-debugLoggerMock.setup((x) => x.create(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
-debuggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
+const loggerMock = TypeMoq.Mock.ofType<ILogger>();
 
 describe("SecurityMapper", () => {
 
@@ -42,7 +38,7 @@ describe("SecurityMapper", () => {
 
     };
 
-    const securityMapper: ISecurityMapper = new SecurityMapper(debugLoggerMock.target);
+    const securityMapper: ISecurityMapper = new SecurityMapper(loggerMock.target);
 
     it("Should map ISecurityIdentity object", async () => {
 

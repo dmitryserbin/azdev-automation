@@ -1,18 +1,18 @@
-import Debug from "debug";
-
 import { IGitApi } from "azure-devops-node-api/GitApi";
 
-import { IDebugLogger } from "../loggers/idebuglogger";
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
 import { IRepositoryHelper } from "./irepositoryhelper";
 
 export class RepositoryHelper implements IRepositoryHelper {
 
+    private debugLogger: IDebug;
+
     private gitApi: IGitApi;
-    private debugLogger: Debug.Debugger;
 
-    constructor(gitApi: IGitApi, debugLogger: IDebugLogger) {
+    constructor(gitApi: IGitApi, logger: ILogger) {
 
-        this.debugLogger = debugLogger.create(this.constructor.name);
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.gitApi = gitApi;
 

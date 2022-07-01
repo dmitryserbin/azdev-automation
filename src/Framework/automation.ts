@@ -1,7 +1,5 @@
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { ConsoleLogger } from "./loggers/consolelogger";
-import { DebugLogger } from "./loggers/debuglogger";
 import { ApiFactory } from "./factories/apifactory";
 import { ArtifactFactory } from "./factories/artifactfactory";
 import { AutomationFactory } from "./factories/automationfactory";
@@ -11,22 +9,21 @@ import { IAutomation, IEndpoint, IParameters } from "./iautomation";
 import { IAutomationFactory } from "./factories/iautomationfactory";
 import { IBuildUpdater } from "./updaters/ibuildupdater";
 import { IProject } from "./readers/iconfigurationreader";
-import { IConsoleLogger } from "./common/iconsolelogger";
-import { IDebugLogger } from "./loggers/idebuglogger";
 import { IProjectUpdater } from "./updaters/iprojectupdater";
 import { IReleaseUpdater } from "./updaters/ireleaseupdater";
 import { IRepositoryUpdater } from "./updaters/irepositoryupdater";
 import { ConfigurationReader } from "./readers/configurationreader";
 import { IWorkUpdater } from "./updaters/iworkupdater";
 import { IEndpointUpdater } from "./updaters/iendpointupdater";
+import { ILogger } from "./loggers/ilogger";
+import { Logger } from "./loggers/logger";
 
 export class Automation implements IAutomation {
 
     private endpoint: IEndpoint;
     private parameters: IParameters;
 
-    private debugLogger: IDebugLogger;
-    private consoleLogger: IConsoleLogger;
+    private logger: ILogger;
 
     private configurationReader: ConfigurationReader;
     private automationFactory: IAutomationFactory;
@@ -36,14 +33,13 @@ export class Automation implements IAutomation {
         this.endpoint = endpoint;
         this.parameters = parameters;
 
-        this.debugLogger = new DebugLogger("azdev-automation");
-        this.consoleLogger = new ConsoleLogger();
+        this.logger = new Logger("azdev-automation", false);
 
-        const apiFactory: IApiFactory = new ApiFactory(this.endpoint.account, this.endpoint.token, this.debugLogger);
+        const apiFactory: IApiFactory = new ApiFactory(this.endpoint.account, this.endpoint.token, this.logger);
         const artifactFactory: IArtifactFactory = new ArtifactFactory(this.parameters.config, this.parameters.policies, this.parameters.schemas);
 
-        this.configurationReader = new ConfigurationReader(artifactFactory, this.debugLogger);
-        this.automationFactory = new AutomationFactory(apiFactory, this.debugLogger, this.consoleLogger);
+        this.configurationReader = new ConfigurationReader(artifactFactory, this.logger);
+        this.automationFactory = new AutomationFactory(apiFactory, this.logger);
 
     }
 
@@ -60,7 +56,7 @@ export class Automation implements IAutomation {
 
         for (const project of configuration) {
 
-            this.consoleLogger.log(`Configuring <${project.name}> project automation`);
+            this.logger.log(`Configuring <${project.name}> project automation`);
 
             let targetProject: TeamProject = await projectUpdater.getProject(project.name);
 

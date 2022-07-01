@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/ban-types */
 
-import Debug from "debug";
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
+import { Logger } from "../loggers/logger";
 
-const logger = Debug("azdev-automation:Retry");
+const logger: ILogger = new Logger("azdev-automation");
+const debugLogger: IDebug = logger.extend("Retry");
 
 export interface IRetryOptions {
 

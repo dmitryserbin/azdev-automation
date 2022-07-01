@@ -1,21 +1,21 @@
-import Debug from "debug";
-
 import { IRequestOptions, IRestResponse, RestClient } from "typed-rest-client/RestClient";
 
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
 import { AzDevApiType, IAzDevClient } from "./iazdevclient";
-import { IDebugLogger } from "../loggers/idebuglogger";
 import { Retryable } from "./retry";
 
 export class AzDevClient implements IAzDevClient {
 
+    private debugLogger: IDebug;
+
     private client: RestClient;
     private apiType: AzDevApiType;
     private accountName: string;
-    private debugLogger: Debug.Debugger;
 
-    constructor(client: RestClient, apiType: AzDevApiType, accountName: string, debugLogger: IDebugLogger) {
+    constructor(client: RestClient, apiType: AzDevApiType, accountName: string, logger: ILogger) {
 
-        this.debugLogger = debugLogger.create(this.constructor.name);
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.client = client;
         this.apiType = apiType;

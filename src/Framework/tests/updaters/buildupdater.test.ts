@@ -1,4 +1,3 @@
-import Debug from "debug";
 import "mocha";
 
 import * as chai from "chai";
@@ -9,11 +8,11 @@ import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { IBuildHelper } from "../../helpers/ibuildhelper";
 import { IBuildUpdater } from "../../updaters/ibuildupdater";
 import { IBuildPermission, IGroupPermission, PermissionType } from "../../readers/iconfigurationreader";
-import { IConsoleLogger } from "../../common/iconsolelogger";
-import { IDebugLogger } from "../../loggers/idebuglogger";
+
 import { IHelper } from "../../common/ihelper";
 import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../helpers/isecurityhelper";
 import { BuildUpdater } from "../../updaters/buildupdater";
+import { ILogger } from "../../loggers/ilogger";
 
 const buildHelperMock = TypeMoq.Mock.ofType<IBuildHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
@@ -21,13 +20,7 @@ const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
 const helperMock = TypeMoq.Mock.ofType<IHelper>();
 helperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber())).returns(() => Promise.resolve());
 
-const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
-const debugLoggerMock = TypeMoq.Mock.ofType<IDebugLogger>();
-debugLoggerMock.setup((x) => x.create(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
-debuggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
-
-const consoleLoggerMock = TypeMoq.Mock.ofType<IConsoleLogger>();
-consoleLoggerMock.setup((x) => x.log(TypeMoq.It.isAny())).returns(() => null);
+const loggerMock = TypeMoq.Mock.ofType<ILogger>();
 
 const projectOne: TeamProject = {
 
@@ -69,7 +62,7 @@ const namespaceName = "Build";
 
 describe("BuildUpdater", () => {
 
-    const buildUpdater: IBuildUpdater = new BuildUpdater(buildHelperMock.target, securityHelperMock.target, helperMock.target, debugLoggerMock.target, consoleLoggerMock.target);
+    const buildUpdater: IBuildUpdater = new BuildUpdater(buildHelperMock.target, securityHelperMock.target, helperMock.target, loggerMock.target);
 
     it("Should update permissions", async () => {
 

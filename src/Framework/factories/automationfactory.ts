@@ -19,8 +19,6 @@ import { IAutomationFactory } from "./iautomationfactory";
 import { AzDevApiType, IAzDevClient } from "../common/iazdevclient";
 import { IBuildHelper } from "../helpers/ibuildhelper";
 import { IBuildUpdater } from "../updaters/ibuildupdater";
-import { IConsoleLogger } from "../common/iconsolelogger";
-import { IDebugLogger } from "../loggers/idebuglogger";
 import { IHelper } from "../common/ihelper";
 import { IProjectHelper } from "../helpers/iprojecthelper";
 import { IProjectUpdater } from "../updaters/iprojectupdater";
@@ -44,18 +42,20 @@ import { IEndpointUpdater } from "../updaters/iendpointupdater";
 import { EndpointUpdater } from "../updaters/endpointupdater";
 import { EndpointHelper } from "../helpers/endpointhelper";
 import { IEndpointHelper } from "../helpers/iendpointhelper";
+import { ILogger } from "../loggers/ilogger";
+import { IDebug } from "../loggers/idebug";
 
 export class AutomationFactory implements IAutomationFactory {
 
-    private debugLogger: IDebugLogger;
-    private consoleLogger: IConsoleLogger;
+    private logger: ILogger;
+    private debugLogger: IDebug;
 
     private apiFactory: IApiFactory;
 
-    constructor(apiFactory: IApiFactory, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
+    constructor(apiFactory: IApiFactory, logger: ILogger) {
 
-        this.debugLogger = debugLogger;
-        this.consoleLogger = consoleLogger;
+        this.logger = logger;
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.apiFactory = apiFactory;
 
@@ -65,90 +65,90 @@ export class AutomationFactory implements IAutomationFactory {
 
         const coreApi: ICoreApi = await this.apiFactory.createCoreApi();
         const vsoClient: VsoClient = await this.apiFactory.createVsoClient();
-        const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
+        const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.logger);
 
-        const helper: IHelper = new Helper(this.debugLogger);
-        const securityMapper: ISecurityMapper = new SecurityMapper(this.debugLogger);
-        const projectHelper: IProjectHelper = new ProjectHelper(coreApi, azdevClient, this.debugLogger);
-        const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, helper, securityMapper, this.debugLogger);
+        const helper: IHelper = new Helper(this.logger);
+        const securityMapper: ISecurityMapper = new SecurityMapper(this.logger);
+        const projectHelper: IProjectHelper = new ProjectHelper(coreApi, azdevClient, this.logger);
+        const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, helper, securityMapper, this.logger);
 
-        return new ProjectUpdater(projectHelper, securityHelper, helper, this.debugLogger, this.consoleLogger);
+        return new ProjectUpdater(projectHelper, securityHelper, helper, this.logger);
 
     }
 
     public async createBuildUpdater(): Promise<IBuildUpdater> {
 
         const vsoClient: VsoClient = await this.apiFactory.createVsoClient();
-        const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
+        const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.logger);
 
         const buildApi: IBuildApi = await this.apiFactory.createBuildApi();
-        const buildHelper: IBuildHelper = new BuildHelper(buildApi, this.debugLogger);
+        const buildHelper: IBuildHelper = new BuildHelper(buildApi, this.logger);
 
-        const helper: IHelper = new Helper(this.debugLogger);
-        const securityMapper: ISecurityMapper = new SecurityMapper(this.debugLogger);
-        const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, helper, securityMapper, this.debugLogger);
+        const helper: IHelper = new Helper(this.logger);
+        const securityMapper: ISecurityMapper = new SecurityMapper(this.logger);
+        const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, helper, securityMapper, this.logger);
 
-        return new BuildUpdater(buildHelper, securityHelper, helper, this.debugLogger, this.consoleLogger);
+        return new BuildUpdater(buildHelper, securityHelper, helper, this.logger);
 
     }
 
     public async createReleaseUpdater(): Promise<IReleaseUpdater> {
 
         const vsoClient: VsoClient = await this.apiFactory.createVsoClient();
-        const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
+        const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.logger);
 
         const releaseApi: IReleaseApi = await this.apiFactory.createReleaseApi();
-        const releaseHelper: IReleaseHelper = new ReleaseHelper(releaseApi, this.debugLogger);
+        const releaseHelper: IReleaseHelper = new ReleaseHelper(releaseApi, this.logger);
 
-        const helper: IHelper = new Helper(this.debugLogger);
-        const securityMapper: ISecurityMapper = new SecurityMapper(this.debugLogger);
+        const helper: IHelper = new Helper(this.logger);
+        const securityMapper: ISecurityMapper = new SecurityMapper(this.logger);
         const taskAgentApi: ITaskAgentApi = await this.apiFactory.createTaskAgentApi();
-        const taskAgentHelper: ITaskAgentHelper = new TaskAgentHelper(taskAgentApi, this.debugLogger);
-        const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, helper, securityMapper, this.debugLogger);
+        const taskAgentHelper: ITaskAgentHelper = new TaskAgentHelper(taskAgentApi, this.logger);
+        const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, helper, securityMapper, this.logger);
 
-        return new ReleaseUpdater(releaseHelper, taskAgentHelper, securityHelper, helper, this.debugLogger, this.consoleLogger);
+        return new ReleaseUpdater(releaseHelper, taskAgentHelper, securityHelper, helper, this.logger);
 
     }
 
     public async createRepositoryUpdater(): Promise<IRepositoryUpdater> {
 
         const vsoClient: VsoClient = await this.apiFactory.createVsoClient();
-        const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
+        const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.logger);
 
         const gitApi: IGitApi = await this.apiFactory.createGitApi();
-        const repositoryHelper: IRepositoryHelper = new RepositoryHelper(gitApi, this.debugLogger);
+        const repositoryHelper: IRepositoryHelper = new RepositoryHelper(gitApi, this.logger);
 
-        const helper: IHelper = new Helper(this.debugLogger);
-        const securityMapper: ISecurityMapper = new SecurityMapper(this.debugLogger);
-        const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, helper, securityMapper, this.debugLogger);
+        const helper: IHelper = new Helper(this.logger);
+        const securityMapper: ISecurityMapper = new SecurityMapper(this.logger);
+        const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, helper, securityMapper, this.logger);
 
-        return new RepositoryUpdater(repositoryHelper, securityHelper, helper, this.debugLogger, this.consoleLogger);
+        return new RepositoryUpdater(repositoryHelper, securityHelper, helper, this.logger);
 
     }
 
     public async createWorkUpdater(): Promise<IWorkUpdater> {
 
         const vsoClient: VsoClient = await this.apiFactory.createVsoClient();
-        const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
+        const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.logger);
 
-        const helper: IHelper = new Helper(this.debugLogger);
-        const workHelper: IWorkHelper = new WorkHelper(azdevClient, this.debugLogger);
-        const securityMapper: ISecurityMapper = new SecurityMapper(this.debugLogger);
-        const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, helper, securityMapper, this.debugLogger);
+        const helper: IHelper = new Helper(this.logger);
+        const workHelper: IWorkHelper = new WorkHelper(azdevClient, this.logger);
+        const securityMapper: ISecurityMapper = new SecurityMapper(this.logger);
+        const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, helper, securityMapper, this.logger);
 
-        return new WorkUpdater(workHelper, securityHelper, helper, this.debugLogger, this.consoleLogger);
+        return new WorkUpdater(workHelper, securityHelper, helper, this.logger);
 
     }
 
     public async createEndpointUpdater(): Promise<IEndpointUpdater> {
 
         const vsoClient: VsoClient = await this.apiFactory.createVsoClient();
-        const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
+        const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.logger);
 
-        const helper: IHelper = new Helper(this.debugLogger);
-        const endpointHelper: IEndpointHelper = new EndpointHelper(azdevClient, this.debugLogger);
+        const helper: IHelper = new Helper(this.logger);
+        const endpointHelper: IEndpointHelper = new EndpointHelper(azdevClient, this.logger);
 
-        return new EndpointUpdater(endpointHelper, helper, this.debugLogger, this.consoleLogger);
+        return new EndpointUpdater(endpointHelper, helper, this.logger);
 
     }
 

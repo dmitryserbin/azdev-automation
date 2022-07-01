@@ -1,4 +1,3 @@
-import Debug from "debug";
 import "mocha";
 
 import * as chai from "chai";
@@ -11,8 +10,8 @@ import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { ProjectHelper } from "../../helpers/projecthelper";
 import { IAzDevClient } from "../../common/iazdevclient";
-import { IDebugLogger } from "../../loggers/idebuglogger";
 import { IProjectHelper } from "../../helpers/iprojecthelper";
+import { ILogger } from "../../loggers/ilogger";
 
 const projectOne = "MyProjectOne";
 const projectOneDescription = "This is Project One";
@@ -28,10 +27,7 @@ const groupOneDescription = "This is Group One";
 const coreApiMock = TypeMoq.Mock.ofType<ICoreApi>();
 const azdevClientMock = TypeMoq.Mock.ofType<IAzDevClient>();
 
-const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
-const debugLoggerMock = TypeMoq.Mock.ofType<IDebugLogger>();
-debugLoggerMock.setup((x) => x.create(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
-debuggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
+const loggerMock = TypeMoq.Mock.ofType<ILogger>();
 
 const mockProjectOne: TypeMoq.IMock<TeamProject> = TypeMoq.Mock.ofType<TeamProject>();
 mockProjectOne.setup((x) => x.name).returns(() => projectOne);
@@ -48,7 +44,7 @@ mockGraphGroup.setup((x) => x.origin).returns(() => "vsts");
 
 describe("ProjectHelper", () => {
 
-    const projectHelper: IProjectHelper = new ProjectHelper(coreApiMock.target, azdevClientMock.target, debugLoggerMock.target);
+    const projectHelper: IProjectHelper = new ProjectHelper(coreApiMock.target, azdevClientMock.target, loggerMock.target);
 
     it("Should create project", async () => {
 

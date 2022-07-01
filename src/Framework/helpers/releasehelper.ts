@@ -1,20 +1,20 @@
-import Debug from "debug";
-
 import { IReleaseApi } from "azure-devops-node-api/ReleaseApi";
 import { Artifact, DeployPhase, Release, ReleaseDefinition, ReleaseDefinitionEnvironment, ReleaseEnvironment, WorkflowTask } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
-import { IDebugLogger } from "../loggers/idebuglogger";
 import { IReleaseHelper } from "./ireleasehelper";
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
 
 export class ReleaseHelper implements IReleaseHelper {
 
+    private debugLogger: IDebug;
+
     private releaseApi: IReleaseApi;
-    private debugLogger: Debug.Debugger;
 
-    constructor(releaseApi: IReleaseApi, debugLogger: IDebugLogger) {
+    constructor(releaseApi: IReleaseApi, logger: ILogger) {
 
-        this.debugLogger = debugLogger.create(this.constructor.name);
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.releaseApi = releaseApi;
 

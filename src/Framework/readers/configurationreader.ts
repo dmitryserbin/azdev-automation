@@ -1,19 +1,20 @@
 import Ajv, { ValidateFunction } from "ajv";
-import Debug from "debug";
 import { readFileSync } from "fs";
 
 import { IArtifactFactory, IConfigArtifact } from "../factories/iartifactfactory";
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
 import { IBuildPermission, IConfigurationReader, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IWorkPermission } from "./iconfigurationreader";
-import { IDebugLogger } from "../loggers/idebuglogger";
 
 export class ConfigurationReader implements IConfigurationReader {
 
+    private debugLogger: IDebug;
+
     private artifactFactory: IArtifactFactory;
-    private debugLogger: Debug.Debugger;
 
-    constructor(artifactFactory: IArtifactFactory, debugLogger: IDebugLogger) {
+    constructor(artifactFactory: IArtifactFactory, logger: ILogger) {
 
-        this.debugLogger = debugLogger.create(this.constructor.name);
+        this.debugLogger = logger.extend(this.constructor.name);
         this.artifactFactory = artifactFactory;
 
     }
@@ -22,7 +23,6 @@ export class ConfigurationReader implements IConfigurationReader {
 
         const debug = this.debugLogger.extend(this.read.name);
 
-        // Read artifacts
         const projects: IProject[] = await this.parse<IProject[]>(this.artifactFactory.configuration);
         const projectPermissions: IProjectPermission[] = await this.parse<IProjectPermission[]>(this.artifactFactory.projectPermissions);
         const buildPermissions: IBuildPermission[] = await this.parse<IBuildPermission[]>(this.artifactFactory.buildPermissions);

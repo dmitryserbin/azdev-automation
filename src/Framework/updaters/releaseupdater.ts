@@ -1,32 +1,30 @@
-import Debug from "debug";
-
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { Release, ReleaseDefinition } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
 import { IReleasePermission, ITask } from "../readers/iconfigurationreader";
-import { IConsoleLogger } from "../common/iconsolelogger";
-import { IDebugLogger } from "../loggers/idebuglogger";
 import { IHelper } from "../common/ihelper";
 import { IReleaseHelper } from "../helpers/ireleasehelper";
 import { IReleaseUpdater } from "./ireleaseupdater";
 import { INamespace, ISecurityHelper, ISecurityIdentity } from "../helpers/isecurityhelper";
 import { ITaskAgentHelper } from "../helpers/itaskagenthelper";
+import { ILogger } from "../loggers/ilogger";
+import { IDebug } from "../loggers/idebug";
 
 export class ReleaseUpdater implements IReleaseUpdater {
+
+    private logger: ILogger;
+    private debugLogger: IDebug;
 
     public releaseHelper: IReleaseHelper;
     public taskAgentHelper: ITaskAgentHelper;
     public securityHelper: ISecurityHelper;
     private helper: IHelper;
 
-    private debugLogger: Debug.Debugger;
-    private logger: IConsoleLogger;
+    constructor(releaseHelper: IReleaseHelper, taskAgentHelper: ITaskAgentHelper, securityHelper: ISecurityHelper, helper: IHelper, logger: ILogger) {
 
-    constructor(releaseHelper: IReleaseHelper, taskAgentHelper: ITaskAgentHelper, securityHelper: ISecurityHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
-
-        this.debugLogger = debugLogger.create(this.constructor.name);
-        this.logger = consoleLogger;
+        this.logger = logger;
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.releaseHelper = releaseHelper;
         this.taskAgentHelper = taskAgentHelper;

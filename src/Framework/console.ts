@@ -1,16 +1,14 @@
 import { Automation } from "./automation";
-import { DebugLogger } from "./loggers/debuglogger";
 import { IAutomation, IEndpoint, IParameters } from "./iautomation";
-import { IDebugLogger } from "./loggers/idebuglogger";
+import { ILogger } from "./loggers/ilogger";
+import { Logger } from "./loggers/logger";
 import { IConsoleParameters } from "./readers/iparameterreader";
 import { ParameterReader } from "./readers/parameterreader";
 
-const debugLogger: IDebugLogger = new DebugLogger("azdev-console");
-const parameterReader: ParameterReader = new ParameterReader(debugLogger);
+const logger: ILogger = new Logger("azdev-automation", false);
+const parameterReader: ParameterReader = new ParameterReader(logger);
 
 function newEndpoint(account: string, token: string): IEndpoint {
-
-    const debug = debugLogger.create("newEndpoint");
 
     const endpoint: IEndpoint = {
 
@@ -19,8 +17,6 @@ function newEndpoint(account: string, token: string): IEndpoint {
         url: `https://dev.azure.com/${account}`,
 
     };
-
-    debug(endpoint);
 
     return endpoint;
 

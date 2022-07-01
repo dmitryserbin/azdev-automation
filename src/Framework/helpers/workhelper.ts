@@ -1,17 +1,17 @@
-import Debug from "debug";
-
-import { IDebugLogger } from "../loggers/idebuglogger";
 import { IWorkHelper } from "./iworkhelper";
 import { AzDevApiType, IAzDevClient } from "../common/iazdevclient";
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
 
 export class WorkHelper implements IWorkHelper {
 
+    private debugLogger: IDebug;
+
     private azdevClient: IAzDevClient;
-    private debugLogger: Debug.Debugger;
 
-    constructor(azdevClient: IAzDevClient, debugLogger: IDebugLogger) {
+    constructor(azdevClient: IAzDevClient, logger: ILogger) {
 
-        this.debugLogger = debugLogger.create(this.constructor.name);
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.azdevClient = azdevClient;
 

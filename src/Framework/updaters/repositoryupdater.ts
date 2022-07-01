@@ -1,28 +1,26 @@
-import Debug from "debug";
-
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
 import { IBuildPermission } from "../readers/iconfigurationreader";
-import { IConsoleLogger } from "../common/iconsolelogger";
-import { IDebugLogger } from "../loggers/idebuglogger";
 import { IHelper } from "../common/ihelper";
 import { IRepositoryHelper } from "../helpers/irepositoryhelper";
 import { IRepositoryUpdater } from "./irepositoryupdater";
 import { INamespace, ISecurityHelper, ISecurityIdentity } from "../helpers/isecurityhelper";
+import { ILogger } from "../loggers/ilogger";
+import { IDebug } from "../loggers/idebug";
 
 export class RepositoryUpdater implements IRepositoryUpdater {
+
+    private logger: ILogger;
+    private debugLogger: IDebug;
 
     public repositoryHelper: IRepositoryHelper;
     public securityHelper: ISecurityHelper;
     private helper: IHelper;
 
-    private debugLogger: Debug.Debugger;
-    private logger: IConsoleLogger;
+    constructor(repositoryHelper: IRepositoryHelper, securityHelper: ISecurityHelper, helper: IHelper, logger: ILogger) {
 
-    constructor(repositoryHelper: IRepositoryHelper, securityHelper: ISecurityHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
-
-        this.debugLogger = debugLogger.create(this.constructor.name);
-        this.logger = consoleLogger;
+        this.logger = logger;
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.repositoryHelper = repositoryHelper;
         this.securityHelper = securityHelper;

@@ -1,4 +1,3 @@
-import Debug from "debug";
 import "mocha";
 
 import * as chai from "chai";
@@ -7,13 +6,12 @@ import * as TypeMoq from "typemoq";
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
 import { IGroupPermission, IRepositoryPermission, PermissionType } from "../../readers/iconfigurationreader";
-import { IConsoleLogger } from "../../common/iconsolelogger";
-import { IDebugLogger } from "../../loggers/idebuglogger";
 import { IHelper } from "../../common/ihelper";
 import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../helpers/isecurityhelper";
 import { IRepositoryHelper } from "../../helpers/irepositoryhelper";
 import { IRepositoryUpdater } from "../../updaters/irepositoryupdater";
 import { RepositoryUpdater } from "../../updaters/repositoryupdater";
+import { ILogger } from "../../loggers/ilogger";
 
 const repositoryHelperMock = TypeMoq.Mock.ofType<IRepositoryHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
@@ -21,13 +19,7 @@ const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
 const helperMock = TypeMoq.Mock.ofType<IHelper>();
 helperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber())).returns(() => Promise.resolve());
 
-const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
-const debugLoggerMock = TypeMoq.Mock.ofType<IDebugLogger>();
-debugLoggerMock.setup((x) => x.create(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
-debuggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
-
-const consoleLoggerMock = TypeMoq.Mock.ofType<IConsoleLogger>();
-consoleLoggerMock.setup((x) => x.log(TypeMoq.It.isAny())).returns(() => null);
+const loggerMock = TypeMoq.Mock.ofType<ILogger>();
 
 const projectOne: TeamProject = {
 
@@ -69,7 +61,7 @@ const namespaceName = "Git Repositories";
 
 describe("RepositoryUpdater", () => {
 
-    const repositoryUpdater: IRepositoryUpdater = new RepositoryUpdater(repositoryHelperMock.target, securityHelperMock.target, helperMock.target, debugLoggerMock.target, consoleLoggerMock.target);
+    const repositoryUpdater: IRepositoryUpdater = new RepositoryUpdater(repositoryHelperMock.target, securityHelperMock.target, helperMock.target, loggerMock.target);
 
     it("Should update permissions", async () => {
 
