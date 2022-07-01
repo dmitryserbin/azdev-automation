@@ -12,6 +12,7 @@ import { ProjectHelper } from "../../helpers/projecthelper";
 import { IAzDevClient } from "../../common/iazdevclient";
 import { IProjectHelper } from "../../helpers/iprojecthelper";
 import { ILogger } from "../../loggers/ilogger";
+import { IDebug } from "../../loggers/idebug";
 
 const projectOne = "MyProjectOne";
 const projectOneDescription = "This is Project One";
@@ -28,6 +29,10 @@ const coreApiMock = TypeMoq.Mock.ofType<ICoreApi>();
 const azdevClientMock = TypeMoq.Mock.ofType<IAzDevClient>();
 
 const loggerMock = TypeMoq.Mock.ofType<ILogger>();
+const debugMock = TypeMoq.Mock.ofType<IDebug>();
+
+loggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
+debugMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
 
 const mockProjectOne: TypeMoq.IMock<TeamProject> = TypeMoq.Mock.ofType<TeamProject>();
 mockProjectOne.setup((x) => x.name).returns(() => projectOne);

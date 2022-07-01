@@ -15,6 +15,7 @@ import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../helpers/is
 import { ITaskAgentHelper } from "../../helpers/itaskagenthelper";
 import { ReleaseUpdater } from "../../updaters/releaseupdater";
 import { ILogger } from "../../loggers/ilogger";
+import { IDebug } from "../../loggers/idebug";
 
 const projectOne: TeamProject = {
 
@@ -148,6 +149,10 @@ const taskAgentHelperMock = TypeMoq.Mock.ofType<ITaskAgentHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
 
 const loggerMock = TypeMoq.Mock.ofType<ILogger>();
+const debugMock = TypeMoq.Mock.ofType<IDebug>();
+
+loggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
+debugMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
 
 const commonHelperMock = TypeMoq.Mock.ofType<ICommonHelper>();
 commonHelperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber())).returns(() => Promise.resolve());

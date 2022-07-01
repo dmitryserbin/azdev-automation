@@ -13,6 +13,7 @@ import { ICommonHelper } from "../../helpers/icommonhelper";
 import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../helpers/isecurityhelper";
 import { BuildUpdater } from "../../updaters/buildupdater";
 import { ILogger } from "../../loggers/ilogger";
+import { IDebug } from "../../loggers/idebug";
 
 const buildHelperMock = TypeMoq.Mock.ofType<IBuildHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
@@ -21,6 +22,10 @@ const commonHelperMock = TypeMoq.Mock.ofType<ICommonHelper>();
 commonHelperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber())).returns(() => Promise.resolve());
 
 const loggerMock = TypeMoq.Mock.ofType<ILogger>();
+const debugMock = TypeMoq.Mock.ofType<IDebug>();
+
+loggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
+debugMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
 
 const projectOne: TeamProject = {
 

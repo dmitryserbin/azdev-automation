@@ -9,10 +9,15 @@ import { IAzDevClient } from "../../common/iazdevclient";
 import { IWorkHelper } from "../../helpers/iworkhelper";
 import { WorkHelper } from "../../helpers/workhelper";
 import { ILogger } from "../../loggers/ilogger";
+import { IDebug } from "../../loggers/idebug";
 
 const azdevClientMock = TypeMoq.Mock.ofType<IAzDevClient>();
 
 const loggerMock = TypeMoq.Mock.ofType<ILogger>();
+const debugMock = TypeMoq.Mock.ofType<IDebug>();
+
+loggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
+debugMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
 
 const projectOne: TeamProject = {
 
