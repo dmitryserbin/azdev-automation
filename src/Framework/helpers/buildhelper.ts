@@ -1,16 +1,16 @@
 import Debug from "debug";
 
-import * as ba from "azure-devops-node-api/BuildApi";
+import { IBuildApi } from "azure-devops-node-api/BuildApi";
 
 import { IBuildHelper } from "./ibuildhelper";
 import { IDebugLogger } from "../common/idebuglogger";
 
 export class BuildHelper implements IBuildHelper {
 
-    private buildApi: ba.IBuildApi;
+    private buildApi: IBuildApi;
     private debugLogger: Debug.Debugger;
 
-    constructor(buildApi: ba.IBuildApi, debugLogger: IDebugLogger) {
+    constructor(buildApi: IBuildApi, debugLogger: IDebugLogger) {
 
         this.debugLogger = debugLogger.create(this.constructor.name);
 

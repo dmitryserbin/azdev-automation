@@ -1,19 +1,19 @@
-import * as ba from "azure-devops-node-api/BuildApi";
-import * as ca from "azure-devops-node-api/CoreApi";
-import * as ga from "azure-devops-node-api/GitApi";
-import * as ra from "azure-devops-node-api/ReleaseApi";
-import * as sa from "azure-devops-node-api/SecurityRolesApi";
-import * as ta from "azure-devops-node-api/TaskAgentApi";
-import * as vc from "azure-devops-node-api/VsoClient";
+import { BuildApi } from "azure-devops-node-api/BuildApi";
+import { CoreApi } from "azure-devops-node-api/CoreApi";
+import { GitApi } from "azure-devops-node-api/GitApi";
+import { ReleaseApi } from "azure-devops-node-api/ReleaseApi";
+import { ISecurityRolesApi } from "azure-devops-node-api/SecurityRolesApi";
+import { ITaskAgentApi } from "azure-devops-node-api/TaskAgentApi";
+import { VsoClient } from "azure-devops-node-api/VsoClient";
 
 export interface IApiFactory {
 
-    createCoreApi(): Promise<ca.CoreApi>;
-    createReleaseApi(): Promise<ra.ReleaseApi>;
-    createBuildApi(): Promise<ba.BuildApi>;
-    createGitApi(): Promise<ga.GitApi>;
-    createTaskAgentApi(): Promise<ta.ITaskAgentApi>;
-    createSecurityRolesApi(): Promise<sa.ISecurityRolesApi>;
-    createVsoClient(): Promise<vc.VsoClient>;
+    createCoreApi(): Promise<CoreApi>;
+    createReleaseApi(): Promise<ReleaseApi>;
+    createBuildApi(): Promise<BuildApi>;
+    createGitApi(): Promise<GitApi>;
+    createTaskAgentApi(): Promise<ITaskAgentApi>;
+    createSecurityRolesApi(): Promise<ISecurityRolesApi>;
+    createVsoClient(): Promise<VsoClient>;
 
 }

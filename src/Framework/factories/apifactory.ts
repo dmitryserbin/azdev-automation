@@ -1,29 +1,28 @@
 import Debug from "debug";
 
-import * as az from "azure-devops-node-api";
-import * as ba from "azure-devops-node-api/BuildApi";
-import * as ca from "azure-devops-node-api/CoreApi";
-import * as ga from "azure-devops-node-api/GitApi";
-import * as ra from "azure-devops-node-api/ReleaseApi";
-import * as sa from "azure-devops-node-api/SecurityRolesApi";
-import * as ta from "azure-devops-node-api/TaskAgentApi";
-import * as vc from "azure-devops-node-api/VsoClient";
-
-import * as vi from "azure-devops-node-api/interfaces/common/VsoBaseInterfaces";
+import { WebApi, getPersonalAccessTokenHandler } from "azure-devops-node-api";
+import { IRequestOptions } from "azure-devops-node-api/interfaces/common/VsoBaseInterfaces";
+import { CoreApi } from "azure-devops-node-api/CoreApi";
+import { ReleaseApi } from "azure-devops-node-api/ReleaseApi";
+import { BuildApi } from "azure-devops-node-api/BuildApi";
+import { GitApi } from "azure-devops-node-api/GitApi";
+import { ITaskAgentApi } from "azure-devops-node-api/TaskAgentApi";
+import { ISecurityRolesApi } from "azure-devops-node-api/SecurityRolesApi";
+import { VsoClient } from "azure-devops-node-api/VsoClient";
 
 import { IApiFactory } from "./iapifactory";
 import { IDebugLogger } from "../common/idebuglogger";
 
 export class ApiFactory implements IApiFactory {
 
-    private webApi: az.WebApi;
+    private webApi: WebApi;
     private debugLogger: Debug.Debugger;
 
     constructor(accountName: string, token: string, debugLogger: IDebugLogger) {
 
         this.debugLogger = debugLogger.create(this.constructor.name);
 
-        const auth = az.getPersonalAccessTokenHandler(token);
+        const auth = getPersonalAccessTokenHandler(token);
 
         // Use integrated retry mechanism to address
         // Intermittent Azure DevOps connectivity errors
@@ -33,17 +32,17 @@ export class ApiFactory implements IApiFactory {
             maxRetries: 100,
             socketTimeout: 30000,
 
-        } as vi.IRequestOptions;
+        } as IRequestOptions;
 
-        this.webApi = new az.WebApi(`https://dev.azure.com/${accountName}`, auth, options);
+        this.webApi = new WebApi(`https://dev.azure.com/${accountName}`, auth, options);
 
     }
 
-    public async createCoreApi(): Promise<ca.CoreApi> {
+    public async createCoreApi(): Promise<CoreApi> {
 
         const debug = this.debugLogger.extend(this.createCoreApi.name);
 
-        const coreApi: ca.CoreApi = await this.webApi.getCoreApi();
+        const coreApi: CoreApi = await this.webApi.getCoreApi();
 
         debug("Azure DevOps Core API initialized");
 
@@ -51,11 +50,11 @@ export class ApiFactory implements IApiFactory {
 
     }
 
-    public async createReleaseApi(): Promise<ra.ReleaseApi> {
+    public async createReleaseApi(): Promise<ReleaseApi> {
 
         const debug = this.debugLogger.extend(this.createReleaseApi.name);
 
-        const releaseApi: ra.ReleaseApi = await this.webApi.getReleaseApi();
+        const releaseApi: ReleaseApi = await this.webApi.getReleaseApi();
 
         debug("Azure DevOps Release API initialized");
 
@@ -63,11 +62,11 @@ export class ApiFactory implements IApiFactory {
 
     }
 
-    public async createBuildApi(): Promise<ba.BuildApi> {
+    public async createBuildApi(): Promise<BuildApi> {
 
         const debug = this.debugLogger.extend(this.createBuildApi.name);
 
-        const buildApi: ba.BuildApi = await this.webApi.getBuildApi();
+        const buildApi: BuildApi = await this.webApi.getBuildApi();
 
         debug("Azure DevOps Build API initialized");
 
@@ -75,11 +74,11 @@ export class ApiFactory implements IApiFactory {
 
     }
 
-    public async createGitApi(): Promise<ga.GitApi> {
+    public async createGitApi(): Promise<GitApi> {
 
         const debug = this.debugLogger.extend(this.createGitApi.name);
 
-        const getApi: ga.GitApi = await this.webApi.getGitApi();
+        const getApi: GitApi = await this.webApi.getGitApi();
 
         debug("Azure DevOps Git API initialized");
 
@@ -87,11 +86,11 @@ export class ApiFactory implements IApiFactory {
 
     }
 
-    public async createTaskAgentApi(): Promise<ta.ITaskAgentApi> {
+    public async createTaskAgentApi(): Promise<ITaskAgentApi> {
 
         const debug = this.debugLogger.extend(this.createTaskAgentApi.name);
 
-        const taskAgentApi: ta.ITaskAgentApi = await this.webApi.getTaskAgentApi();
+        const taskAgentApi: ITaskAgentApi = await this.webApi.getTaskAgentApi();
 
         debug("Azure DevOps Task Agent API initialized");
 
@@ -99,11 +98,11 @@ export class ApiFactory implements IApiFactory {
 
     }
 
-    public async createSecurityRolesApi(): Promise<sa.ISecurityRolesApi> {
+    public async createSecurityRolesApi(): Promise<ISecurityRolesApi> {
 
         const debug = this.debugLogger.extend(this.createSecurityRolesApi.name);
 
-        const securityRolesApi: sa.ISecurityRolesApi = await this.webApi.getSecurityRolesApi();
+        const securityRolesApi: ISecurityRolesApi = await this.webApi.getSecurityRolesApi();
 
         debug("Azure DevOps Security Roles API initialized");
 
@@ -111,7 +110,7 @@ export class ApiFactory implements IApiFactory {
 
     }
 
-    public async createVsoClient(): Promise<vc.VsoClient> {
+    public async createVsoClient(): Promise<VsoClient> {
 
         const debug = this.debugLogger.extend(this.createVsoClient.name);
 

@@ -1,7 +1,6 @@
 import Debug from "debug";
 
-import * as ta from "azure-devops-node-api/TaskAgentApi";
-
+import { ITaskAgentApi } from "azure-devops-node-api/TaskAgentApi";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
 import { IDebugLogger } from "../common/idebuglogger";
@@ -9,10 +8,10 @@ import { ITaskAgentHelper } from "./itaskagenthelper";
 
 export class TaskAgentHelper implements ITaskAgentHelper {
 
-    private taskAgentApi: ta.ITaskAgentApi;
+    private taskAgentApi: ITaskAgentApi;
     private debugLogger: Debug.Debugger;
 
-    constructor(taskAgentApi: ta.ITaskAgentApi, debugLogger: IDebugLogger) {
+    constructor(taskAgentApi: ITaskAgentApi, debugLogger: IDebugLogger) {
 
         this.debugLogger = debugLogger.create(this.constructor.name);
 

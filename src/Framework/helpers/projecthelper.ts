@@ -1,7 +1,6 @@
 import Debug from "debug";
 
-import * as ca from "azure-devops-node-api/CoreApi";
-
+import { ICoreApi } from "azure-devops-node-api/CoreApi";
 import { OperationReference } from "azure-devops-node-api/interfaces/common/OperationsInterfaces";
 import { Process, ProjectVisibility, TeamProject, TeamProjectReference } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { GraphDescriptorResult, GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
@@ -13,10 +12,10 @@ import { IProjectHelper } from "./iprojecthelper";
 export class ProjectHelper implements IProjectHelper {
 
     private azdevClient: IAzDevClient;
-    private coreApi: ca.ICoreApi;
+    private coreApi: ICoreApi;
     private debugLogger: Debug.Debugger;
 
-    constructor(coreApi: ca.ICoreApi, azdevClient: IAzDevClient, debugLogger: IDebugLogger) {
+    constructor(coreApi: ICoreApi, azdevClient: IAzDevClient, debugLogger: IDebugLogger) {
 
         this.debugLogger = debugLogger.create(this.constructor.name);
 

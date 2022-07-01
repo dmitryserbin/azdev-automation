@@ -1,9 +1,10 @@
-import * as ba from "azure-devops-node-api/BuildApi";
-import * as ca from "azure-devops-node-api/CoreApi";
-import * as ga from "azure-devops-node-api/GitApi";
-import * as ra from "azure-devops-node-api/ReleaseApi";
-import * as ta from "azure-devops-node-api/TaskAgentApi";
-import * as vc from "azure-devops-node-api/VsoClient";
+
+import { VsoClient } from "azure-devops-node-api/VsoClient";
+import { IBuildApi } from "azure-devops-node-api/BuildApi";
+import { ICoreApi } from "azure-devops-node-api/CoreApi";
+import { IReleaseApi } from "azure-devops-node-api/ReleaseApi";
+import { ITaskAgentApi } from "azure-devops-node-api/TaskAgentApi";
+import { IGitApi } from "azure-devops-node-api/GitApi";
 
 import { AzDevClient } from "../common/azdevclient";
 import { Helper } from "../common/helper";
@@ -62,8 +63,8 @@ export class AutomationFactory implements IAutomationFactory {
 
     public async createProjectUpdater(): Promise<IProjectUpdater> {
 
-        const coreApi: ca.ICoreApi = await this.apiFactory.createCoreApi();
-        const vsoClient: vc.VsoClient = await this.apiFactory.createVsoClient();
+        const coreApi: ICoreApi = await this.apiFactory.createCoreApi();
+        const vsoClient: VsoClient = await this.apiFactory.createVsoClient();
         const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
 
         const helper: IHelper = new Helper(this.debugLogger);
@@ -77,10 +78,10 @@ export class AutomationFactory implements IAutomationFactory {
 
     public async createBuildUpdater(): Promise<IBuildUpdater> {
 
-        const vsoClient: vc.VsoClient = await this.apiFactory.createVsoClient();
+        const vsoClient: VsoClient = await this.apiFactory.createVsoClient();
         const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
 
-        const buildApi: ba.IBuildApi = await this.apiFactory.createBuildApi();
+        const buildApi: IBuildApi = await this.apiFactory.createBuildApi();
         const buildHelper: IBuildHelper = new BuildHelper(buildApi, this.debugLogger);
 
         const helper: IHelper = new Helper(this.debugLogger);
@@ -93,15 +94,15 @@ export class AutomationFactory implements IAutomationFactory {
 
     public async createReleaseUpdater(): Promise<IReleaseUpdater> {
 
-        const vsoClient: vc.VsoClient = await this.apiFactory.createVsoClient();
+        const vsoClient: VsoClient = await this.apiFactory.createVsoClient();
         const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
 
-        const releaseApi: ra.IReleaseApi = await this.apiFactory.createReleaseApi();
+        const releaseApi: IReleaseApi = await this.apiFactory.createReleaseApi();
         const releaseHelper: IReleaseHelper = new ReleaseHelper(releaseApi, this.debugLogger);
 
         const helper: IHelper = new Helper(this.debugLogger);
         const securityMapper: ISecurityMapper = new SecurityMapper(this.debugLogger);
-        const taskAgentApi: ta.ITaskAgentApi = await this.apiFactory.createTaskAgentApi();
+        const taskAgentApi: ITaskAgentApi = await this.apiFactory.createTaskAgentApi();
         const taskAgentHelper: ITaskAgentHelper = new TaskAgentHelper(taskAgentApi, this.debugLogger);
         const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, helper, securityMapper, this.debugLogger);
 
@@ -111,10 +112,10 @@ export class AutomationFactory implements IAutomationFactory {
 
     public async createRepositoryUpdater(): Promise<IRepositoryUpdater> {
 
-        const vsoClient: vc.VsoClient = await this.apiFactory.createVsoClient();
+        const vsoClient: VsoClient = await this.apiFactory.createVsoClient();
         const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
 
-        const gitApi: ga.IGitApi = await this.apiFactory.createGitApi();
+        const gitApi: IGitApi = await this.apiFactory.createGitApi();
         const repositoryHelper: IRepositoryHelper = new RepositoryHelper(gitApi, this.debugLogger);
 
         const helper: IHelper = new Helper(this.debugLogger);
@@ -127,7 +128,7 @@ export class AutomationFactory implements IAutomationFactory {
 
     public async createWorkUpdater(): Promise<IWorkUpdater> {
 
-        const vsoClient: vc.VsoClient = await this.apiFactory.createVsoClient();
+        const vsoClient: VsoClient = await this.apiFactory.createVsoClient();
         const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
 
         const helper: IHelper = new Helper(this.debugLogger);
@@ -141,7 +142,7 @@ export class AutomationFactory implements IAutomationFactory {
 
     public async createEndpointUpdater(): Promise<IEndpointUpdater> {
 
-        const vsoClient: vc.VsoClient = await this.apiFactory.createVsoClient();
+        const vsoClient: VsoClient = await this.apiFactory.createVsoClient();
         const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
 
         const helper: IHelper = new Helper(this.debugLogger);

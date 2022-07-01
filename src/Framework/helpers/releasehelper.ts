@@ -1,7 +1,6 @@
 import Debug from "debug";
 
-import * as ra from "azure-devops-node-api/ReleaseApi";
-
+import { IReleaseApi } from "azure-devops-node-api/ReleaseApi";
 import { Artifact, DeployPhase, Release, ReleaseDefinition, ReleaseDefinitionEnvironment, ReleaseEnvironment, WorkflowTask } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
@@ -10,10 +9,10 @@ import { IReleaseHelper } from "./ireleasehelper";
 
 export class ReleaseHelper implements IReleaseHelper {
 
-    private releaseApi: ra.IReleaseApi;
+    private releaseApi: IReleaseApi;
     private debugLogger: Debug.Debugger;
 
-    constructor(releaseApi: ra.IReleaseApi, debugLogger: IDebugLogger) {
+    constructor(releaseApi: IReleaseApi, debugLogger: IDebugLogger) {
 
         this.debugLogger = debugLogger.create(this.constructor.name);
 
