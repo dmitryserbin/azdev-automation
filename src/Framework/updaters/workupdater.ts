@@ -2,13 +2,13 @@ import Debug from "debug";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IWorkPermission } from "../interfaces/readers/configurationreader";
-import { IConsoleLogger } from "../interfaces/common/consolelogger";
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IHelper } from "../interfaces/common/helper";
-import { IWorkHelper } from "../interfaces/helpers/workhelper";
-import { IWorkUpdater } from "../interfaces/updaters/workupdater";
-import { INamespace, ISecurityHelper, ISecurityIdentity } from "../interfaces/helpers/securityhelper";
+import { IWorkPermission } from "../readers/iconfigurationreader";
+import { IConsoleLogger } from "../common/iconsolelogger";
+import { IDebugLogger } from "../common/idebuglogger";
+import { IHelper } from "../common/ihelper";
+import { IWorkHelper } from "../helpers/iworkhelper";
+import { IWorkUpdater } from "./iworkupdater";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../helpers/isecurityhelper";
 
 export class WorkUpdater implements IWorkUpdater {
 

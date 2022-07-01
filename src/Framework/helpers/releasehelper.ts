@@ -5,8 +5,8 @@ import * as ra from "azure-devops-node-api/ReleaseApi";
 import { Artifact, DeployPhase, Release, ReleaseDefinition, ReleaseDefinitionEnvironment, ReleaseEnvironment, WorkflowTask } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IReleaseHelper } from "../interfaces/helpers/releasehelper";
+import { IDebugLogger } from "../common/idebuglogger";
+import { IReleaseHelper } from "./ireleasehelper";
 
 export class ReleaseHelper implements IReleaseHelper {
 

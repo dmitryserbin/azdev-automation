@@ -1,8 +1,8 @@
 import Debug from "debug";
 
-import { IAzDevClient } from "../interfaces/common/azdevclient";
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IEndpointHelper } from "../interfaces/helpers/endpointhelper";
+import { IAzDevClient } from "../common/iazdevclient";
+import { IDebugLogger } from "../common/idebuglogger";
+import { IEndpointHelper } from "./iendpointhelper";
 
 export class EndpointHelper implements IEndpointHelper {
 

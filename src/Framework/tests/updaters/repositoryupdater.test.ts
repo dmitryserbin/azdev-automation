@@ -6,13 +6,13 @@ import * as TypeMoq from "typemoq";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IGroupPermission, IRepositoryPermission, PermissionType } from "../../interfaces/readers/configurationreader";
-import { IConsoleLogger } from "../../interfaces/common/consolelogger";
-import { IDebugLogger } from "../../interfaces/common/debuglogger";
-import { IHelper } from "../../interfaces/common/helper";
-import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../interfaces/helpers/securityhelper";
-import { IRepositoryHelper } from "../../interfaces/helpers/repositoryhelper";
-import { IRepositoryUpdater } from "../../interfaces/updaters/repositoryupdater";
+import { IGroupPermission, IRepositoryPermission, PermissionType } from "../../readers/iconfigurationreader";
+import { IConsoleLogger } from "../../common/iconsolelogger";
+import { IDebugLogger } from "../../common/idebuglogger";
+import { IHelper } from "../../common/ihelper";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../helpers/isecurityhelper";
+import { IRepositoryHelper } from "../../helpers/irepositoryhelper";
+import { IRepositoryUpdater } from "../../updaters/irepositoryupdater";
 import { RepositoryUpdater } from "../../updaters/repositoryupdater";
 
 const repositoryHelperMock = TypeMoq.Mock.ofType<IRepositoryHelper>();

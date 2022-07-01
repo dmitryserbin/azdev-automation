@@ -6,14 +6,14 @@ import * as TypeMoq from "typemoq";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IGroupPermission, IWorkPermission, PermissionType } from "../../interfaces/readers/configurationreader";
-import { IConsoleLogger } from "../../interfaces/common/consolelogger";
-import { IDebugLogger } from "../../interfaces/common/debuglogger";
-import { IHelper } from "../../interfaces/common/helper";
-import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../interfaces/helpers/securityhelper";
-import { IWorkUpdater } from "../../interfaces/updaters/workupdater";
+import { IGroupPermission, IWorkPermission, PermissionType } from "../../readers/iconfigurationreader";
+import { IConsoleLogger } from "../../common/iconsolelogger";
+import { IDebugLogger } from "../../common/idebuglogger";
+import { IHelper } from "../../common/ihelper";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../helpers/isecurityhelper";
+import { IWorkUpdater } from "../../updaters/iworkupdater";
 import { WorkUpdater } from "../../updaters/workupdater";
-import { IWorkHelper } from "../../interfaces/helpers/workhelper";
+import { IWorkHelper } from "../../helpers/iworkhelper";
 
 const workHelperMock = TypeMoq.Mock.ofType<IWorkHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();

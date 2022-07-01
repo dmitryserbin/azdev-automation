@@ -4,9 +4,9 @@ import "mocha";
 import * as chai from "chai";
 import * as TypeMoq from "typemoq";
 
-import { IDebugLogger } from "../../interfaces/common/debuglogger";
-import { IIdentityPermission, ISecurityIdentity } from "../../interfaces/helpers/securityhelper";
-import { ISecurityMapper } from "../../interfaces/mappers/securitymapper";
+import { IDebugLogger } from "../../common/idebuglogger";
+import { IIdentityPermission, ISecurityIdentity } from "../../helpers/isecurityhelper";
+import { ISecurityMapper } from "../../mappers/isecuritymapper";
 import { SecurityMapper } from "../../mappers/securitymapper";
 
 const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();

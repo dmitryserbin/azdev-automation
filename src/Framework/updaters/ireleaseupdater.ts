@@ -1,5 +1,5 @@
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
-import { IReleasePermission, ITask } from "../readers/configurationreader";
+import { IReleasePermission, ITask } from "../readers/iconfigurationreader";
 
 export interface IReleaseUpdater {
 

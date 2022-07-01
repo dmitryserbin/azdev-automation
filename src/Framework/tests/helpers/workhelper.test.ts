@@ -6,9 +6,9 @@ import * as TypeMoq from "typemoq";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IAzDevClient } from "../../interfaces/common/azdevclient";
-import { IDebugLogger } from "../../interfaces/common/debuglogger";
-import { IWorkHelper } from "../../interfaces/helpers/workhelper";
+import { IAzDevClient } from "../../common/iazdevclient";
+import { IDebugLogger } from "../../common/idebuglogger";
+import { IWorkHelper } from "../../helpers/iworkhelper";
 import { WorkHelper } from "../../helpers/workhelper";
 
 const azdevClientMock = TypeMoq.Mock.ofType<IAzDevClient>();

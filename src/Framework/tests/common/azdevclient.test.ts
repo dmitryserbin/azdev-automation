@@ -7,8 +7,8 @@ import * as TypeMoq from "typemoq";
 import { VsoClient } from "azure-devops-node-api/VsoClient";
 import { RestClient } from "typed-rest-client";
 import { AzDevClient } from "../../common/azdevclient";
-import { AzDevApiType, IAzDevClient } from "../../interfaces/common/azdevclient";
-import { IDebugLogger } from "../../interfaces/common/debuglogger";
+import { AzDevApiType, IAzDevClient } from "../../common/iazdevclient";
+import { IDebugLogger } from "../../common/idebuglogger";
 
 const vsoClientMock = TypeMoq.Mock.ofType<VsoClient>();
 const restClient = TypeMoq.Mock.ofType<RestClient>();

@@ -2,13 +2,13 @@ import Debug from "debug";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IBuildHelper } from "../interfaces/helpers/buildhelper";
-import { IBuildUpdater } from "../interfaces/updaters/buildupdater";
-import { IBuildPermission } from "../interfaces/readers/configurationreader";
-import { IConsoleLogger } from "../interfaces/common/consolelogger";
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IHelper } from "../interfaces/common/helper";
-import { INamespace, ISecurityHelper, ISecurityIdentity } from "../interfaces/helpers/securityhelper";
+import { IBuildHelper } from "../helpers/ibuildhelper";
+import { IBuildUpdater } from "./ibuildupdater";
+import { IBuildPermission } from "../readers/iconfigurationreader";
+import { IConsoleLogger } from "../common/iconsolelogger";
+import { IDebugLogger } from "../common/idebuglogger";
+import { IHelper } from "../common/ihelper";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../helpers/isecurityhelper";
 
 export class BuildUpdater implements IBuildUpdater {
 

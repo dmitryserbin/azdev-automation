@@ -2,8 +2,8 @@ import Debug from "debug";
 
 import * as ga from "azure-devops-node-api/GitApi";
 
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IRepositoryHelper } from "../interfaces/helpers/repositoryhelper";
+import { IDebugLogger } from "../common/idebuglogger";
+import { IRepositoryHelper } from "./irepositoryhelper";
 
 export class RepositoryHelper implements IRepositoryHelper {
 

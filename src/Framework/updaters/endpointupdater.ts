@@ -1,10 +1,10 @@
 import Debug from "debug";
 
-import { IConsoleLogger } from "../interfaces/common/consolelogger";
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IHelper } from "../interfaces/common/helper";
-import { IEndpointHelper } from "../interfaces/helpers/endpointhelper";
-import { IEndpointUpdater } from "../interfaces/updaters/endpointupdater";
+import { IConsoleLogger } from "../common/iconsolelogger";
+import { IDebugLogger } from "../common/idebuglogger";
+import { IHelper } from "../common/ihelper";
+import { IEndpointHelper } from "../helpers/iendpointhelper";
+import { IEndpointUpdater } from "./iendpointupdater";
 
 export class EndpointUpdater implements IEndpointUpdater {
 

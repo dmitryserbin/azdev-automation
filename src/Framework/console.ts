@@ -1,8 +1,8 @@
 import { Automation } from "./automation";
 import { DebugLogger } from "./common/debuglogger";
-import { IAutomation, IEndpoint, IParameters } from "./interfaces/automation";
-import { IDebugLogger } from "./interfaces/common/debuglogger";
-import { IConsoleParameters } from "./interfaces/readers/parameterreader";
+import { IAutomation, IEndpoint, IParameters } from "./iautomation";
+import { IDebugLogger } from "./common/idebuglogger";
+import { IConsoleParameters } from "./readers/iparameterreader";
 import { ParameterReader } from "./readers/parameterreader";
 
 const debugLogger: IDebugLogger = new DebugLogger("azdev-console");

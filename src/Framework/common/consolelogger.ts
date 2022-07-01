@@ -1,4 +1,4 @@
-import { IConsoleLogger } from "../interfaces/common/consolelogger";
+import { IConsoleLogger } from "./iconsolelogger";
 
 export class ConsoleLogger implements IConsoleLogger {
 

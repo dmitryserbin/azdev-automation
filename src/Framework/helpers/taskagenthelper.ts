@@ -4,8 +4,8 @@ import * as ta from "azure-devops-node-api/TaskAgentApi";
 
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { ITaskAgentHelper } from "../interfaces/helpers/taskagenthelper";
+import { IDebugLogger } from "../common/idebuglogger";
+import { ITaskAgentHelper } from "./itaskagenthelper";
 
 export class TaskAgentHelper implements ITaskAgentHelper {
 

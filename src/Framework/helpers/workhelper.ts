@@ -1,8 +1,8 @@
 import Debug from "debug";
 
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IWorkHelper } from "../interfaces/helpers/workhelper";
-import { AzDevApiType, IAzDevClient } from "../interfaces/common/azdevclient";
+import { IDebugLogger } from "../common/idebuglogger";
+import { IWorkHelper } from "./iworkhelper";
+import { AzDevApiType, IAzDevClient } from "../common/iazdevclient";
 
 export class WorkHelper implements IWorkHelper {
 

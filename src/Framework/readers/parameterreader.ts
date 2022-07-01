@@ -1,8 +1,8 @@
 import Debug from "debug";
 import meow, { AnyFlags, Result } from "meow";
 
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IConsoleParameters, IParameterReader } from "../interfaces/readers/parameterreader";
+import { IDebugLogger } from "../common/idebuglogger";
+import { IConsoleParameters, IParameterReader } from "./iparameterreader";
 
 export class ParameterReader implements IParameterReader {
 

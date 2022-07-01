@@ -8,13 +8,13 @@ import { OperationReference } from "azure-devops-node-api/interfaces/common/Oper
 import { Process, TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
-import { IBuildPermission, IGroupMembership, IPermission, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IWorkPermission, PermissionType } from "../../interfaces/readers/configurationreader";
-import { IConsoleLogger } from "../../interfaces/common/consolelogger";
-import { IDebugLogger } from "../../interfaces/common/debuglogger";
-import { IHelper } from "../../interfaces/common/helper";
-import { IProjectHelper } from "../../interfaces/helpers/projecthelper";
-import { IProjectUpdater } from "../../interfaces/updaters/projectupdater";
-import { ISecurityHelper } from "../../interfaces/helpers/securityhelper";
+import { IBuildPermission, IGroupMembership, IPermission, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IWorkPermission, PermissionType } from "../../readers/iconfigurationreader";
+import { IConsoleLogger } from "../../common/iconsolelogger";
+import { IDebugLogger } from "../../common/idebuglogger";
+import { IHelper } from "../../common/ihelper";
+import { IProjectHelper } from "../../helpers/iprojecthelper";
+import { IProjectUpdater } from "../../updaters/iprojectupdater";
+import { ISecurityHelper } from "../../helpers/isecurityhelper";
 import { ProjectUpdater } from "../../updaters/projectupdater";
 
 const memberOne = "GroupOne";

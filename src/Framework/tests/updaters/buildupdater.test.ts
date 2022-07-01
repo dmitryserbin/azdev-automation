@@ -6,13 +6,13 @@ import * as TypeMoq from "typemoq";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IBuildHelper } from "../../interfaces/helpers/buildhelper";
-import { IBuildUpdater } from "../../interfaces/updaters/buildupdater";
-import { IBuildPermission, IGroupPermission, PermissionType } from "../../interfaces/readers/configurationreader";
-import { IConsoleLogger } from "../../interfaces/common/consolelogger";
-import { IDebugLogger } from "../../interfaces/common/debuglogger";
-import { IHelper } from "../../interfaces/common/helper";
-import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../interfaces/helpers/securityhelper";
+import { IBuildHelper } from "../../helpers/ibuildhelper";
+import { IBuildUpdater } from "../../updaters/ibuildupdater";
+import { IBuildPermission, IGroupPermission, PermissionType } from "../../readers/iconfigurationreader";
+import { IConsoleLogger } from "../../common/iconsolelogger";
+import { IDebugLogger } from "../../common/idebuglogger";
+import { IHelper } from "../../common/ihelper";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../helpers/isecurityhelper";
 import { BuildUpdater } from "../../updaters/buildupdater";
 
 const buildHelperMock = TypeMoq.Mock.ofType<IBuildHelper>();

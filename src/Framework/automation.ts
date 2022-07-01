@@ -5,20 +5,20 @@ import { DebugLogger } from "./common/debuglogger";
 import { ApiFactory } from "./factories/apifactory";
 import { ArtifactFactory } from "./factories/artifactfactory";
 import { AutomationFactory } from "./factories/automationfactory";
-import { IApiFactory } from "./interfaces/factories/apifactory";
-import { IArtifactFactory } from "./interfaces/factories/artifactfactory";
-import { IAutomation, IEndpoint, IParameters } from "./interfaces/automation";
-import { IAutomationFactory } from "./interfaces/factories/automationfactory";
-import { IBuildUpdater } from "./interfaces/updaters/buildupdater";
-import { IProject } from "./interfaces/readers/configurationreader";
-import { IConsoleLogger } from "./interfaces/common/consolelogger";
-import { IDebugLogger } from "./interfaces/common/debuglogger";
-import { IProjectUpdater } from "./interfaces/updaters/projectupdater";
-import { IReleaseUpdater } from "./interfaces/updaters/releaseupdater";
-import { IRepositoryUpdater } from "./interfaces/updaters/repositoryupdater";
+import { IApiFactory } from "./factories/iapifactory";
+import { IArtifactFactory } from "./factories/iartifactfactory";
+import { IAutomation, IEndpoint, IParameters } from "./iautomation";
+import { IAutomationFactory } from "./factories/iautomationfactory";
+import { IBuildUpdater } from "./updaters/ibuildupdater";
+import { IProject } from "./readers/iconfigurationreader";
+import { IConsoleLogger } from "./common/iconsolelogger";
+import { IDebugLogger } from "./common/idebuglogger";
+import { IProjectUpdater } from "./updaters/iprojectupdater";
+import { IReleaseUpdater } from "./updaters/ireleaseupdater";
+import { IRepositoryUpdater } from "./updaters/irepositoryupdater";
 import { ConfigurationReader } from "./readers/configurationreader";
-import { IWorkUpdater } from "./interfaces/updaters/workupdater";
-import { IEndpointUpdater } from "./interfaces/updaters/endpointupdater";
+import { IWorkUpdater } from "./updaters/iworkupdater";
+import { IEndpointUpdater } from "./updaters/iendpointupdater";
 
 export class Automation implements IAutomation {
 

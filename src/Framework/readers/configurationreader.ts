@@ -2,9 +2,9 @@ import Ajv, { ValidateFunction } from "ajv";
 import Debug from "debug";
 import { readFileSync } from "fs";
 
-import { IArtifactFactory, IConfigArtifact } from "../interfaces/factories/artifactfactory";
-import { IBuildPermission, IConfigurationReader, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IWorkPermission } from "../interfaces/readers/configurationreader";
-import { IDebugLogger } from "../interfaces/common/debuglogger";
+import { IArtifactFactory, IConfigArtifact } from "../factories/iartifactfactory";
+import { IBuildPermission, IConfigurationReader, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IWorkPermission } from "./iconfigurationreader";
+import { IDebugLogger } from "../common/idebuglogger";
 
 export class ConfigurationReader implements IConfigurationReader {
 

@@ -8,14 +8,14 @@ import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { DeployPhase, ReleaseDefinition, ReleaseDefinitionEnvironment, WorkflowTask } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
-import { IGroupPermission, IReleasePermission, ITask, PermissionType } from "../../interfaces/readers/configurationreader";
-import { IConsoleLogger } from "../../interfaces/common/consolelogger";
-import { IDebugLogger } from "../../interfaces/common/debuglogger";
-import { IHelper } from "../../interfaces/common/helper";
-import { IReleaseHelper } from "../../interfaces/helpers/releasehelper";
-import { IReleaseUpdater } from "../../interfaces/updaters/releaseupdater";
-import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../interfaces/helpers/securityhelper";
-import { ITaskAgentHelper } from "../../interfaces/helpers/taskagenthelper";
+import { IGroupPermission, IReleasePermission, ITask, PermissionType } from "../../readers/iconfigurationreader";
+import { IConsoleLogger } from "../../common/iconsolelogger";
+import { IDebugLogger } from "../../common/idebuglogger";
+import { IHelper } from "../../common/ihelper";
+import { IReleaseHelper } from "../../helpers/ireleasehelper";
+import { IReleaseUpdater } from "../../updaters/ireleaseupdater";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../helpers/isecurityhelper";
+import { ITaskAgentHelper } from "../../helpers/itaskagenthelper";
 import { ReleaseUpdater } from "../../updaters/releaseupdater";
 
 const projectOne: TeamProject = {
