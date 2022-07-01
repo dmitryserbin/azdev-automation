@@ -5,6 +5,8 @@ parameters:
 jobs:
 - deployment: Extension
   environment: ${{ parameters.environmentName }}
+  pool:
+    vmImage: ubuntu-latest
   workspace:
     clean: all
   variables:
