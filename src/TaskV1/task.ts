@@ -1,4 +1,4 @@
-import tl = require("azure-pipelines-task-lib");
+import { TaskResult, setResult } from "azure-pipelines-task-lib";
 
 import { Automation } from "azdev-automation";
 import { IAutomation, IEndpoint, IParameters } from "azdev-automation/interfaces/automation";
@@ -16,7 +16,7 @@ async function run() {
 
     } catch (e: any) {
 
-        tl.setResult(tl.TaskResult.Failed, e.message);
+        setResult(TaskResult.Failed, e.message);
 
         console.log(e);
 

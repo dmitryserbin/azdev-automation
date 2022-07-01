@@ -61,6 +61,28 @@ export class AzDevClient implements IAzDevClient {
 
     }
 
+    public async postNoRetry<T>(path: string, apiVersion?: string, body?: any, type: AzDevApiType = this.apiType): Promise<T> {
+
+        const debug = this.debugLogger.extend(this.post.name);
+
+        const url: string = this.newUrl(path, type);
+
+        debug(url);
+
+        const requestOptions: rc.IRequestOptions = {};
+
+        if (apiVersion) {
+
+            requestOptions.acceptHeader = `api-version=${apiVersion}`;
+
+        }
+
+        const response: rc.IRestResponse<any> = await this.client.create(url, body, requestOptions);
+
+        return response.result;
+
+    }
+
     @Retryable()
     public async patch<T>(path: string, apiVersion?: string, body?: any, type: AzDevApiType = this.apiType): Promise<T> {
 

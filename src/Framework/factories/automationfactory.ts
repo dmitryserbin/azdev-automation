@@ -39,6 +39,10 @@ import { IWorkUpdater } from "../interfaces/updaters/workupdater";
 import { IWorkHelper } from "../interfaces/helpers/workhelper";
 import { WorkHelper } from "../helpers/workhelper";
 import { WorkUpdater } from "../updaters/workupdater";
+import { IEndpointUpdater } from "../interfaces/updaters/endpointupdater";
+import { EndpointUpdater } from "../updaters/endpointupdater";
+import { EndpointHelper } from "../helpers/endpointhelper";
+import { IEndpointHelper } from "../interfaces/helpers/endpointhelper";
 
 export class AutomationFactory implements IAutomationFactory {
 
@@ -132,6 +136,18 @@ export class AutomationFactory implements IAutomationFactory {
         const securityHelper: ISecurityHelper = new SecurityHelper(azdevClient, helper, securityMapper, this.debugLogger);
 
         return new WorkUpdater(workHelper, securityHelper, helper, this.debugLogger, this.consoleLogger);
+
+    }
+
+    public async createEndpointUpdater(): Promise<IEndpointUpdater> {
+
+        const vsoClient: vc.VsoClient = await this.apiFactory.createVsoClient();
+        const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
+
+        const helper: IHelper = new Helper(this.debugLogger);
+        const endpointHelper: IEndpointHelper = new EndpointHelper(azdevClient, this.debugLogger);
+
+        return new EndpointUpdater(endpointHelper, helper, this.debugLogger, this.consoleLogger);
 
     }
 
