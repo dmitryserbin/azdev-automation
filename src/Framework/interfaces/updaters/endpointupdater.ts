@@ -1,5 +1,5 @@
 export interface IEndpointUpdater {
 
-    initialize(projectName: string): Promise<void>;
+    initialize(projectName: string, projectId: string): Promise<void>;
 
 }

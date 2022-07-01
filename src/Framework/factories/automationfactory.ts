@@ -141,12 +141,11 @@ export class AutomationFactory implements IAutomationFactory {
 
     public async createEndpointUpdater(): Promise<IEndpointUpdater> {
 
-        const coreApi: ca.ICoreApi = await this.apiFactory.createCoreApi();
         const vsoClient: vc.VsoClient = await this.apiFactory.createVsoClient();
         const azdevClient: IAzDevClient = new AzDevClient(vsoClient.restClient, AzDevApiType.Core, vsoClient.basePath, this.debugLogger);
 
         const helper: IHelper = new Helper(this.debugLogger);
-        const endpointHelper: IEndpointHelper = new EndpointHelper(coreApi, azdevClient, this.debugLogger);
+        const endpointHelper: IEndpointHelper = new EndpointHelper(azdevClient, this.debugLogger);
 
         return new EndpointUpdater(endpointHelper, helper, this.debugLogger, this.consoleLogger);
 

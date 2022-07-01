@@ -88,7 +88,8 @@ export class Automation implements IAutomation {
 
             // Features first time initialization is required for
             // Related policies to work correctly (permissions, etc)
-            await releaseUpdater.initialize(project.name!);
+            await releaseUpdater.initialize(targetProject.name!);
+            await endpointUpdater.initialize(targetProject.name!, targetProject.id!);
 
             if (this.parameters.accessPermissions) {
 

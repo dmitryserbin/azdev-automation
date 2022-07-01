@@ -24,9 +24,15 @@ export class EndpointUpdater implements IEndpointUpdater {
 
     }
 
-    public async initialize(projectName: string): Promise<void> {
+    public async initialize(projectName: string, projectId: string): Promise<void> {
 
-        // TBU
+        const results = await this.endpointHelper.getServiceEndpoints(projectName);
+
+        if (results.length === 0) {
+
+            const fakeEndpoint = await this.endpointHelper.fakeServiceEndpoint(projectName, projectId);
+
+        }
 
     }
 
