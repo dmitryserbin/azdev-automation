@@ -44,10 +44,10 @@
       "uri": "https://github.com/dmitryserbin/azdev-automation/issues"
     },
     "license": {
-      "uri": "https://github.com/dmitryserbin/azdev-automation/blob/master/LICENSE"
+      "uri": "https://github.com/dmitryserbin/azdev-automation/blob/main/LICENSE"
     },
     "privacypolicy": {
-      "uri": "https://github.com/dmitryserbin/azdev-automation/blob/master/PRIVACY.md"
+      "uri": "https://github.com/dmitryserbin/azdev-automation/blob/main/PRIVACY.md"
     }
   },
   "repository": {
