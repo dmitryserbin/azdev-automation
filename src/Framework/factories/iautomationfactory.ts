@@ -1,8 +1,8 @@
-import { IBuildUpdater } from "../updaters/buildupdater";
-import { IEndpointUpdater } from "../updaters/endpointupdater";
-import { IProjectUpdater } from "../updaters/projectupdater";
-import { IReleaseUpdater } from "../updaters/releaseupdater";
-import { IRepositoryUpdater } from "../updaters/repositoryupdater";
+import { IBuildUpdater } from "../updaters/ibuildupdater";
+import { IEndpointUpdater } from "../updaters/iendpointupdater";
+import { IProjectUpdater } from "../updaters/iprojectupdater";
+import { IReleaseUpdater } from "../updaters/ireleaseupdater";
+import { IRepositoryUpdater } from "../updaters/irepositoryupdater";
 
 export interface IAutomationFactory {
 

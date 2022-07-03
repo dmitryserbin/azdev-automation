@@ -1,32 +1,30 @@
-import Debug from "debug";
-
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IWorkPermission } from "../interfaces/readers/configurationreader";
-import { IConsoleLogger } from "../interfaces/common/consolelogger";
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IHelper } from "../interfaces/common/helper";
-import { IWorkHelper } from "../interfaces/helpers/workhelper";
-import { IWorkUpdater } from "../interfaces/updaters/workupdater";
-import { INamespace, ISecurityHelper, ISecurityIdentity } from "../interfaces/helpers/securityhelper";
+import { IWorkPermission } from "../readers/iconfigurationreader";
+import { ICommonHelper } from "../helpers/icommonhelper";
+import { IWorkHelper } from "../helpers/iworkhelper";
+import { IWorkUpdater } from "./iworkupdater";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../helpers/isecurityhelper";
+import { ILogger } from "../loggers/ilogger";
+import { IDebug } from "../loggers/idebug";
 
 export class WorkUpdater implements IWorkUpdater {
 
+    private logger: ILogger;
+    private debugLogger: IDebug;
+
     public workHelper: IWorkHelper;
     public securityHelper: ISecurityHelper;
+    private commonHelper: ICommonHelper;
 
-    private debugLogger: Debug.Debugger;
-    private logger: IConsoleLogger;
-    private helper: IHelper;
+    constructor(workHelper: IWorkHelper, securityHelper: ISecurityHelper, commonHelper: ICommonHelper, logger: ILogger) {
 
-    constructor(workHelper: IWorkHelper, securityHelper: ISecurityHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
-
-        this.debugLogger = debugLogger.create(this.constructor.name);
-        this.logger = consoleLogger;
+        this.logger = logger;
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.workHelper = workHelper;
         this.securityHelper = securityHelper;
-        this.helper = helper;
+        this.commonHelper = commonHelper;
 
     }
 
@@ -51,7 +49,7 @@ export class WorkUpdater implements IWorkUpdater {
 
             // Slow down parallel calls to address
             // Intermittent API connectivity issues
-            await this.helper.wait(500, 3000);
+            await this.commonHelper.wait(500, 3000);
 
             const targetIdentity: ISecurityIdentity = await this.securityHelper.getExistingIdentity(groupName, project.id!, existingIdentities);
 

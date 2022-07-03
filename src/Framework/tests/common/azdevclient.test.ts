@@ -1,4 +1,3 @@
-import Debug from "debug";
 import "mocha";
 
 import * as chai from "chai";
@@ -7,23 +6,25 @@ import * as TypeMoq from "typemoq";
 import { VsoClient } from "azure-devops-node-api/VsoClient";
 import { RestClient } from "typed-rest-client";
 import { AzDevClient } from "../../common/azdevclient";
-import { AzDevApiType, IAzDevClient } from "../../interfaces/common/azdevclient";
-import { IDebugLogger } from "../../interfaces/common/debuglogger";
+import { AzDevApiType, IAzDevClient } from "../../common/iazdevclient";
+import { ILogger } from "../../loggers/ilogger";
+import { IDebug } from "../../loggers/idebug";
 
 const vsoClientMock = TypeMoq.Mock.ofType<VsoClient>();
 const restClient = TypeMoq.Mock.ofType<RestClient>();
 
-const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
-const debugLoggerMock = TypeMoq.Mock.ofType<IDebugLogger>();
-debugLoggerMock.setup((x) => x.create(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
-debuggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
+const loggerMock = TypeMoq.Mock.ofType<ILogger>();
+const debugMock = TypeMoq.Mock.ofType<IDebug>();
+
+loggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
+debugMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
 
 vsoClientMock.setup((x) => x.restClient).returns(() => restClient.target);
 vsoClientMock.setup((x) => x.basePath).returns(() => "MyAccount");
 
 describe("AzDevClient", () => {
 
-    const azdevClient: IAzDevClient = new AzDevClient(vsoClientMock.target.restClient, AzDevApiType.Core, vsoClientMock.target.basePath, debugLoggerMock.target);
+    const azdevClient: IAzDevClient = new AzDevClient(vsoClientMock.target.restClient, AzDevApiType.Core, vsoClientMock.target.basePath, loggerMock.target);
 
     it("Should make GET request", async () => {
 

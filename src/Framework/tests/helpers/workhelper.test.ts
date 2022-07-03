@@ -1,4 +1,3 @@
-import Debug from "debug";
 import "mocha";
 
 import * as chai from "chai";
@@ -6,17 +5,19 @@ import * as TypeMoq from "typemoq";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IAzDevClient } from "../../interfaces/common/azdevclient";
-import { IDebugLogger } from "../../interfaces/common/debuglogger";
-import { IWorkHelper } from "../../interfaces/helpers/workhelper";
+import { IAzDevClient } from "../../common/iazdevclient";
+import { IWorkHelper } from "../../helpers/iworkhelper";
 import { WorkHelper } from "../../helpers/workhelper";
+import { ILogger } from "../../loggers/ilogger";
+import { IDebug } from "../../loggers/idebug";
 
 const azdevClientMock = TypeMoq.Mock.ofType<IAzDevClient>();
 
-const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
-const debugLoggerMock = TypeMoq.Mock.ofType<IDebugLogger>();
-debugLoggerMock.setup((x) => x.create(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
-debuggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
+const loggerMock = TypeMoq.Mock.ofType<ILogger>();
+const debugMock = TypeMoq.Mock.ofType<IDebug>();
+
+loggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
+debugMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
 
 const projectOne: TeamProject = {
 
@@ -27,7 +28,7 @@ const projectOne: TeamProject = {
 
 describe("WorkHelper", () => {
 
-    const workHelper: IWorkHelper = new WorkHelper(azdevClientMock.target, debugLoggerMock.target);
+    const workHelper: IWorkHelper = new WorkHelper(azdevClientMock.target, loggerMock.target);
 
     it("Should get node identifier", async () => {
 

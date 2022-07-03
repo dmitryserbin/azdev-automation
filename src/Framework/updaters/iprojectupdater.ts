@@ -1,5 +1,5 @@
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
-import { IProject, IProjectPermission } from "../readers/configurationreader";
+import { IProject, IProjectPermission } from "../readers/iconfigurationreader";
 
 export interface IProjectUpdater {
 

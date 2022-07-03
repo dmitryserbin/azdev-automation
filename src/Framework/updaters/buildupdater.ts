@@ -1,32 +1,30 @@
-import Debug from "debug";
-
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IBuildHelper } from "../interfaces/helpers/buildhelper";
-import { IBuildUpdater } from "../interfaces/updaters/buildupdater";
-import { IBuildPermission } from "../interfaces/readers/configurationreader";
-import { IConsoleLogger } from "../interfaces/common/consolelogger";
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IHelper } from "../interfaces/common/helper";
-import { INamespace, ISecurityHelper, ISecurityIdentity } from "../interfaces/helpers/securityhelper";
+import { IBuildHelper } from "../helpers/ibuildhelper";
+import { IBuildUpdater } from "./ibuildupdater";
+import { IBuildPermission } from "../readers/iconfigurationreader";
+import { ICommonHelper } from "../helpers/icommonhelper";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../helpers/isecurityhelper";
+import { ILogger } from "../loggers/ilogger";
+import { IDebug } from "../loggers/idebug";
 
 export class BuildUpdater implements IBuildUpdater {
 
+    private logger: ILogger;
+    private debugLogger: IDebug;
+
     public buildHelper: IBuildHelper;
     public securityHelper: ISecurityHelper;
-    private helper: IHelper;
+    private commonHelper: ICommonHelper;
 
-    private debugLogger: Debug.Debugger;
-    private logger: IConsoleLogger;
+    constructor(buildHelper: IBuildHelper, securityHelper: ISecurityHelper, commonHelper: ICommonHelper, logger: ILogger) {
 
-    constructor(buildHelper: IBuildHelper, securityHelper: ISecurityHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
-
-        this.debugLogger = debugLogger.create(this.constructor.name);
-        this.logger = consoleLogger;
+        this.logger = logger;
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.buildHelper = buildHelper;
         this.securityHelper = securityHelper;
-        this.helper = helper;
+        this.commonHelper = commonHelper;
 
     }
 
@@ -50,7 +48,7 @@ export class BuildUpdater implements IBuildUpdater {
 
             // Slow down parallel calls to address
             // Intermittent API connectivity issues
-            await this.helper.wait(500, 3000);
+            await this.commonHelper.wait(500, 3000);
 
             const targetIdentity: ISecurityIdentity = await this.securityHelper.getExistingIdentity(groupName, project.id!, existingIdentities);
 

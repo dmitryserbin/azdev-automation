@@ -1,24 +1,23 @@
-import Debug from "debug";
-
-import * as ca from "azure-devops-node-api/CoreApi";
-
+import { ICoreApi } from "azure-devops-node-api/CoreApi";
 import { OperationReference } from "azure-devops-node-api/interfaces/common/OperationsInterfaces";
 import { Process, ProjectVisibility, TeamProject, TeamProjectReference } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { GraphDescriptorResult, GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
-import { AzDevApiType, IAzDevClient } from "../interfaces/common/azdevclient";
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IProjectHelper } from "../interfaces/helpers/projecthelper";
+import { AzDevApiType, IAzDevClient } from "../common/iazdevclient";
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
+import { IProjectHelper } from "./iprojecthelper";
 
 export class ProjectHelper implements IProjectHelper {
 
+    private debugLogger: IDebug;
+
     private azdevClient: IAzDevClient;
-    private coreApi: ca.ICoreApi;
-    private debugLogger: Debug.Debugger;
+    private coreApi: ICoreApi;
 
-    constructor(coreApi: ca.ICoreApi, azdevClient: IAzDevClient, debugLogger: IDebugLogger) {
+    constructor(coreApi: ICoreApi, azdevClient: IAzDevClient, logger: ILogger) {
 
-        this.debugLogger = debugLogger.create(this.constructor.name);
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.azdevClient = azdevClient;
         this.coreApi = coreApi;

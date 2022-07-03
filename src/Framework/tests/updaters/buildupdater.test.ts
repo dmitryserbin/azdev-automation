@@ -1,4 +1,3 @@
-import Debug from "debug";
 import "mocha";
 
 import * as chai from "chai";
@@ -6,28 +5,27 @@ import * as TypeMoq from "typemoq";
 
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IBuildHelper } from "../../interfaces/helpers/buildhelper";
-import { IBuildUpdater } from "../../interfaces/updaters/buildupdater";
-import { IBuildPermission, IGroupPermission, PermissionType } from "../../interfaces/readers/configurationreader";
-import { IConsoleLogger } from "../../interfaces/common/consolelogger";
-import { IDebugLogger } from "../../interfaces/common/debuglogger";
-import { IHelper } from "../../interfaces/common/helper";
-import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../interfaces/helpers/securityhelper";
+import { IBuildHelper } from "../../helpers/ibuildhelper";
+import { IBuildUpdater } from "../../updaters/ibuildupdater";
+import { IBuildPermission, IGroupPermission, PermissionType } from "../../readers/iconfigurationreader";
+
+import { ICommonHelper } from "../../helpers/icommonhelper";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../helpers/isecurityhelper";
 import { BuildUpdater } from "../../updaters/buildupdater";
+import { ILogger } from "../../loggers/ilogger";
+import { IDebug } from "../../loggers/idebug";
 
 const buildHelperMock = TypeMoq.Mock.ofType<IBuildHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
 
-const helperMock = TypeMoq.Mock.ofType<IHelper>();
-helperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber())).returns(() => Promise.resolve());
+const commonHelperMock = TypeMoq.Mock.ofType<ICommonHelper>();
+commonHelperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber())).returns(() => Promise.resolve());
 
-const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
-const debugLoggerMock = TypeMoq.Mock.ofType<IDebugLogger>();
-debugLoggerMock.setup((x) => x.create(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
-debuggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
+const loggerMock = TypeMoq.Mock.ofType<ILogger>();
+const debugMock = TypeMoq.Mock.ofType<IDebug>();
 
-const consoleLoggerMock = TypeMoq.Mock.ofType<IConsoleLogger>();
-consoleLoggerMock.setup((x) => x.log(TypeMoq.It.isAny())).returns(() => null);
+loggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
+debugMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
 
 const projectOne: TeamProject = {
 
@@ -69,7 +67,7 @@ const namespaceName = "Build";
 
 describe("BuildUpdater", () => {
 
-    const buildUpdater: IBuildUpdater = new BuildUpdater(buildHelperMock.target, securityHelperMock.target, helperMock.target, debugLoggerMock.target, consoleLoggerMock.target);
+    const buildUpdater: IBuildUpdater = new BuildUpdater(buildHelperMock.target, securityHelperMock.target, commonHelperMock.target, loggerMock.target);
 
     it("Should update permissions", async () => {
 

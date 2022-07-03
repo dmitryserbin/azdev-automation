@@ -1,4 +1,3 @@
-import Debug from "debug";
 import "mocha";
 
 import * as chai from "chai";
@@ -8,15 +7,15 @@ import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { DeployPhase, ReleaseDefinition, ReleaseDefinitionEnvironment, WorkflowTask } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
-import { IGroupPermission, IReleasePermission, ITask, PermissionType } from "../../interfaces/readers/configurationreader";
-import { IConsoleLogger } from "../../interfaces/common/consolelogger";
-import { IDebugLogger } from "../../interfaces/common/debuglogger";
-import { IHelper } from "../../interfaces/common/helper";
-import { IReleaseHelper } from "../../interfaces/helpers/releasehelper";
-import { IReleaseUpdater } from "../../interfaces/updaters/releaseupdater";
-import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../interfaces/helpers/securityhelper";
-import { ITaskAgentHelper } from "../../interfaces/helpers/taskagenthelper";
+import { IGroupPermission, IReleasePermission, ITask, PermissionType } from "../../readers/iconfigurationreader";
+import { ICommonHelper } from "../../helpers/icommonhelper";
+import { IReleaseHelper } from "../../helpers/ireleasehelper";
+import { IReleaseUpdater } from "../../updaters/ireleaseupdater";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../../helpers/isecurityhelper";
+import { ITaskAgentHelper } from "../../helpers/itaskagenthelper";
 import { ReleaseUpdater } from "../../updaters/releaseupdater";
+import { ILogger } from "../../loggers/ilogger";
+import { IDebug } from "../../loggers/idebug";
 
 const projectOne: TeamProject = {
 
@@ -149,20 +148,18 @@ const releaseHelperMock = TypeMoq.Mock.ofType<IReleaseHelper>();
 const taskAgentHelperMock = TypeMoq.Mock.ofType<ITaskAgentHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
 
-const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
-const debugLoggerMock = TypeMoq.Mock.ofType<IDebugLogger>();
-debugLoggerMock.setup((x) => x.create(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
-debuggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
+const loggerMock = TypeMoq.Mock.ofType<ILogger>();
+const debugMock = TypeMoq.Mock.ofType<IDebug>();
 
-const consoleLoggerMock = TypeMoq.Mock.ofType<IConsoleLogger>();
-consoleLoggerMock.setup((x) => x.log(TypeMoq.It.isAny())).returns(() => null);
+loggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
+debugMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
 
-const helperMock = TypeMoq.Mock.ofType<IHelper>();
-helperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber())).returns(() => Promise.resolve());
+const commonHelperMock = TypeMoq.Mock.ofType<ICommonHelper>();
+commonHelperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber())).returns(() => Promise.resolve());
 
 describe("ReleaseUpdater", () => {
 
-    const releaseUpdater: IReleaseUpdater = new ReleaseUpdater(releaseHelperMock.target, taskAgentHelperMock.target, securityHelperMock.target, helperMock.target, debugLoggerMock.target, consoleLoggerMock.target);
+    const releaseUpdater: IReleaseUpdater = new ReleaseUpdater(releaseHelperMock.target, taskAgentHelperMock.target, securityHelperMock.target, commonHelperMock.target, loggerMock.target);
 
     it("Should remove definition tasks", async () => {
 

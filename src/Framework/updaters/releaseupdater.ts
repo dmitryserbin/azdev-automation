@@ -1,41 +1,41 @@
-import Debug from "debug";
-
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { Release, ReleaseDefinition } from "azure-devops-node-api/interfaces/ReleaseInterfaces";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
-import { IReleasePermission, ITask } from "../interfaces/readers/configurationreader";
-import { IConsoleLogger } from "../interfaces/common/consolelogger";
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IHelper } from "../interfaces/common/helper";
-import { IReleaseHelper } from "../interfaces/helpers/releasehelper";
-import { IReleaseUpdater } from "../interfaces/updaters/releaseupdater";
-import { INamespace, ISecurityHelper, ISecurityIdentity } from "../interfaces/helpers/securityhelper";
-import { ITaskAgentHelper } from "../interfaces/helpers/taskagenthelper";
+import { IReleasePermission, ITask } from "../readers/iconfigurationreader";
+import { ICommonHelper } from "../helpers/icommonhelper";
+import { IReleaseHelper } from "../helpers/ireleasehelper";
+import { IReleaseUpdater } from "./ireleaseupdater";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../helpers/isecurityhelper";
+import { ITaskAgentHelper } from "../helpers/itaskagenthelper";
+import { ILogger } from "../loggers/ilogger";
+import { IDebug } from "../loggers/idebug";
 
 export class ReleaseUpdater implements IReleaseUpdater {
+
+    private logger: ILogger;
+    private debugLogger: IDebug;
 
     public releaseHelper: IReleaseHelper;
     public taskAgentHelper: ITaskAgentHelper;
     public securityHelper: ISecurityHelper;
-    private helper: IHelper;
+    private commonHelper: ICommonHelper;
 
-    private debugLogger: Debug.Debugger;
-    private logger: IConsoleLogger;
+    constructor(releaseHelper: IReleaseHelper, taskAgentHelper: ITaskAgentHelper, securityHelper: ISecurityHelper, commonHelper: ICommonHelper, logger: ILogger) {
 
-    constructor(releaseHelper: IReleaseHelper, taskAgentHelper: ITaskAgentHelper, securityHelper: ISecurityHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
-
-        this.debugLogger = debugLogger.create(this.constructor.name);
-        this.logger = consoleLogger;
+        this.logger = logger;
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.releaseHelper = releaseHelper;
         this.taskAgentHelper = taskAgentHelper;
         this.securityHelper = securityHelper;
-        this.helper = helper;
+        this.commonHelper = commonHelper;
 
     }
 
     public async initialize(projectName: string): Promise<void> {
+
+        this.logger.log("Initializing project classic release pipelines feature");
 
         // Simply getting all release definitions initializes
         // Required classic release pipelines capabilities
@@ -265,7 +265,7 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
             // Slow down parallel calls to address
             // Intermittent API connectivity issues
-            await this.helper.wait(500, 3000);
+            await this.commonHelper.wait(500, 3000);
 
             const targetIdentity: ISecurityIdentity = await this.securityHelper.getExistingIdentity(groupName, project.id!, existingIdentities);
 

@@ -3,7 +3,7 @@ import url from "url";
 
 import { getBoolInput, getEndpointAuthorizationParameter, getEndpointUrl, getInput } from "azure-pipelines-task-lib";
 
-import { IEndpoint, IParameters } from "azdev-automation/interfaces/automation";
+import { IEndpoint, IParameters } from "azdev-automation/iautomation";
 
 export async function getEndpoint(): Promise<IEndpoint> {
 

@@ -1,21 +1,21 @@
-import Debug from "debug";
+import { IRequestOptions, IRestResponse, RestClient } from "typed-rest-client/RestClient";
 
-import * as rc from "typed-rest-client/RestClient";
-
-import { AzDevApiType, IAzDevClient } from "../interfaces/common/azdevclient";
-import { IDebugLogger } from "../interfaces/common/debuglogger";
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
+import { AzDevApiType, IAzDevClient } from "./iazdevclient";
 import { Retryable } from "./retry";
 
 export class AzDevClient implements IAzDevClient {
 
-    private client: rc.RestClient;
+    private debugLogger: IDebug;
+
+    private client: RestClient;
     private apiType: AzDevApiType;
     private accountName: string;
-    private debugLogger: Debug.Debugger;
 
-    constructor(client: rc.RestClient, apiType: AzDevApiType, accountName: string, debugLogger: IDebugLogger) {
+    constructor(client: RestClient, apiType: AzDevApiType, accountName: string, logger: ILogger) {
 
-        this.debugLogger = debugLogger.create(this.constructor.name);
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.client = client;
         this.apiType = apiType;
@@ -32,7 +32,7 @@ export class AzDevClient implements IAzDevClient {
 
         debug(url);
 
-        const response: rc.IRestResponse<any> = await this.client.get(url);
+        const response: IRestResponse<any> = await this.client.get(url);
 
         return response.result;
 
@@ -47,7 +47,7 @@ export class AzDevClient implements IAzDevClient {
 
         debug(url);
 
-        const requestOptions: rc.IRequestOptions = {};
+        const requestOptions: IRequestOptions = {};
 
         if (apiVersion) {
 
@@ -55,7 +55,7 @@ export class AzDevClient implements IAzDevClient {
 
         }
 
-        const response: rc.IRestResponse<any> = await this.client.create(url, body, requestOptions);
+        const response: IRestResponse<any> = await this.client.create(url, body, requestOptions);
 
         return response.result;
 
@@ -69,7 +69,7 @@ export class AzDevClient implements IAzDevClient {
 
         debug(url);
 
-        const requestOptions: rc.IRequestOptions = {};
+        const requestOptions: IRequestOptions = {};
 
         if (apiVersion) {
 
@@ -77,7 +77,7 @@ export class AzDevClient implements IAzDevClient {
 
         }
 
-        const response: rc.IRestResponse<any> = await this.client.create(url, body, requestOptions);
+        const response: IRestResponse<any> = await this.client.create(url, body, requestOptions);
 
         return response.result;
 
@@ -92,7 +92,7 @@ export class AzDevClient implements IAzDevClient {
 
         debug(url);
 
-        const requestOptions: rc.IRequestOptions = {};
+        const requestOptions: IRequestOptions = {};
 
         if (apiVersion) {
 
@@ -100,7 +100,7 @@ export class AzDevClient implements IAzDevClient {
 
         }
 
-        const response: rc.IRestResponse<any> = await this.client.update(url, body, requestOptions);
+        const response: IRestResponse<any> = await this.client.update(url, body, requestOptions);
 
         return response.result;
 
@@ -115,7 +115,7 @@ export class AzDevClient implements IAzDevClient {
 
         debug(url);
 
-        const requestOptions: rc.IRequestOptions = {};
+        const requestOptions: IRequestOptions = {};
 
         if (apiVersion) {
 
@@ -123,7 +123,7 @@ export class AzDevClient implements IAzDevClient {
 
         }
 
-        const response: rc.IRestResponse<any> = await this.client.replace(url, body, requestOptions);
+        const response: IRestResponse<any> = await this.client.replace(url, body, requestOptions);
 
         return response.result;
 
@@ -138,7 +138,7 @@ export class AzDevClient implements IAzDevClient {
 
         debug(url);
 
-        const requestOptions: rc.IRequestOptions = {};
+        const requestOptions: IRequestOptions = {};
 
         if (apiVersion) {
 
@@ -146,7 +146,7 @@ export class AzDevClient implements IAzDevClient {
 
         }
 
-        const response: rc.IRestResponse<any> = await this.client.del(url, requestOptions);
+        const response: IRestResponse<any> = await this.client.del(url, requestOptions);
 
         return response.result;
 

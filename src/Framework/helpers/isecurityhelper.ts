@@ -1,6 +1,6 @@
 import { GraphGroup, GraphMembership } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
-import { IPermission, PermissionType } from "../readers/configurationreader";
+import { IPermission, PermissionType } from "../readers/iconfigurationreader";
 
 export interface ISecurityHelper {
 

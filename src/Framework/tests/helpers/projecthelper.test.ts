@@ -1,4 +1,3 @@
-import Debug from "debug";
 import "mocha";
 
 import * as chai from "chai";
@@ -10,9 +9,10 @@ import { Process, ProjectVisibility, TeamProject } from "azure-devops-node-api/i
 import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
 import { ProjectHelper } from "../../helpers/projecthelper";
-import { IAzDevClient } from "../../interfaces/common/azdevclient";
-import { IDebugLogger } from "../../interfaces/common/debuglogger";
-import { IProjectHelper } from "../../interfaces/helpers/projecthelper";
+import { IAzDevClient } from "../../common/iazdevclient";
+import { IProjectHelper } from "../../helpers/iprojecthelper";
+import { ILogger } from "../../loggers/ilogger";
+import { IDebug } from "../../loggers/idebug";
 
 const projectOne = "MyProjectOne";
 const projectOneDescription = "This is Project One";
@@ -28,10 +28,11 @@ const groupOneDescription = "This is Group One";
 const coreApiMock = TypeMoq.Mock.ofType<ICoreApi>();
 const azdevClientMock = TypeMoq.Mock.ofType<IAzDevClient>();
 
-const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
-const debugLoggerMock = TypeMoq.Mock.ofType<IDebugLogger>();
-debugLoggerMock.setup((x) => x.create(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
-debuggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
+const loggerMock = TypeMoq.Mock.ofType<ILogger>();
+const debugMock = TypeMoq.Mock.ofType<IDebug>();
+
+loggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
+debugMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
 
 const mockProjectOne: TypeMoq.IMock<TeamProject> = TypeMoq.Mock.ofType<TeamProject>();
 mockProjectOne.setup((x) => x.name).returns(() => projectOne);
@@ -48,7 +49,7 @@ mockGraphGroup.setup((x) => x.origin).returns(() => "vsts");
 
 describe("ProjectHelper", () => {
 
-    const projectHelper: IProjectHelper = new ProjectHelper(coreApiMock.target, azdevClientMock.target, debugLoggerMock.target);
+    const projectHelper: IProjectHelper = new ProjectHelper(coreApiMock.target, azdevClientMock.target, loggerMock.target);
 
     it("Should create project", async () => {
 

@@ -1,32 +1,30 @@
-import Debug from "debug";
-
 import { TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 
-import { IBuildPermission } from "../interfaces/readers/configurationreader";
-import { IConsoleLogger } from "../interfaces/common/consolelogger";
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IHelper } from "../interfaces/common/helper";
-import { IRepositoryHelper } from "../interfaces/helpers/repositoryhelper";
-import { IRepositoryUpdater } from "../interfaces/updaters/repositoryupdater";
-import { INamespace, ISecurityHelper, ISecurityIdentity } from "../interfaces/helpers/securityhelper";
+import { IBuildPermission } from "../readers/iconfigurationreader";
+import { ICommonHelper } from "../helpers/icommonhelper";
+import { IRepositoryHelper } from "../helpers/irepositoryhelper";
+import { IRepositoryUpdater } from "./irepositoryupdater";
+import { INamespace, ISecurityHelper, ISecurityIdentity } from "../helpers/isecurityhelper";
+import { ILogger } from "../loggers/ilogger";
+import { IDebug } from "../loggers/idebug";
 
 export class RepositoryUpdater implements IRepositoryUpdater {
 
+    private logger: ILogger;
+    private debugLogger: IDebug;
+
     public repositoryHelper: IRepositoryHelper;
     public securityHelper: ISecurityHelper;
-    private helper: IHelper;
+    private commonHelper: ICommonHelper;
 
-    private debugLogger: Debug.Debugger;
-    private logger: IConsoleLogger;
+    constructor(repositoryHelper: IRepositoryHelper, securityHelper: ISecurityHelper, commonHelper: ICommonHelper, logger: ILogger) {
 
-    constructor(repositoryHelper: IRepositoryHelper, securityHelper: ISecurityHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
-
-        this.debugLogger = debugLogger.create(this.constructor.name);
-        this.logger = consoleLogger;
+        this.logger = logger;
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.repositoryHelper = repositoryHelper;
         this.securityHelper = securityHelper;
-        this.helper = helper;
+        this.commonHelper = commonHelper;
 
     }
 
@@ -50,7 +48,7 @@ export class RepositoryUpdater implements IRepositoryUpdater {
 
             // Slow down parallel calls to address
             // Intermittent API connectivity issues
-            await this.helper.wait(500, 3000);
+            await this.commonHelper.wait(500, 3000);
 
             const targetIdentity: ISecurityIdentity = await this.securityHelper.getExistingIdentity(groupName, project.id!, existingIdentities);
 

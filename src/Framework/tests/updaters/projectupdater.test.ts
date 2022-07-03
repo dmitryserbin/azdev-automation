@@ -1,4 +1,3 @@
-import Debug from "debug";
 import "mocha";
 
 import * as chai from "chai";
@@ -8,14 +7,14 @@ import { OperationReference } from "azure-devops-node-api/interfaces/common/Oper
 import { Process, TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
-import { IBuildPermission, IGroupMembership, IPermission, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IWorkPermission, PermissionType } from "../../interfaces/readers/configurationreader";
-import { IConsoleLogger } from "../../interfaces/common/consolelogger";
-import { IDebugLogger } from "../../interfaces/common/debuglogger";
-import { IHelper } from "../../interfaces/common/helper";
-import { IProjectHelper } from "../../interfaces/helpers/projecthelper";
-import { IProjectUpdater } from "../../interfaces/updaters/projectupdater";
-import { ISecurityHelper } from "../../interfaces/helpers/securityhelper";
+import { IBuildPermission, IGroupMembership, IPermission, IProject, IProjectPermission, IReleasePermission, IRepositoryPermission, IWorkPermission, PermissionType } from "../../readers/iconfigurationreader";
+import { ICommonHelper } from "../../helpers/icommonhelper";
+import { IProjectHelper } from "../../helpers/iprojecthelper";
+import { IProjectUpdater } from "../../updaters/iprojectupdater";
+import { ISecurityHelper } from "../../helpers/isecurityhelper";
 import { ProjectUpdater } from "../../updaters/projectupdater";
+import { ILogger } from "../../loggers/ilogger";
+import { IDebug } from "../../loggers/idebug";
 
 const memberOne = "GroupOne";
 const memberTwo = "GroupTwo";
@@ -96,16 +95,14 @@ const project: IProject = {
 const projectHelperMock = TypeMoq.Mock.ofType<IProjectHelper>();
 const securityHelperMock = TypeMoq.Mock.ofType<ISecurityHelper>();
 
-const debuggerMock = TypeMoq.Mock.ofType<Debug.Debugger>();
-const debugLoggerMock = TypeMoq.Mock.ofType<IDebugLogger>();
-debugLoggerMock.setup((x) => x.create(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
-debuggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debuggerMock.target);
+const loggerMock = TypeMoq.Mock.ofType<ILogger>();
+const debugMock = TypeMoq.Mock.ofType<IDebug>();
 
-const consoleLoggerMock = TypeMoq.Mock.ofType<IConsoleLogger>();
-consoleLoggerMock.setup((x) => x.log(TypeMoq.It.isAny())).returns(() => null);
+loggerMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
+debugMock.setup((x) => x.extend(TypeMoq.It.isAnyString())).returns(() => debugMock.object);
 
-const helperMock = TypeMoq.Mock.ofType<IHelper>();
-helperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber())).returns(() => Promise.resolve());
+const commonHelperMock = TypeMoq.Mock.ofType<ICommonHelper>();
+commonHelperMock.setup((x) => x.wait(TypeMoq.It.isAnyNumber(), TypeMoq.It.isAnyNumber())).returns(() => Promise.resolve());
 
 const mockProject: TypeMoq.IMock<TeamProject> = TypeMoq.Mock.ofType<TeamProject>();
 mockProject.setup((x) => x.name).returns(() => project.name);
@@ -113,7 +110,7 @@ mockProject.setup((x) => x.id).returns(() => "1");
 
 describe("ProjectUpdater", () => {
 
-    const projectUpdater: IProjectUpdater = new ProjectUpdater(projectHelperMock.target, securityHelperMock.target, helperMock.target, debugLoggerMock.target, consoleLoggerMock.target);
+    const projectUpdater: IProjectUpdater = new ProjectUpdater(projectHelperMock.target, securityHelperMock.target, commonHelperMock.target, loggerMock.target);
 
     it("Should create new project", async () => {
 

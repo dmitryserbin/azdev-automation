@@ -1,34 +1,32 @@
-import Debug from "debug";
-
 import { OperationReference } from "azure-devops-node-api/interfaces/common/OperationsInterfaces";
 import { Process, ProjectVisibility, TeamProject } from "azure-devops-node-api/interfaces/CoreInterfaces";
 import { GraphGroup } from "azure-devops-node-api/interfaces/GraphInterfaces";
 
-import { IProject, IProjectPermission } from "../interfaces/readers/configurationreader";
-import { IConsoleLogger } from "../interfaces/common/consolelogger";
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IHelper } from "../interfaces/common/helper";
-import { IProjectHelper } from "../interfaces/helpers/projecthelper";
-import { IProjectUpdater } from "../interfaces/updaters/projectupdater";
-import { ISecurityHelper } from "../interfaces/helpers/securityhelper";
+import { IProject, IProjectPermission } from "../readers/iconfigurationreader";
+import { ICommonHelper } from "../helpers/icommonhelper";
+import { IProjectHelper } from "../helpers/iprojecthelper";
+import { IProjectUpdater } from "./iprojectupdater";
+import { ISecurityHelper } from "../helpers/isecurityhelper";
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
 
 export class ProjectUpdater implements IProjectUpdater {
 
+    private logger: ILogger;
+    private debugLogger: IDebug;
+
     public projectHelper: IProjectHelper;
     public securityHelper: ISecurityHelper;
-    private helper: IHelper;
+    private commonHelper: ICommonHelper;
 
-    private debugLogger: Debug.Debugger;
-    private logger: IConsoleLogger;
+    constructor(projectHelper: IProjectHelper, securityHelper: ISecurityHelper, commonHelper: ICommonHelper, logger: ILogger) {
 
-    constructor(projectHelper: IProjectHelper, securityHelper: ISecurityHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
-
-        this.debugLogger = debugLogger.create(this.constructor.name);
-        this.logger = consoleLogger;
+        this.logger = logger;
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.projectHelper = projectHelper;
         this.securityHelper = securityHelper;
-        this.helper = helper;
+        this.commonHelper = commonHelper;
 
     }
 
@@ -62,7 +60,7 @@ export class ProjectUpdater implements IProjectUpdater {
 
         const result: OperationReference = await this.projectHelper.createProject(project.name, project.description, processTemplate, sourceControlType, projectVisibility);
 
-        await this.helper.wait(5000, 5000);
+        await this.commonHelper.wait(5000, 5000);
 
         const targetProject: TeamProject = await this.projectHelper.findProject(project.name);
 
@@ -105,7 +103,7 @@ export class ProjectUpdater implements IProjectUpdater {
 
             // Slow down parallel calls to address
             // Intermittent API connectivity issues
-            await this.helper.wait(500, 3000);
+            await this.commonHelper.wait(500, 3000);
 
             let targetGroup: GraphGroup = await this.projectHelper.getProjectGroup(groupName, project.id!);
 
@@ -118,7 +116,7 @@ export class ProjectUpdater implements IProjectUpdater {
 
                 // It may take up to a few seconds before
                 // New group identity becomes available
-                await this.helper.wait(5000, 5000);
+                await this.commonHelper.wait(5000, 5000);
 
             }
 

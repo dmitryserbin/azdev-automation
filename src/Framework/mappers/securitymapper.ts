@@ -1,16 +1,15 @@
-import Debug from "debug";
-
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IGroupProvider, IIdentityPermission, INamespace, INamespaceAction, ISecurityIdentity, ISecurityPermission, ISubjectPermission } from "../interfaces/helpers/securityhelper";
-import { ISecurityMapper } from "../interfaces/mappers/securitymapper";
+import { IGroupProvider, IIdentityPermission, INamespace, INamespaceAction, ISecurityIdentity, ISecurityPermission, ISubjectPermission } from "../helpers/isecurityhelper";
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
+import { ISecurityMapper } from "./isecuritymapper";
 
 export class SecurityMapper implements ISecurityMapper {
 
-    private debugLogger: Debug.Debugger;
+    private debugLogger: IDebug;
 
-    constructor(debugLogger: IDebugLogger) {
+    constructor(logger: ILogger) {
 
-        this.debugLogger = debugLogger.create(this.constructor.name);
+        this.debugLogger = logger.extend(this.constructor.name);
 
     }
 

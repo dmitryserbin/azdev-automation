@@ -1,30 +1,30 @@
-import Debug from "debug";
-
-import { IConsoleLogger } from "../interfaces/common/consolelogger";
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { IHelper } from "../interfaces/common/helper";
-import { IEndpointHelper } from "../interfaces/helpers/endpointhelper";
-import { IEndpointUpdater } from "../interfaces/updaters/endpointupdater";
+import { ICommonHelper } from "../helpers/icommonhelper";
+import { IEndpointHelper } from "../helpers/iendpointhelper";
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
+import { IEndpointUpdater } from "./iendpointupdater";
 
 export class EndpointUpdater implements IEndpointUpdater {
 
+    private logger: ILogger;
+    private debugLogger: IDebug;
+
     private endpointHelper: IEndpointHelper;
-    private helper: IHelper;
+    private commonHelper: ICommonHelper;
 
-    private debugLogger: Debug.Debugger;
-    private logger: IConsoleLogger;
+    constructor(endpointHelper: IEndpointHelper, commonHelper: ICommonHelper, logger: ILogger) {
 
-    constructor(endpointHelper: IEndpointHelper, helper: IHelper, debugLogger: IDebugLogger, consoleLogger: IConsoleLogger) {
-
-        this.debugLogger = debugLogger.create(this.constructor.name);
-        this.logger = consoleLogger;
+        this.logger = logger;
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.endpointHelper = endpointHelper;
-        this.helper = helper;
+        this.commonHelper = commonHelper;
 
     }
 
     public async initialize(projectName: string, projectId: string): Promise<void> {
+
+        this.logger.log("Initializing project service endpoint feature");
 
         const results = await this.endpointHelper.getServiceEndpoints(projectName);
 

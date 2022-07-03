@@ -1,6 +1,6 @@
 import { join } from "path";
 
-import { IArtifactFactory, IConfigArtifact } from "../interfaces/factories/artifactfactory";
+import { IArtifactFactory, IConfigArtifact } from "./iartifactfactory";
 
 export class ArtifactFactory implements IArtifactFactory {
 

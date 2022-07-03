@@ -1,20 +1,19 @@
-import Debug from "debug";
-
-import * as ta from "azure-devops-node-api/TaskAgentApi";
-
+import { ITaskAgentApi } from "azure-devops-node-api/TaskAgentApi";
 import { TaskDefinition } from "azure-devops-node-api/interfaces/TaskAgentInterfaces";
 
-import { IDebugLogger } from "../interfaces/common/debuglogger";
-import { ITaskAgentHelper } from "../interfaces/helpers/taskagenthelper";
+import { ITaskAgentHelper } from "./itaskagenthelper";
+import { IDebug } from "../loggers/idebug";
+import { ILogger } from "../loggers/ilogger";
 
 export class TaskAgentHelper implements ITaskAgentHelper {
 
-    private taskAgentApi: ta.ITaskAgentApi;
-    private debugLogger: Debug.Debugger;
+    private debugLogger: IDebug;
 
-    constructor(taskAgentApi: ta.ITaskAgentApi, debugLogger: IDebugLogger) {
+    private taskAgentApi: ITaskAgentApi;
 
-        this.debugLogger = debugLogger.create(this.constructor.name);
+    constructor(taskAgentApi: ITaskAgentApi, logger: ILogger) {
+
+        this.debugLogger = logger.extend(this.constructor.name);
 
         this.taskAgentApi = taskAgentApi;
 
