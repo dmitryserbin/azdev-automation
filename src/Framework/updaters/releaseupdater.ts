@@ -35,6 +35,8 @@ export class ReleaseUpdater implements IReleaseUpdater {
 
     public async initialize(projectName: string): Promise<void> {
 
+        this.logger.log("Initializing project classic release pipelines feature");
+
         // Simply getting all release definitions initializes
         // Required classic release pipelines capabilities
         const result = this.releaseHelper.getDefinitions(projectName);

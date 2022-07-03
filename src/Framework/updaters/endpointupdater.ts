@@ -24,6 +24,8 @@ export class EndpointUpdater implements IEndpointUpdater {
 
     public async initialize(projectName: string, projectId: string): Promise<void> {
 
+        this.logger.log("Initializing project service endpoint feature");
+
         const results = await this.endpointHelper.getServiceEndpoints(projectName);
 
         if (results.length === 0) {
