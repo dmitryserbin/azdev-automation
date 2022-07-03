@@ -1,8 +1,8 @@
 import { TaskResult, setResult } from "azure-pipelines-task-lib";
 
 import { Automation } from "azdev-automation";
-import { IAutomation, IEndpoint, IParameters } from "azdev-automation/interfaces/automation";
 import { getEndpoint, getParameters } from "./helper";
+import { IAutomation, IEndpoint, IParameters } from "azdev-automation/iautomation";
 
 async function run() {
 
