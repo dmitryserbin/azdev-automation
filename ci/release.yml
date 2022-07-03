@@ -11,6 +11,12 @@ pr: none
 pool:
   name: Default
 
+parameters:
+- name: releaseFramework
+  displayName: Release framework
+  type: boolean
+  default: true
+
 stages:
 - stage: Build
   jobs:
@@ -41,7 +47,8 @@ stages:
   - template: templates/release-extension.yml
     parameters:
       environmentName: Marketplace
-  - template: templates/release-framework.yml
-    parameters:
-      environmentName: NpmJs
-      dryRun: ${{ ne(variables['Build.SourceBranch'], 'refs/heads/main') }}
+  - ${{ if eq(parameters.releaseFramework, true) }}:
+    - template: templates/release-framework.yml
+      parameters:
+        environmentName: NpmJs
+        dryRun: ${{ ne(variables['Build.SourceBranch'], 'refs/heads/main') }}

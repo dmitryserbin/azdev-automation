@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.13
+## 1.0.*
 
 Add project features initialization support
 Internal refactoring & minor improvements
