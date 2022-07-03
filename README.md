@@ -13,7 +13,7 @@ This extension adds [Azure DevOps Automation](https://marketplace.visualstudio.c
 
 Extension | Package | Build   | Code
 :---------|:--------|:--------|:--------
-[![Extension](https://vsmarketplacebadge.apphb.com/version/dmitryserbin.azdev-automation.svg)](https://marketplace.visualstudio.com/items?itemName=dmitryserbin.azdev-automation) | [![npm version](https://badge.fury.io/js/azdev-automation.svg)](https://www.npmjs.com/package/azdev-automation) | [![Build Status](https://dev.azure.com/dmitryserbin/Automation/_apis/build/status/Automation-master?branchName=master)](https://dev.azure.com/dmitryserbin/Automation/_build/latest?definitionId=13&branchName=master) | [![CodeFactor](https://www.codefactor.io/repository/github/dmitryserbin/azdev-automation/badge)](https://www.codefactor.io/repository/github/dmitryserbin/azdev-automation)
+[![Extension](https://vsmarketplacebadge.apphb.com/version/dmitryserbin.azdev-automation.svg)](https://marketplace.visualstudio.com/items?itemName=dmitryserbin.azdev-automation) | [![npm version](https://badge.fury.io/js/azdev-automation.svg)](https://www.npmjs.com/package/azdev-automation) | [![Build Status](https://dev.azure.com/dmitryserbin/Automation/_apis/build/status/Automation-release?branchName=main)](https://dev.azure.com/dmitryserbin/Automation/_build/latest?definitionId=13&branchName=main) | [![CodeFactor](https://www.codefactor.io/repository/github/dmitryserbin/azdev-automation/badge)](https://www.codefactor.io/repository/github/dmitryserbin/azdev-automation)
 
 ## Features
 
@@ -61,11 +61,11 @@ Projects configuration contains target projects definition and policy mappings.
 }
 ```
 
-> Please refer to [examples](https://github.com/dmitryserbin/azdev-automation/tree/master/src/examples) for reference.
+> Please refer to [examples](https://github.com/dmitryserbin/azdev-automation/tree/main/src/examples) for reference.
 
 ## Policies
 
-Permission policies contain set of rule for different project fetures. 
+Permission policies contain set of rule for different project fetures.
 
 - `Project Permissions` - permissions policies defining security access to project
 - `Build Permissions` - permissions policies defining level of access to build pipelines
@@ -74,7 +74,7 @@ Permission policies contain set of rule for different project fetures.
 - `Work Items Permissions` - permissions policies defining level of access to work items
 - `Service Connections` - service connections definitions _(to be implemented)_
 
-> Please refer to [examples](https://github.com/dmitryserbin/azdev-automation/tree/master/src/examples) and [policy schemas](https://github.com/dmitryserbin/azdev-automation/tree/master/src/Framework/schemas) for reference.
+> Please refer to [examples](https://github.com/dmitryserbin/azdev-automation/tree/main/src/examples) and [policy schemas](https://github.com/dmitryserbin/azdev-automation/tree/main/src/Framework/schemas) for reference.
 
 ## Support
 

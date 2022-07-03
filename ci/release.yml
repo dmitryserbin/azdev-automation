@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-    - master
+    - main
   paths:
     exclude:
     - src/task
@@ -44,4 +44,4 @@ stages:
   - template: templates/release-framework.yml
     parameters:
       environmentName: NpmJs
-      dryRun: ${{ ne(variables['Build.SourceBranch'], 'refs/heads/master') }}
+      dryRun: ${{ ne(variables['Build.SourceBranch'], 'refs/heads/main') }}
